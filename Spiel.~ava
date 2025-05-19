@@ -1,5 +1,8 @@
 public class Spiel {
-  public Spiel() {
-   haha du doofer; 
+  private byte dran;
+  private byte phase;
+  private byte zugNummer;
+  public Spiel(String spielerName[], RisikoGui meineGui) {
+    
   }
 }
