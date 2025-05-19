@@ -5,8 +5,13 @@ import javafx.stage.Stage;
 
 
 public class RisikoGui extends Application {
-  // Anfang Attribute
-  // Ende Attribute
+  private String[] laenderSvg = new String[42];
+  private byte spielerAnzahl;
+  private Spiel spiel;
+  private LandButton[] landButtons = new LandButton[42];
+  private Button kampfButton;
+  private Button fertigButton;
+  private Label wuerfelLabel;
   
   public void start(Stage primaryStage) { 
     Pane root = new Pane();
@@ -25,6 +30,18 @@ public class RisikoGui extends Application {
   
   public static void main(String[] args) {
     launch(args);
+  }
+  
+  public void grafikErneuern (){
+  
+    }
+  
+  public void kampfButton_gedrueckt (){
+    
+  }
+  
+  public void fertigButton_gedrueckt (){
+    
   }
   // Ende Methoden
 }
