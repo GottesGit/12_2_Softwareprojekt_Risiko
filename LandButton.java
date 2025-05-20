@@ -13,5 +13,4 @@ public class LandButton extends Button{
   public void refresh(){
   
   }
- 
 }

@@ -13,5 +13,4 @@ public class Kontinent{
   public int getExtraTruppen(){
     
   }
-
 }

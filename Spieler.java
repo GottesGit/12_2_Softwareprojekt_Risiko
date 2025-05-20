@@ -28,5 +28,4 @@ public class Spieler{
   public void getGesamtTruppen(){
     return this.gesamtTruppen;
   }
-
  }

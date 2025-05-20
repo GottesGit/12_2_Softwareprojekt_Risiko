@@ -9,7 +9,7 @@ public class Spieler{
   }
 
   public String getName(Spieler spieler){
-    return name;
+    return this.name;
   }
   
   public void kartenNutzen(int[] kartenAnzahl){//keine ahnung, ob die eckigen da hin müssen
@@ -18,6 +18,15 @@ public class Spieler{
  
   public void karteZiehen(int[] kartenanzahl){
     int zahl = (int)(Math.random() * 3);// sollte glaube 0, 1 oder 2 geben  }
-    kartenAnzahl[zahl]++;
+    this.kartenAnzahl[zahl]++;
   }
+  
+  public void setGesamtTruppen(int anzahl){
+    this.gesamtTruppen = gesamtTruppen + anzahl;
+  }
+  
+  public void getGesamtTruppen(){
+    return this.gesamtTruppen;
+  }
+
  }

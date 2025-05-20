@@ -43,5 +43,4 @@ public class Land{
   public boolean getVerbunden(Land anderesLand){//rekursiv, aber übergeben, welche schon überprüft wurden
     return false;
   }
-
 }
