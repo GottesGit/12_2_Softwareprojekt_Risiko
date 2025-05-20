@@ -10,8 +10,9 @@ public class Land{
     
   }
  
-  public void setTruppen(byte meinHerrscher, int anzahl){
-    
+  public void setTruppen(byte meinHerrscher, int anzahl){//meinHerrscher?
+    this.anzahlTruppen = anzahlTruppen + anzahl;
+    this.herrscher = meinHerrscher;
   }
 
   public int getTruppen(){

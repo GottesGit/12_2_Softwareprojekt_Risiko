@@ -27,7 +27,7 @@ public class Spiel {
   }
   
   public int getDran(){
-    return dran;
+    return this.dran;
   }
   
   private boolean truppenPlatzieren(int anzahl, Land ziel){//anzahl aus gui übergeben, auch von da aufrufen
