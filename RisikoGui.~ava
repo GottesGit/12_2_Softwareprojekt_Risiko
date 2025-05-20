@@ -38,12 +38,12 @@ public class RisikoGui extends Application {
     
     //Australien
     
-    };
-    int[][] laenderPositionen = {
     //Suedamerika
+    };
+    
+    int[][] laenderPositionen = {
     {100, 500}, {200, 500}, {300, 500}, {400, 500}
     };
-
     
     for (byte i = 0; i < 4; i++) {
       SVGPath laender = new SVGPath();
