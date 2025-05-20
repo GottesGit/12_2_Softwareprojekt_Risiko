@@ -49,9 +49,7 @@ public class Land{
     } // end of for
     return false;
   }
-  
   public boolean getSchonDurch(){
     return this.schonDurch;
   }
-
 }
