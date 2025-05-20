@@ -36,6 +36,7 @@ public class Spiel {
       case 1 : //angreifen also eigenes Land auswaehlen
         if (land.getHerrscher() == dran) {
           vonLand = land;
+          phasenWechsel();
         } else {
           System.out.println("Dieses Land gehoert nich dir");
         }
@@ -43,6 +44,7 @@ public class Spiel {
       case 2 : //angreifen also Feind auswaehlen
         if (land.getHerrscher() != dran) {
           nachLand = land;
+          phasenWechsel();
         } else {
           System.out.println("Dieses Land gehoert dir");
         }

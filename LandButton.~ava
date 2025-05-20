@@ -7,11 +7,10 @@ public class LandButton extends Button{
   }
   
   public void landButton_gedrueckt(){
-    
+    spiel.land
   }
   
   public void refresh(){
   
   }
- 
 }

@@ -104,8 +104,21 @@ public class Spiel {
     
   }
   
-  public int getGewonnen (){
-    
+  public byte getGewonnen (){
+    boolean gewonnen;
+    for (byte i = 0; i < mitSpieler.length; i++) {
+      gewonnen = true;
+      for (byte j = 0; j < laender.length; j++) {
+        if (laender[j].getHerrscher() != i) {
+          gewonnen = false;
+        }
+      }
+      if (gewonnen == true) {
+        System.out.println("Spieler" + i + " hat gewonnen");
+        return i;
+      }
+    }
+    return 100;
   }
 
   public String getSpielerName(byte sNr){
