@@ -18,8 +18,21 @@ public class Spiel {
     }
   }
   
-  public void landKlickAktion(Land name, byte taste){
-    
+  public void landKlickAktion(Land land, byte taste) {
+    switch (phase) {
+      case 0 : //truppenPlazieren
+        
+        break;
+      case 1 : //angreifen also Feind auswaehlen
+        
+        break;
+      case 2 : //angreifen also im Kampf
+        
+        break;
+      case 3 : //Truppen verschieben
+        
+        break;
+    }
   }
   
   public boolean phasenWechsel(){
