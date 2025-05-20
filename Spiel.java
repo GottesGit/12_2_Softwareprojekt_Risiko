@@ -30,8 +30,16 @@ public class Spiel {
     return dran;
   }
   
-  private boolean truppenPlatzieren(int anzahl){//anzahl aus gui übergeben
-    
+  private boolean truppenPlatzieren(int anzahl, Land ziel){//anzahl aus gui übergeben, auch von da aufrufen
+    if (byte dran == ziel.getHerrscher()) {
+      ziel.setTruppen(dran, anzahl);
+      mitSpieler[dran].setGesamtTruppen(anzahl);
+      return true;
+    } // end of if
+    else {
+      System.out.println("Dies ist nicht dein Land!");
+      return false;  
+    } // end of if-else
   }
   
   private int anzahlLaenderSpieler(Spieler spieler){

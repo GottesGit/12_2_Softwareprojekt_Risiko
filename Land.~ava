@@ -15,32 +15,32 @@ public class Land{
   }
 
   public int getTruppen(){
-    return name.anzahlTruppen;
+    return this.anzahlTruppen;
   }
   
   public byte getHerrscher(){
-    return herrscher;
+    return this.herrscher;
   }
   
-  public String getName(Land name){ 
-  return name;
+  public String getName(){
+    return this.name;
   }
   
-  public Land[] getNachbarn(String name){
-    return name.nachbarn[];//darf man das so?
+  public Land[] getNachbarn(){
+    return this.nachbarn[];//darf man das so?
   }
   
-  public boolean getAngrenzend(Land name){
-    for (i = 0;i< nachbarn.length ;i++) {
-      if (nachbarn[i] == name){
+  public boolean getAngrenzend(Land anderesLand){
+    for (i = 0; i < nachbarn.length; i++) {
+      if (nachbarn[i] == anderesLand){//funktioniert das so oder muessen die Namen der Laender verglichen werden?
         return true;
       }
     } // end of for
     return false;
   }
   
-  public boolean getVerbunden(Land name){
+  public boolean getVerbunden(Land anderesLand){//rekursiv, aber übergeben, welche schon überprüft wurden
     return false;
   }
 
-  }
+}
