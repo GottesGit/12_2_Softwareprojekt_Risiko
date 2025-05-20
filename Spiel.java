@@ -10,9 +10,11 @@ public class Spiel {
   private Land nachLand;
   private byte[] würfel = new byte[??];// weiß nicht, wie viel
   
-  public Spiel(String spielerName[], RisikoGui meineGui) {
-    for (i = 0; i < spielerName[].length; i++) {
-      private Spieler;//array mitspieler müsste auf die Ruichtige Länge und dann miot Spielern gefüllt werden
+  public Spiel(String spielerNamen[], RisikoGui meineGui) {
+    gui = meineGui;
+    mitSpieler[] = new Spieler[spielerNamen.length];
+    for (i = 0; i < spielerNamen.length; i++) {
+      mitSpieler[i] = new Spieler(spielerNamen[i]);//array mitspieler müsste auf die Ruichtige Länge und dann miot Spielern gefüllt werden
     }
   }
   

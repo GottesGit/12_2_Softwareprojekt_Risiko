@@ -30,11 +30,12 @@ public class RisikoGui extends Application {
   
   public static void main(String[] args) {
     launch(args);
+    spiel = new Spiel(["Bob", "Peter"], this)
   }
   
   public void grafikErneuern (){
   
-    }
+  }
   
   public void kampfButton_gedrueckt (){
     
