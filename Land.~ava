@@ -5,6 +5,7 @@ public class Land{
   private int anzahlTruppen;
   private byte angreiferSpieler;
   private int angreiferTruppen;
+  private boolean schonDurch;
   
   public Land(Land[] angrenzend,String laenderName){ // ist der name nicht unnötig bzw sind zahlen nicht einfacher?
     
@@ -41,7 +42,19 @@ public class Land{
   }
   
   public boolean getVerbunden(Land anderesLand){//rekursiv, aber übergeben, welche schon überprüft wurden
+    for (i = 0; i < nachbarn.length; i++) {
+      if (nachbarn[i] == anderesLand){//funktioniert das so oder muessen die Namen der Laender verglichen werden?
+        return true;
+      }
+    } // end of for
     return false;
   }
+<<<<<<< HEAD
+  
+  public boolean getSchonDurch(){
+    return this.schonDurch;
+  }
 
+=======
+>>>>>>> Lasse
 }
