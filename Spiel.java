@@ -38,7 +38,7 @@ public class Spiel {
           vonLand = land;
           phasenWechsel();
         } else {
-          System.out.println("Dieses Land gehoert nich dir");
+          System.out.println("Dieses Land gehoert nicht dir");
         }
         break;
       case 2 : //angreifen also Feind auswaehlen
@@ -50,10 +50,10 @@ public class Spiel {
         }
         break;
       case 3 : //angreifen also im Kampf
-        //wie kann das aufgerufen werden also muss halt vom kampfbutton aufgerufen werden
+        //wie kann das aufgerufen werden also muss halt vom kampfbutton aufgerufen werden; was? -j
         break;
       case 4 : //Truppen verschieben
-        
+        nichtDurch();
         break;
     }
   }
@@ -123,5 +123,11 @@ public class Spiel {
 
   public String getSpielerName(byte sNr){
     
+  } 
+  
+  public void nichtDurch() {
+    for (i = 0; i < laender.length; i++){
+      laender[i].setSchonDurch(false);
+    }
   }
-}
+  }

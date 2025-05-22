@@ -41,15 +41,30 @@ public class Land{
     return false;
   }
   
-  public boolean getVerbunden(Land anderesLand){//rekursiv, aber übergeben, welche schon überprüft wurden
-    for (i = 0; i < nachbarn.length; i++) {
-      if (nachbarn[i] == anderesLand){//funktioniert das so oder muessen die Namen der Laender verglichen werden?
-        return true;
-      }
-    } // end of for
+  public boolean getVerbunden(Land anderesLand, byte dran){//rekursiv, aber übergeben, welche schon überprüft wurden
+     this.schonDurch = true;
+
+    if (this == anderesLand) {
+      return true;
+    }
+
+    for (Land nachbar : nachbarn) {
+        if (nachbar.getSchonDurch() != true && nachbar.getHerrscher() == dran) {
+            if (nachbar.getVerbunden(anderesLand, dran)) {
+               return true;
+            }
+        }
+    }
+
     return false;
   }
+  
   public boolean getSchonDurch(){
     return this.schonDurch;
   }
+  
+  public void setSchonDurch(boolean keineAhnung){
+    this.setSchondurch = keineAhnung;
+  }
+
 }
