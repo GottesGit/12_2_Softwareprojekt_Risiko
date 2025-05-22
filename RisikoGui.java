@@ -136,15 +136,17 @@ public class RisikoGui extends Application {
   }
   
   public void grafikErneuern (){
-  
+    for (byte i = 0; i < landButtons.length; i++) {
+      landButtons[i].refresh();
+    }
   }
   
   public void kampfButton_gedrueckt (){
-    
+    //spiel.?
   }
   
   public void fertigButton_gedrueckt (){
-    
+    //spiel.?
   }
   // Ende Methoden
 }

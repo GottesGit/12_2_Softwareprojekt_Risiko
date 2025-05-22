@@ -16,7 +16,7 @@ public class Spiel {
     for (i = 0; i < spielerNamen.length; i++) {
       mitSpieler[i] = new Spieler(spielerNamen[i]);//array mitspieler müsste auf die Ruichtige Länge und dann miot Spielern gefüllt werden
     }
-    Land[][] angrenzende = {
+    Land[][] angrenzende = {//Todo
       {}
     };
 
@@ -52,14 +52,23 @@ public class Spiel {
       case 3 : //angreifen also im Kampf
         //wie kann das aufgerufen werden also muss halt vom kampfbutton aufgerufen werden; was? -j
         break;
-      case 4 : //Truppen verschieben
+      case 4 : //Truppen verschieben also StartLand auswählen
+        if (land.getHerrscher() == dran) {
+          vonLand = land;
+          phasenWechsel();
+        } else {
+          System.out.println("Dieses Land gehoert nicht dir");
+        }
+        break;
+      case 5 : //Truppen verschieben also zielLand auswählen
         nichtDurch();
         break;
     }
   }
   
   public void phasenWechsel(){
-    
+    //...
+    gui.grafikErneuern();
   }
   public byte getPhase(){
     return this.phase;
@@ -125,9 +134,9 @@ public class Spiel {
     
   } 
   
-  public void nichtDurch() {
+  public void nichtDurch() {//???nichtDurch
     for (i = 0; i < laender.length; i++){
       laender[i].setSchonDurch(false);
     }
   }
-  }
+}

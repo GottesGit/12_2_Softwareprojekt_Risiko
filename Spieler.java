@@ -12,10 +12,16 @@ public class Spieler{
     return this.name;
   }
   
-  public void kartenNutzen(int[] karten){//keine ahnung, ob die eckigen da hin müssen
-    if (karten[0] >= 1 && karten[1] >= 1 && karten[2] >= 1) {
-      //counter +6
-    } // end of if
+  public void kartenNutzen(){
+    if (karten[0] >= 3) {
+      //counter +keineAhnungWieViel, oder als return, je nach dem von wo es aufgerufen wird
+    } else if (karten[1] >= 3) {
+        
+    } else if (karten[2] >= 3) {
+        
+    } else if (karten[0] >= 1 && karten[1] >= 1 && karten[2] >= 1) {
+        
+    }
   }
  
   public void karteZiehen(int[] kartenanzahl){

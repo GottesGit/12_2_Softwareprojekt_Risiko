@@ -62,5 +62,9 @@ public class Land{
   public boolean getSchonDurch(){
     return this.schonDurch;
   }
+  
+  public void setSchonDurch(boolean keineAhnung){
+    this.setSchondurch = keineAhnung;
+  }
 
 }

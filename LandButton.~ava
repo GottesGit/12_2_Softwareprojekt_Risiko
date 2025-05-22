@@ -7,10 +7,10 @@ public class LandButton extends Button{
   }
   
   public void landButton_gedrueckt(){
-    spiel.land
+    spiel.landKlickAktion(land, 1);//erstmal nur linke Maustaste
   }
   
   public void refresh(){
-  
+    land.getTruppen();//dann anzeigen
   }
 }
