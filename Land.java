@@ -7,28 +7,29 @@ public class Land{
   private int angreiferTruppen;
   private boolean schonDurch;
   
-  public Land(Land[] angrenzend,String laenderName){ // ist der name nicht unnötig bzw sind zahlen nicht einfacher?
-    
+  public Land(Land[] angrenzend, String meinName){ // ist der name nicht unnoetig bzw sind zahlen nicht einfacher? - Das Land muss trotzdem einen Namen haben
+    this.nachbarn = angrenzend;//geht das mit dem Array so?
+    this.name = meinName;
   }
  
-  public void setTruppen(byte meinHerrscher, int anzahl){//meinHerrscher?
+  public void setTruppen(byte meinHerrscher, int anzahl) {//meinHerrscher?
     this.anzahlTruppen = anzahlTruppen + anzahl;
     this.herrscher = meinHerrscher;
   }
 
-  public int getTruppen(){
+  public int getTruppen() {
     return this.anzahlTruppen;
   }
   
-  public byte getHerrscher(){
+  public byte getHerrscher() {
     return this.herrscher;
   }
   
-  public String getName(){
+  public String getName() {
     return this.name;
   }
   
-  public Land[] getNachbarn(){
+  public Land[] getNachbarn() {
     return this.nachbarn[];//darf man das so?
   }
   
@@ -41,13 +42,11 @@ public class Land{
     return false;
   }
   
-  public boolean getVerbunden(Land anderesLand, byte dran){//rekursiv, aber übergeben, welche schon überprüft wurden
-     this.schonDurch = true;
-
+  public boolean getVerbunden(Land anderesLand, byte dran) {//rekursiv, aber uebergeben, welche schon ueberprueft wurden
+    this.schonDurch = true;
     if (this == anderesLand) {
       return true;
     }
-
     for (Land nachbar : nachbarn) {
         if (nachbar.getSchonDurch() != true && nachbar.getHerrscher() == dran) {
             if (nachbar.getVerbunden(anderesLand, dran)) {
@@ -55,16 +54,14 @@ public class Land{
             }
         }
     }
-
     return false;
   }
   
-  public boolean getSchonDurch(){
+  public boolean getSchonDurch() {
     return this.schonDurch;
   }
   
-  public void setSchonDurch(boolean keineAhnung){
+  public void setSchonDurch(boolean keineAhnung) {
     this.setSchondurch = keineAhnung;
   }
-
 }

@@ -130,14 +130,35 @@ public class RisikoGui extends Application {
     launch(args);
     String[] namen = {"Bob", "Peter"};//da fehlt natuerlich noch die Startseite
     spiel = new Spiel(namen, this);
-    for (byte i = 0; i < spiel.laender.length; i++) {
-      landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.laender[i]);
+    for (byte i = 0; i < 42; i++) {
+      landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i););
     }
   }
   
-  public void grafikErneuern (){
-    for (byte i = 0; i < landButtons.length; i++) {
-      landButtons[i].refresh();
+  public void grafikErneuern() {
+    if (spiel.getGewonnen() != 100) {
+      System.out.println("Spieler " + spiel.getGewonnen() + " hat gewonnen!");
+    } else {
+      for (byte i = 0; i < landButtons.length; i++) {
+        if(spiel.getPhase() == 0 || spiel.getPhase() == 1 || spiel.getPhase() == 4 || spiel.getPhase() == 5) { //truppenPlazieren, eigenes Land zum Angreifen auswählen, 2xeigenes Land zum Verschieben auswählen
+          if (landButtons[i].getHerrscher() == spiel.getDran()) { //nur eigene Laender enablen
+            landButtons[i].setDisabled(false);
+          } else {
+            landButtons[i].setDisabled(true);
+          }
+        } else if (spiel.getPhase() == 2) { //Feind auswaehlen 
+          if (landButtons[i].getHerrscher() == spiel.getDran()) { //nur eigene Laender enablen
+            landButtons[i].setDisabled(true); //nur fremde Laender enablen
+          } else {
+            landButtons[i].setDisabled(false);
+          }
+        } else if (spiel.getPhase() == 3) { //Kampf
+          landButtons[i].setDisabled(true); // alle disablen
+        } else {
+          System.out.println("Error falsche Phase");
+        }
+        landButtons[i].refresh();
+      }
     }
   }
   

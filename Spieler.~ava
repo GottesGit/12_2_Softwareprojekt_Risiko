@@ -1,26 +1,35 @@
 public class Spieler{
-  private int gesamtTruppen;
+  private int gesamtTruppen = 0;
   private String name;
-  private int gesamtLänder;
-  private int[] kartenAnzahl = new int[3];// 0 = soldaten; 1 = pferde; 2 = kanonen
+  private int gesamtLaender = 0;
+  private int[] kartenAnzahl = {0, 0, 0};
+;// 0 = soldaten; 1 = pferde; 2 = kanonen
 
-  public Spieler(String Name){
-    
+  public Spieler(String meinName){
+    this.name = meinName;
   }
 
   public String getName(Spieler spieler){
     return this.name;
   }
   
-  public void kartenNutzen(){
+  public byte kartenNutzen(){
     if (karten[0] >= 3) {
-      //counter +keineAhnungWieViel, oder als return, je nach dem von wo es aufgerufen wird
+      karten[0] = karten[0] - 3;
+      return //kp wie viel
     } else if (karten[1] >= 3) {
-        
+      karten[1] = karten[1] - 3;
+      return //kp wie viel
     } else if (karten[2] >= 3) {
-        
+      karten[2] = karten[2] - 3;
+      return //kp wie viel
     } else if (karten[0] >= 1 && karten[1] >= 1 && karten[2] >= 1) {
-        
+      karten[0]--;
+      karten[1]--;
+      karten[2]--;
+      return //kp wie viel
+    } else {
+      return 0;
     }
   }
  

@@ -2,15 +2,23 @@ public class LandButton extends Button{
   private String positionSvg;
   private Land land;
   private Spiel spiel;
-  public LandButton(Spiel meinSpiel, String position, Land meinLand){
-    
+  
+  public LandButton(Spiel meinSpiel, String position, Land meinLand) {
+    this.spiel = meinSpiel;
+    this.positionSvg = position;
+    this.land = meinLand;
+    refresh();
   }
   
-  public void landButton_gedrueckt(){
+  public void landButton_gedrueckt() {
     spiel.landKlickAktion(land, 1);//erstmal nur linke Maustaste
   }
   
-  public void refresh(){
-    land.getTruppen();//dann anzeigen
+  public void refresh() {
+    this.setText("" + land.getTruppen());//gibt es setText bei Buttons?
+  }
+  
+  public void getHerrscher() {
+    return land.getHerrscher();
   }
 }
