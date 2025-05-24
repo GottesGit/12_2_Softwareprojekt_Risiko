@@ -140,7 +140,7 @@ public class RisikoGui extends Application {
       System.out.println("Spieler " + spiel.getGewonnen() + " hat gewonnen!");
     } else {
       for (byte i = 0; i < landButtons.length; i++) {
-        if(spiel.getPhase() == 0 || spiel.getPhase() == 1 || spiel.getPhase() == 4 || spiel.getPhase() == 5) { //truppenPlazieren, eigenes Land zum Angreifen auswählen, 2xeigenes Land zum Verschieben auswählen
+        if(spiel.getPhase() == 0 || spiel.getPhase() == 1 || spiel.getPhase() == 5 || spiel.getPhase() == 6) { //truppenPlazieren, eigenes Land zum Angreifen auswählen, 2xeigenes Land zum Verschieben auswählen
           if (landButtons[i].getHerrscher() == spiel.getDran()) { //nur eigene Laender enablen
             landButtons[i].setDisabled(false);
           } else {
@@ -152,10 +152,10 @@ public class RisikoGui extends Application {
           } else {
             landButtons[i].setDisabled(false);
           }
-        } else if (spiel.getPhase() == 3) { //Kampf
+        } else if (spiel.getPhase() == 4) { //Kampf
           landButtons[i].setDisabled(true); // alle disablen
         } else {
-          System.out.println("Error falsche Phase");
+          System.out.println("Error falsche Phase");//phase 3 fehlt noch
         }
         landButtons[i].refresh();
       }
@@ -163,11 +163,11 @@ public class RisikoGui extends Application {
   }
   
   public void kampfButton_gedrueckt (){
-    //spiel.?
+    spiel.buttonKlickAktion(2, 1);
   }
   
   public void fertigButton_gedrueckt (){
-    //spiel.?
+    spiel.buttonKlickAktion(1, 1);
   }
   // Ende Methoden
 }

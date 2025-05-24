@@ -12,12 +12,20 @@ public class Land{
     this.name = meinName;
   }
  
-  public void setTruppen(byte meinHerrscher, int anzahl) {//meinHerrscher?
-    this.anzahlTruppen = anzahlTruppen + anzahl;
+  public void setTruppen(byte meinHerrscher, int anzahl) {
+    this.anzahlTruppen = anzahl;
     this.herrscher = meinHerrscher;
   }
 
   public int getTruppen() {
+    return this.anzahlTruppen;
+  }
+  
+  public void setAngreiferTruppen(byte meinAngreifer, int anzahl) {
+    this.angreiferTruppen = anzahl;
+    this.angreiferSpieler = meinAngreifer;
+  }
+  public int getAngreiferTruppen() {
     return this.anzahlTruppen;
   }
   

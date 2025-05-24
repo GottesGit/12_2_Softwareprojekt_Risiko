@@ -16,18 +16,18 @@ public class Spieler{
   public byte kartenNutzen(){
     if (karten[0] >= 3) {
       karten[0] = karten[0] - 3;
-      return //kp wie viel
+      return ;//kp wie viel
     } else if (karten[1] >= 3) {
       karten[1] = karten[1] - 3;
-      return //kp wie viel
+      return ;//kp wie viel
     } else if (karten[2] >= 3) {
       karten[2] = karten[2] - 3;
-      return //kp wie viel
+      return ;//kp wie viel
     } else if (karten[0] >= 1 && karten[1] >= 1 && karten[2] >= 1) {
       karten[0]--;
       karten[1]--;
       karten[2]--;
-      return //kp wie viel
+      return ;//kp wie viel
     } else {
       return 0;
     }

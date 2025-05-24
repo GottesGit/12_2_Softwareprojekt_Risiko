@@ -8,7 +8,8 @@ public class Spiel {
   private RisikoGui gui;
   private Land vonLand;
   private Land nachLand;
-  private byte[] wuerfel = new byte[5];
+  private byte[] angeiferWuerfel = new byte[3];
+  private byte[] vertidigerWuerfel = new byte[2];
   
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
     gui = meineGui;
@@ -18,7 +19,7 @@ public class Spiel {
     }
     
     String[42] laenderNamen = {"Argentinien", "Peru", "Brasilien", "Venezuela"}; //Erstellung der Laender und Kontinente
-    int[42][5] angrenzende = {//Todo (aeussere, innere Dimension
+    int[42][5] angrenzende = {//Todo (aeussere, innere Dimension)
       {}
     };
     int[6] kontinentLaender = {4, 9, 6, 6, 12, 4}; //die Laender muessen alle nach Kontinenten (siehe naechste Zeile) sortiert im Array stehen!
@@ -31,7 +32,7 @@ public class Spiel {
     for (byte i = 0; i < 6; i++) {
       Land[] hinzuzfuegendeLaender = new Land[kontinentLaender[i];
       for (int j = 0; j < kontinentLaender[i]; i++) {
-        hinzuzfuegendeLaender[j] = laender[zuKontinentHinzugefuegt+];
+        hinzuzfuegendeLaender[j] = laender[zuKontinentHinzugefuegt++];
       }
       kontinente[i] = new Kontinent(hinzuzfuegendeLaender, kontinentNamen[i]);
     }
@@ -61,10 +62,18 @@ public class Spiel {
           System.out.println("Dieses Land gehoert dir");
         }
         break;
-      case 3 : //angreifen also im Kampf
-        //wie kann das aufgerufen werden also muss halt vom kampfbutton aufgerufen werden; was? -j
+      case 3 : //angreifen also Truppen nach Zielland verschieben
+        if (land.getHerrscher() != dran) {
+          nachLand = land;
+          phasenWechsel();
+        } else {
+          System.out.println("Dieses Land gehoert dir");
+        }
         break;
-      case 4 : //Truppen verschieben also StartLand auswaehlen
+      case 4 : //angreifen also im Kampf
+        System.out.println("Error ein Land wurde im Kampf ausgewaehlt");
+        break;
+      case 5 : //Truppen verschieben also StartLand auswaehlen
         if (land.getHerrscher() == dran) {
           vonLand = land;
           phasenWechsel();
@@ -72,15 +81,44 @@ public class Spiel {
           System.out.println("Dieses Land gehoert nicht dir");
         }
         break;
-      case 5 : //Truppen verschieben also zielLand auswaehlen
+      case 6 : //Truppen verschieben also zielLand auswaehlen
         nichtDurch();
         break;
+    }
+    gui.grafikErneuern();
+  }
+  public void buttonKlickAktion(byte knopf, byte taste) { //ok (1) und Kampfbutton (2)
+    if (knopf == 1) {
+      phasenWechsel(); //vllt geht das nicht immer einfach so
+      gui.grafikErneuern();
+    } else if (knopf == 2) {
+      if (phase == 3) {
+        kampf();
+        gui.grafikErneuern(); //je nach dem, ob der Kampf bereits eine Animation macht unnoetig
+      } else {
+        System.out.println("Error der Kampfbutton wurde faelschlich bedient");
+      }
+    } else {
+      System.out.println("Error ein unbekannter Button wurde bedient");
     }
   }
   
   public void phasenWechsel() {
-    //...
-    gui.grafikErneuern();
+    switch (phase) {
+      case 0 : 
+        mitSpieler[dran].setGesamtTruppen(berechneGesamtTruppen());
+        phase++;
+        break;
+      case 1 : 
+        if (vonLand != null) {
+          phase++;
+        } else {
+          System.out.println("Error die Phase " + phase + " kann nicht geaendert werden");
+        }
+        break;
+      default: 
+        
+    }
   }
   public byte getPhase() {
     return this.phase;
@@ -91,17 +129,17 @@ public class Spiel {
   
   private boolean truppenPlatzieren(int anzahl, Land ziel) {//anzahl aus gui uebergeben, auch von da aufrufen
     if (byte dran == ziel.getHerrscher()) {
-      ziel.setTruppen(dran, anzahl);
-      mitSpieler[dran].setGesamtTruppen(anzahl);
+      ziel.setTruppen(dran, ziel.getTruppen() + anzahl);
+      // mitSpieler[dran].setGesamtTruppen(anzahl);
       return true;
     } // end of if
     else {
-      System.out.println("Dies ist nicht dein Land!");
+      System.out.println("Error es wird aus einem fremden Land angegriffen");
       return false;  
     } // end of if-else
   }
   
-  private int anzahlLaenderSpieler(Spieler spieler) {
+  private int anzahlLaenderSpieler(Spieler spieler) {//getter?
     
   }
   
@@ -109,12 +147,22 @@ public class Spiel {
     
   }
   
-  private int einmarschieren(Land von, Land nach) {
-    
+  private boolean einmarschieren(Land von, Land nach, int anzahl) {
+    if (byte dran != ziel.getHerrscher()) {
+      ziel.(dran, anzahl);
+      mitSpieler[dran].setGesamtTruppen(anzahl);
+      return true;
+    } // end of if
+    else {
+      System.out.println("Error eigenes Land wird angegriffen");
+      return false;  
+    } // end of if-else
   }
   
-  private void kampf(Land meinLand) {
-    
+  private void kampf() {
+    if (nachLand.getTruppen() == 0 || nachLand.getAngeiferTruppen == 0) {
+      phasenwechsel();
+    }
   }
   
   public int[] getWuerfel() {
@@ -150,10 +198,32 @@ public class Spiel {
     }
     return 100;
   }
-
   public String getSpielerName(byte sNr) {
     
-  } 
+  }
+  private int berchneZuPlazierendeTruppen() {
+    int truppen = 0;
+    for (byte i = 0; i < laender.length; i++) {
+      if (laender[i].getHerrscher() == dran) {
+        truppen++;//1 Truppe pro Land?
+      }
+    }
+    for (byte i = 0; i < kontinente.length; i++) {
+      if (kontinente[i].beherrschtVon(dran)) {
+        truppen += kontinente[i].getExtraTruppen();
+      }
+    }
+    return truppen;
+  }
+  private void berechneGesamtTruppen() {
+    int truppen = 0;
+    for (byte i = 0; i < laender.length; i++) {
+      if (laender[i].getHerrscher() == dran) {
+        truppen += laender[i].getTruppen();
+      }
+    }
+    return truppen;
+  }
   
   public void schonDurchReset() {//extramethode??
     for (byte i = 0; i < laender.length; i++) {
