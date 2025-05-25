@@ -1,8 +1,6 @@
-
 object FGUIForm: TFXGuiForm
   Left = 1082
   Top = 229
-
   BorderIcons = [biSystemMenu]
   Caption = 'RisikoGui'
   ClientHeight = 223
@@ -14,20 +12,21 @@ object FGUIForm: TFXGuiForm
   Font.Name = 'Segoe UI'
   Font.Style = []
   FormStyle = fsStayOnTop
-  OldCreateOrder = True
   Position = poDesigned
   Scaled = False
   ShowHint = True
   Visible = True
+  OnAfterMonitorDpiChanged = FormAfterMonitorDpiChanged
+  OnCanResize = FormCanResize
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
+  OnMouseActivate = FormMouseActivate
   OnResize = FormResize
   FrameType = 8
   Modified = False
   Resizable = True
   Undecorated = False
   Background = clBtnFace
-  showing = ''
   Title = 'RisikoGui'
   X = 0
   Y = 0
@@ -38,6 +37,6 @@ object FGUIForm: TFXGuiForm
   MaxWidth = 0
   MinHeight = 0
   MinWidth = 0
-  PixelsPerInch = 96
+  showing = ''
   TextHeight = 21
 end

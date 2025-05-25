@@ -38,11 +38,11 @@ public class Land{
   }
   
   public Land[] getNachbarn() {
-    return this.nachbarn[];//darf man das so?
+    return this.nachbarn;//darf man das so?
   }
   
   public boolean getAngrenzend(Land anderesLand){
-    for (i = 0; i < nachbarn.length; i++) {
+    for (int i = 0; i < nachbarn.length; i++) {
       if (nachbarn[i] == anderesLand){//funktioniert das so oder muessen die Namen der Laender verglichen werden?
         return true;
       }
@@ -70,6 +70,6 @@ public class Land{
   }
   
   public void setSchonDurch(boolean keineAhnung) {
-    this.setSchondurch = keineAhnung;
+    this.schonDurch = keineAhnung;
   }
 }

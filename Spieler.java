@@ -2,8 +2,7 @@ public class Spieler{
   private int gesamtTruppen = 0;
   private String name;
   private int gesamtLaender = 0;
-  private int[] kartenAnzahl = {0, 0, 0};
-;// 0 = soldaten; 1 = pferde; 2 = kanonen
+  private int[] kartenAnzahl = {0, 0, 0};// 0 = soldaten; 1 = pferde; 2 = kanonen
 
   public Spieler(String meinName){
     this.name = meinName;
@@ -13,28 +12,28 @@ public class Spieler{
     return this.name;
   }
   
-  public byte kartenNutzen(){
-    if (karten[0] >= 3) {
-      karten[0] = karten[0] - 3;
-      return ;//kp wie viel
-    } else if (karten[1] >= 3) {
-      karten[1] = karten[1] - 3;
-      return ;//kp wie viel
-    } else if (karten[2] >= 3) {
-      karten[2] = karten[2] - 3;
-      return ;//kp wie viel
-    } else if (karten[0] >= 1 && karten[1] >= 1 && karten[2] >= 1) {
-      karten[0]--;
-      karten[1]--;
-      karten[2]--;
-      return ;//kp wie viel
+  public byte kartenNutzen(){ // könnten wir auch als switch case machen, ween das nicht automatisch sein soll
+    if (kartenAnzahl[0] >= 3) {
+      kartenAnzahl[0] = kartenAnzahl[0] - 3;
+      return 4;
+    } else if (kartenAnzahl[1] >= 3) {
+      kartenAnzahl[1] = kartenAnzahl[1] - 3;
+      return 6;
+    } else if (kartenAnzahl[2] >= 3) {
+      kartenAnzahl[2] = kartenAnzahl[2] - 3;
+      return 8;
+    } else if (kartenAnzahl[0] >= 1 && kartenAnzahl[1] >= 1 && kartenAnzahl[2] >= 1) {
+      kartenAnzahl[0]-1;
+      kartenAnzahl[1]-1;
+      kartenAnzahl[2]-1;
+      return 10;
     } else {
       return 0;
     }
   }
  
   public void karteZiehen(int[] kartenanzahl){
-    int zahl = (int)(Math.random() * 3);// sollte glaube 0, 1 oder 2 geben  }
+    int zahl = (int)(Math.random() * 3);// sollte glaube 0, 1 oder 2 geben  }warum ist da ne klammer?
     this.kartenAnzahl[zahl]++;
   }
   

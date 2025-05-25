@@ -1,4 +1,6 @@
-public class LandButton extends Button{
+import javafx.scene.control.Button;
+
+public class LandButton extends Button{//geht anscheinend nicht
   private String positionSvg;
   private Land land;
   private Spiel spiel;

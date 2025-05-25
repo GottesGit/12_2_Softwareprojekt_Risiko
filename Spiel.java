@@ -13,7 +13,7 @@ public class Spiel {
   
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
     gui = meineGui;
-    mitSpieler[] = new Spieler[spielerNamen.length]; //Erstellung der Spieler
+    mitSpieler = new Spieler[spielerNamen.length]; //Erstellung der Spieler
     for (i = 0; i < spielerNamen.length; i++) {
       mitSpieler[i] = new Spieler(spielerNamen[i]);
     }
@@ -128,9 +128,9 @@ public class Spiel {
   }
   
   private boolean truppenPlatzieren(int anzahl, Land ziel) {//anzahl aus gui uebergeben, auch von da aufrufen
-    if (byte dran == ziel.getHerrscher()) {
+    if (dran == ziel.getHerrscher()) {
       ziel.setTruppen(dran, ziel.getTruppen() + anzahl);
-      // mitSpieler[dran].setGesamtTruppen(anzahl);
+      mitSpieler[dran].setGesamtTruppen(anzahl);
       return true;
     } // end of if
     else {
@@ -149,7 +149,7 @@ public class Spiel {
   
   private boolean einmarschieren(Land von, Land nach, int anzahl) {
     if (byte dran != ziel.getHerrscher()) {
-      ziel.(dran, anzahl);
+      ziel.(dran, anzahl);//gibts die methode noch nicht?
       mitSpieler[dran].setGesamtTruppen(anzahl);
       return true;
     } // end of if
@@ -198,9 +198,11 @@ public class Spiel {
     }
     return 100;
   }
+  
   public String getSpielerName(byte sNr) {
     
   }
+  
   private int berchneZuPlazierendeTruppen() {
     int truppen = 0;
     for (byte i = 0; i < laender.length; i++) {
