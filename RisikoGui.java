@@ -103,6 +103,9 @@ public class RisikoGui extends Application {
       LandButton.setPickOnBounds(false);
       LandButton.setLayoutX(laenderPositionen[i][0]);
       LandButton.setLayoutY(laenderPositionen[i][1]);
+      LandButton.setMinSize(0, 0);
+      LandButton.setPrefHeight(0.0001);
+      LandButton.setPrefWidth(0.0001);
       
       root.getChildren().add(LandButton);
     }
