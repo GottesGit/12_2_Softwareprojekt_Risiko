@@ -4,22 +4,84 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.scene.control.*;
+import je.NumberField;
+import javafx.event.*;
 
 
 public class RisikoGui extends Application {
+  // Anfang Attribute
   private byte spielerAnzahl;
   private Spiel spiel;
   private LandButton[] landButtons = new LandButton[laenderNamen.length];
   private Button kampfButton;
   private Button fertigButton;
   private Label wuerfelLabel;
+  private Button startButton = new Button();
+  private TextField textField1 = new TextField();
+  private TextField textField2 = new TextField();
+  private TextField textField3 = new TextField();
+  private TextField textField4 = new TextField();
+  // Ende Attribute
   
   public void start(Stage primaryStage) { 
     Pane root = new Pane();
-    Scene scene = new Scene(root, 268, 224);
+
+    Scene scene = new Scene(root, 437, 330);
     // Anfang Komponenten
-    String[] laenderSvg = new String [42];
-    laenderSvg = {
+    
+    
+    startButton.setLayoutX(160);
+    startButton.setLayoutY(192);
+    startButton.setPrefHeight(40);
+    startButton.setPrefWidth(96);
+    startButton.setText("Start");
+    startButton.setOnAction(
+      (event) -> {startButton_Action(event);} 
+    );
+    root.getChildren().add(startButton);
+    textField1.setLayoutX(136);
+    textField1.setLayoutY(56);
+    textField1.setPrefHeight(24);
+    textField1.setPrefWidth(152);
+    textField1.setPromptText("Spielername eingeben...");
+    root.getChildren().add(textField1);
+    textField2.setLayoutX(136);
+    textField2.setLayoutY(88);
+    textField2.setPrefHeight(24);
+    textField2.setPrefWidth(152);
+    textField2.setPromptText("Spielername eingeben...");
+    root.getChildren().add(textField2);
+    textField3.setLayoutX(136);
+    textField3.setLayoutY(120);
+    textField3.setPrefHeight(24);
+    textField3.setPrefWidth(152);
+    textField3.setPromptText("Spielername eingeben...");
+    root.getChildren().add(textField3);
+    textField4.setLayoutX(136);
+    textField4.setLayoutY(152);
+    textField4.setPrefHeight(24);
+    textField4.setPrefWidth(152);
+    textField4.setPromptText("Spielername eingeben...");
+    root.getChildren().add(textField4);
+    // Ende Komponenten
+    primaryStage.setOnCloseRequest(e -> System.exit(0));
+    primaryStage.setTitle("RisikoGui");
+    primaryStage.setScene(scene);
+    primaryStage.show();
+  }
+  
+  public void startButton_Action(Event evt) {
+    spielfeld();
+  }
+  
+    private void spielfeld() {
+    Stage spielPlan = new Stage();
+    
+  // Anfang Methoden
+    Pane pane = new Pane();
+    Scene scene2 = new Scene(pane, 1366, 728);
+    String[] laenderSvg = {
     
     // Suedamerika
     "M 74.22,107.99 C 74.27,108.10 74.35,108.42 74.39,108.55 74.39,108.55 74.65,109.43 74.65,109.43 74.70,109.58 74.78,109.88 74.94,109.94 75.05,109.98 75.35,109.88 75.47,109.85 75.47,109.85 76.53,109.44 76.53,109.44 76.66,109.42 76.94,109.43 77.06,109.49 77.17,109.54 77.18,109.72 77.21,109.84 77.21,109.84 77.34,110.40 77.34,110.40 77.34,110.40 77.44,110.71 77.44,110.71 77.46,110.80 77.47,110.95 77.54,111.00 77.63,111.07 77.74,111.00 77.81,110.95 78.03,110.80 78.23,110.61 78.47,110.50 78.55,110.46 78.68,110.41 78.76,110.48 78.82,110.54 78.82,110.69 78.94,110.72 79.08,110.75 79.21,110.56 79.47,110.52 79.47,110.61 79.46,110.72 79.49,110.80 79.59,111.28 80.00,111.24 80.38,111.24 80.46,111.24 80.58,111.25 80.64,111.19 80.70,111.14 80.73,110.92 80.75,110.84 80.75,110.84 80.94,109.96 80.94,109.96 80.94,109.96 81.41,109.93 81.41,109.93 81.41,109.93 82.19,109.93 82.19,109.93 82.25,110.12 82.39,110.10 82.56,110.12 82.56,110.12 83.47,110.27 83.47,110.27 83.47,110.27 82.98,112.02 82.98,112.02 82.95,112.14 82.87,112.55 83.01,112.62 83.12,112.68 83.28,112.44 83.38,112.35 83.66,112.12 83.81,112.33 83.97,112.56 83.97,112.56 84.18,111.15 84.18,111.15 84.22,110.93 84.27,110.58 84.38,110.40 84.53,110.55 84.58,110.44 84.63,110.27 84.63,110.27 84.78,109.55 84.78,109.55 84.91,109.85 85.03,110.10 85.03,110.43 85.03,110.43 85.03,110.90 85.03,110.90 84.99,111.02 84.92,111.03 84.88,111.24 84.88,111.24 84.88,111.56 84.88,111.56 84.84,112.04 84.78,112.57 85.00,113.03 85.11,113.27 85.36,113.53 85.56,113.69 86.00,114.04 86.25,114.09 86.72,114.31 86.72,114.31 86.12,114.67 86.12,114.67 85.67,115.00 85.35,115.51 85.38,116.09 85.40,116.47 85.52,116.80 85.62,117.16 85.66,117.28 85.69,117.50 85.58,117.60 85.47,117.71 85.12,117.72 84.97,117.72 84.97,117.72 83.72,117.62 83.72,117.62 83.00,117.62 82.17,117.60 81.85,118.41 81.75,118.67 81.74,118.94 81.75,119.22 81.76,119.32 81.78,119.50 81.68,119.56 81.58,119.62 81.32,119.52 81.22,119.48 80.88,119.36 80.52,119.18 80.16,119.19 79.23,119.23 79.19,120.51 79.19,121.19 79.19,121.74 79.03,122.33 78.50,122.59 78.11,122.79 77.71,122.75 77.52,123.04 77.30,123.37 77.80,123.89 77.60,124.29 77.45,124.59 77.15,124.60 77.04,124.76 77.04,124.76 76.91,125.07 76.91,125.07 76.91,125.07 76.69,125.48 76.69,125.48 76.33,126.11 75.85,126.85 75.84,127.60 75.84,127.60 75.84,127.95 75.84,127.95 75.84,128.56 76.13,129.33 76.42,129.86 76.42,129.86 76.66,130.26 76.66,130.26 76.18,130.62 75.68,131.32 75.06,131.38 74.74,131.42 74.49,131.27 74.22,131.13 74.22,131.13 73.34,130.66 73.34,130.66 72.13,129.93 71.07,129.01 70.67,127.60 70.53,127.13 70.49,126.66 70.50,126.16 70.51,125.40 70.78,124.43 71.06,123.72 71.06,123.72 71.39,122.94 71.39,122.94 71.77,122.00 72.11,121.04 72.39,120.06 73.14,117.44 73.64,114.61 73.91,111.90 73.91,111.90 74.13,109.46 74.13,109.46 74.13,109.46 74.19,108.68 74.19,108.68 74.19,108.68 74.22,107.99 74.22,107.99 Z M 76.06,132.27 C 76.06,132.27 76.88,131.67 76.88,131.67 76.97,131.61 77.18,131.43 77.28,131.41 77.41,131.38 77.68,131.50 77.81,131.55 77.81,131.55 78.78,131.86 78.78,131.86 78.92,131.91 79.14,131.97 79.25,132.05 79.25,132.05 78.31,132.18 78.31,132.18 78.31,132.18 77.57,132.09 77.57,132.09 77.57,132.09 77.24,132.37 77.24,132.37 77.24,132.37 76.84,132.37 76.84,132.37 76.84,132.37 76.06,132.27 76.06,132.27 Z", // Argentinien
@@ -103,22 +165,22 @@ public class RisikoGui extends Application {
       LandButton.setPickOnBounds(false);
       LandButton.setLayoutX(laenderPositionen[i][0]);
       LandButton.setLayoutY(laenderPositionen[i][1]);
+      LandButton.setMinSize(0, 0);
+      LandButton.setPrefHeight(0.1);
+      LandButton.setPrefWidth(0.1);
+
       
-      root.getChildren().add(LandButton);
+      pane.getChildren().add(LandButton);
     }
-    // Ende Komponenten
     
-    primaryStage.setOnCloseRequest(e -> System.exit(0));
-    primaryStage.setTitle("RisikoGui");
-    primaryStage.setScene(scene);
-    primaryStage.show();
+    spielPlan.setTitle("Risiko");
+    spielPlan.setScene(scene2);
+    spielPlan.show();
   }
-  
-  // Anfang Methoden
   
   public static void main(String[] args) {
     launch(args);
-    String[] namen = {"Bob", "Peter"};//da fehlt natuerlich noch die Startseite
+    String[] namen = {textField1.getText(), textField2.getText(), textField3.getText(), textField4.getText()};//da fehlt natuerlich noch die Startseite (das sollte nicht in main oder?)
     spiel = new Spiel(namen, this);
     for (byte i = 0; i < 42; i++) {
       landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i););
@@ -195,5 +257,5 @@ public class RisikoGui extends Application {
   public void fertigButton_gedrueckt() {
     spiel.buttonKlickAktion(1, 1);
   }
-  // Ende Methoden
 }
+// Ende Methoden
