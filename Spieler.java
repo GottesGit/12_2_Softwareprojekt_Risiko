@@ -8,7 +8,7 @@ public class Spieler{
     this.name = meinName;
   }
 
-  public String getName(Spieler spieler){
+  public String getName(){
     return this.name;
   }
   
@@ -41,7 +41,7 @@ public class Spieler{
     this.gesamtTruppen = gesamtTruppen + anzahl;
   }
   
-  public void getGesamtTruppen(){
+  public int getGesamtTruppen(){
     return this.gesamtTruppen;
   }
  }

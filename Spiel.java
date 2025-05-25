@@ -22,15 +22,15 @@ public class Spiel {
     int[42][5] angrenzende = {//Todo (aeussere, innere Dimension)
       {}
     };
-    int[6] kontinentLaender = {4, 9, 6, 6, 12, 4}; //die Laender muessen alle nach Kontinenten (siehe naechste Zeile) sortiert im Array stehen!
+    int[6] kontinentLaender = {4, 9, 6, 6, 12, 4}; //Anzahl der Laender der jeweiligen Kontinente
     String[6] kontinentNamen = {"Suedamerika", "Nordmerika", "Europa", "Afrika", "Asien", "Australien"};
 
     for (byte i = 0; i < 42; i++) {
-      laender[i] = new Land(angrenzende[i], laenderNamen[i]);
+      laender[i] = new Land(angrenzende[i], laenderNamen[i], i);
     }
     byte zuKontinentHinzugefuegt = 0;
     for (byte i = 0; i < 6; i++) {
-      Land[] hinzuzfuegendeLaender = new Land[kontinentLaender[i];
+      Land[] hinzuzfuegendeLaender = new Land[kontinentLaender[i]];
       for (int j = 0; j < kontinentLaender[i]; i++) {
         hinzuzfuegendeLaender[j] = laender[zuKontinentHinzugefuegt++];
       }
@@ -42,54 +42,67 @@ public class Spiel {
     switch (phase) {
       case 0 : //truppenPlazieren, eigentlich je nach maustaste
         truppenPlazieren(1, land);
-        if (platzierteTruppen >= zuPlatzierendeTruppen) {
+        if (berechneGesamtTruppen() == mitSpieler[dran].getGesamtTruppen() + berchneZuPlazierendeTruppen()) {
+          phasenWechsel();
+        } else if (berechneGesamtTruppen() > mitSpieler[dran].getGesamtTruppen() + berchneZuPlazierendeTruppen()) {
+          System.out.println("Error zu viele Truppen wurden plaziert");
           phasenWechsel();
         }
         break;
       case 1 : //angreifen also eigenes Land auswaehlen
-        if (land.getHerrscher() == dran) {
+        if (land.getHerrscher() == dran && land.getTruppen() > 1) {
           vonLand = land;
           phasenWechsel();
         } else {
-          System.out.println("Dieses Land gehoert nicht dir");
+          System.out.println("Error falsches Land 1");
         }
         break;
       case 2 : //angreifen also Feind auswaehlen
-        if (land.getHerrscher() != dran) {
+        if (land.getHerrscher() != dran && istBenachbart(land.getIndex())) {
           nachLand = land;
           phasenWechsel();
         } else {
-          System.out.println("Dieses Land gehoert dir");
+          System.out.println("Error falsches Land 2");
         }
         break;
       case 3 : //angreifen also Truppen nach Zielland verschieben
-        if (land.getHerrscher() != dran) {
-          nachLand = land;
-          phasenWechsel();
+        if (land == nachLand) {
+          if (einmarschieren(1)) {
+            phasenWechsel();
+          }
         } else {
-          System.out.println("Dieses Land gehoert dir");
+          System.out.println("Error falsches Land 3");
         }
         break;
       case 4 : //angreifen also im Kampf
         System.out.println("Error ein Land wurde im Kampf ausgewaehlt");
         break;
       case 5 : //Truppen verschieben also StartLand auswaehlen
-        if (land.getHerrscher() == dran) {
+        if (land.getHerrscher() == dran && land.getTruppen() > 1) {
           vonLand = land;
           phasenWechsel();
         } else {
-          System.out.println("Dieses Land gehoert nicht dir");
+          System.out.println("Error falsches Land 4");
         }
         break;
       case 6 : //Truppen verschieben also ZielLand auswaehlen
-        nichtDurch();
+        if (land.getHerrscher() == dran && land != vonLand && istVerbunden(land.getIndex())) {
+          nachLand = land;
+        }
+        break;
+      case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
+        if (land == nachLand) {
+          verschiebeTruppen();
+        } else {
+          System.out.println("Error falsches Land beim Verschieben ausgewaehlt");
+        }
         break;
     }
     gui.grafikErneuern();
   }
   public void buttonKlickAktion(byte knopf, byte taste) { //ok (1) und Kampfbutton (2)
     if (knopf == 1) {
-      phasenWechsel(); //vllt geht das nicht immer einfach so
+      phasenWechsel(); //vllt geht das nicht immer einfach so?
       gui.grafikErneuern();
     } else if (knopf == 2) {
       if (phase == 3) {
@@ -104,73 +117,161 @@ public class Spiel {
   }
   
   public void phasenWechsel() {
+    boolean fehler = false;
     switch (phase) {
-      case 0 : 
+      case 0 : //truppenPlazieren
         mitSpieler[dran].setGesamtTruppen(berechneGesamtTruppen());
         phase++;
         break;
-      case 1 : 
+      case 1 : //angreifen also eigenes Land auswaehlen
         if (vonLand != null) {
           phase++;
         } else {
-          System.out.println("Error die Phase " + phase + " kann nicht geaendert werden");
+          fehler = true;
         }
         break;
-      default: 
-        
+      case 2 : //angreifen also Feind auswaehlen
+        if (nachLand != null) {
+          phase++;
+        } else {
+          fehler = true;
+        }
+        break;
+      case 3 : //angreifen also Truppen nach Zielland verschieben
+        if (nachLand.getAngreiferTruppen() > 0) {
+          phase++;
+        } else {
+          fehler = true;
+        }
+        break;
+      case 4 : //angreifen also im Kampf
+        if (nachLand.getAngreiferTruppen() == 0) {
+          vonLand = null;
+          nachLand = null;
+          phase++;
+        } else {
+          fehler = true;
+        }
+        break;
+      case 5 : //Truppen verschieben also StartLand auswaehlen
+        if (vonLand != null) {
+          phase++;
+        } else {
+          fehler = true;
+        }
+        break;
+      case 6 : //Truppen verschieben also ZielLand auswaehlen
+        if (nachLand != null) {
+          phase++;
+        } else {
+          fehler = true;
+        }
+        break;
+      case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
+        vonLand = null;
+        nachLand = null;
+        zugNummer++;
+        if (dran >= mitSpieler.length - 1) {
+          dran = 0;
+        } else {
+          dran++;
+        }
+        phase = 0;
+        break;
+    }
+    if (fehler) {
+      System.out.println("Error die Phase " + phase + " kann nicht geaendert werden");
     }
   }
+  public boolean istBenachbart(byte meinLand) {
+    boolean istEinNachbar = false;
+    for (byte i = 0; i < vonLand.getNachbarn().length; i++) {
+      if (vonLand.getNachbarn()[i] == laender[meinLand]) {
+        istEinNachbar = true;
+      }
+    }
+    return istEinNachbar;
+  }
+  public boolean istVerbunden(byte meinLand) {
+    boolean istEinVerbundener = vonLand.getVerbunden(meinLand, dran);
+    schonDurchReset();
+    return istEinVerbundener;
+  }
+
   public byte getPhase() {
     return this.phase;
   }
-  public int getDran() {
+  public byte getDran() {
     return this.dran;
   }
-  
-  private boolean truppenPlatzieren(int anzahl, Land ziel) {//anzahl aus gui uebergeben, auch von da aufrufen
-    if (dran == ziel.getHerrscher()) {
-      ziel.setTruppen(dran, ziel.getTruppen() + anzahl);
-      mitSpieler[dran].setGesamtTruppen(anzahl);
+  public byte getNachLand() {
+    return this.nachLand;
+  }
+  public byte getVonLand() {
+    return this.vonLand;
+  }
+  private boolean truppenPlatzieren(int anzahl, Land meinLand) { //von LandKlickAktionen in Phase 0 aufgerufen
+    if (dran == meinLand.getHerrscher()) {
+      meinLand.setTruppen(dran, meinLand.getTruppen() + anzahl);
       return true;
-    } // end of if
+    }
     else {
-      System.out.println("Error es wird aus einem fremden Land angegriffen");
+      System.out.println("Error es werden Truppen in fremde Laender plaziert");
       return false;  
-    } // end of if-else
+    }
   }
   
-  private int anzahlLaenderSpieler(Spieler spieler) {//getter?
+  private int getAnzahlLaender(Spieler spieler) {
     
   }
   
-  private int anzahlTruppenSpieler(Spieler spieler) {
+  private int getAnzahlTruppen(Spieler spieler) {
     
   }
   
-  private boolean einmarschieren(Land von, Land nach, int anzahl) {
-    if (byte dran != ziel.getHerrscher()) {
-      ziel.(dran, anzahl);//gibts die methode noch nicht?
-      mitSpieler[dran].setGesamtTruppen(anzahl);
-      return true;
-    } // end of if
+  private boolean einmarschieren(int anzahl) {
+    if (dran != nachLand.getHerrscher()) {
+      if (vonLand.getTruppen() > 1 + anzahl) {
+        vonLand.setTruppen(mitSpieler[dran], vonLand.getTruppen() - anzahl);
+        nachLand.setAngreiferTruppen(mitSpieler[dran], nachLand.getAngreiferTruppen() + anzahl);
+        return true;
+      } else {
+        System.out.println("Error es werden zu viele Truppen zum Angreifen verwendet"); //bis jetzt ist diese Fehlermeldung einfach auszuloesen
+        return false;
+      }
+    }
     else {
       System.out.println("Error eigenes Land wird angegriffen");
-      return false;  
-    } // end of if-else
+      return false;
+    }
   }
   
   private void kampf() {
+    //..
     if (nachLand.getTruppen() == 0 || nachLand.getAngeiferTruppen == 0) {
       phasenwechsel();
     }
   }
   
-  public int[] getWuerfel() {
+  public int[] getWuerfel() {//sollte dann von Gui abgefragt werden
     
   }
   
-  private boolean verschiebeTruppen(Land von, Land nach) {
-    
+  private boolean verschiebeTruppen(int anzahl) {
+    if (dran == vonLand.getHerrscher() && dran == nachLand.getHerrscher()) {
+      if (vonLand.getTruppen() > 1 + anzahl) {
+        vonLand.setTruppen(mitSpieler[dran], vonLand.getTruppen() - anzahl);
+        nachLand.setTruppen(mitSpieler[dran], nachLand.getTruppen() + anzahl);
+        return true;
+      } else {
+        System.out.println("Error es werden zu viele Truppen verschoben"); //bis jetzt ist diese Fehlermeldung einfach auszuloesen
+        return false;
+      }
+    }
+    else {
+      System.out.println("Error eigenes Land wird angegriffen");
+      return false;
+    }
   }
   
   public void getLand(byte stelle) {
@@ -200,7 +301,7 @@ public class Spiel {
   }
   
   public String getSpielerName(byte sNr) {
-    
+    return this.mitSpieler[sNr].getName();
   }
   
   private int berchneZuPlazierendeTruppen() {
@@ -229,7 +330,7 @@ public class Spiel {
   
   public void schonDurchReset() {//extramethode??
     for (byte i = 0; i < laender.length; i++) {
-      laender[i].setSchonDurch(false);
+      laender[i].resetSchonDurch();
     }
   }
 }

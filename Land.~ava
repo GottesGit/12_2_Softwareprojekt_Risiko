@@ -6,10 +6,12 @@ public class Land{
   private byte angreiferSpieler;
   private int angreiferTruppen;
   private boolean schonDurch;
+  private byte index;
   
-  public Land(Land[] angrenzend, String meinName){ // ist der name nicht unnoetig bzw sind zahlen nicht einfacher? - Das Land muss trotzdem einen Namen haben
-    this.nachbarn = angrenzend;//geht das mit dem Array so?
+  public Land(Land[] angrenzend, String meinName, byte meinIndex){ // ist der name nicht unnoetig bzw sind zahlen nicht einfacher? - Das Land muss trotzdem einen Namen haben
+    this.nachbarn = java.util.Arrays.copyOf(angrenzend, angrenzend.length);
     this.name = meinName;
+    this.index = meinIndex;
   }
  
   public void setTruppen(byte meinHerrscher, int anzahl) {
@@ -55,12 +57,12 @@ public class Land{
     if (this == anderesLand) {
       return true;
     }
-    for (Land nachbar : nachbarn) {
-        if (nachbar.getSchonDurch() != true && nachbar.getHerrscher() == dran) {
-            if (nachbar.getVerbunden(anderesLand, dran)) {
-               return true;
-            }
+    for (byte i = 0; i < nachbarn.length; i++) {
+      if (nachbarn[i].getSchonDurch() != true && nachbarn[i].getHerrscher() == dran) {
+        if (nachbarn[i].getVerbunden(anderesLand, dran)) {
+          return true;
         }
+      }
     }
     return false;
   }
@@ -69,7 +71,11 @@ public class Land{
     return this.schonDurch;
   }
   
-  public void setSchonDurch(boolean keineAhnung) {
-    this.setSchondurch(keineAhnung);//checke das problem nicht
+  public void resetSchonDurch() {
+    this.setSchondurch = false;
+  }
+  
+  public byte getIndex() {
+    return this.index;
   }
 }

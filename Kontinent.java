@@ -3,7 +3,7 @@ public class Kontinent{
   private byte truppen;
   
   public Kontinent(Land staaten[], byte extraTruppen) {
-    this.laender = java.util.Arrays.copyOf(staaten, staaten.length);//geht das so?
+    this.laender = java.util.Arrays.copyOf(staaten, staaten.length);
     this.truppen = extraTruppen;
   }
 
