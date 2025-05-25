@@ -18,7 +18,10 @@ public class LandButton extends Button{
     this.setText("" + land.getTruppen());//gibt es setText bei Buttons?
   }
   
-  public void getHerrscher() {
+  public byte getHerrscher() {
     return land.getHerrscher();
+  }
+  public int getTruppen() {
+    return land.getTruppen();
   }
 }
