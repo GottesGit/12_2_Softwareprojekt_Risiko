@@ -42,9 +42,9 @@ public class Spiel {
     switch (phase) {
       case 0 : //truppenPlazieren, eigentlich je nach maustaste
         truppenPlazieren(1, land);
-        if (berechneGesamtTruppen() == mitSpieler[dran].getGesamtTruppen() + berchneZuPlazierendeTruppen()) {
+        if (berechneGesamtTruppen(dran) == mitSpieler[dran].getGesamtTruppen() + berchneZuPlazierendeTruppen()) {
           phasenWechsel();
-        } else if (berechneGesamtTruppen() > mitSpieler[dran].getGesamtTruppen() + berchneZuPlazierendeTruppen()) {
+        } else if (berechneGesamtTruppen(dran) > mitSpieler[dran].getGesamtTruppen() + berchneZuPlazierendeTruppen()) {
           System.out.println("Error zu viele Truppen wurden plaziert");
           phasenWechsel();
         }
@@ -89,6 +89,7 @@ public class Spiel {
         if (land.getHerrscher() == dran && land != vonLand && istVerbunden(land.getIndex())) {
           nachLand = land;
         }
+        schonDurchReset();
         break;
       case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
         if (land == nachLand) {
@@ -120,7 +121,7 @@ public class Spiel {
     boolean fehler = false;
     switch (phase) {
       case 0 : //truppenPlazieren
-        mitSpieler[dran].setGesamtTruppen(berechneGesamtTruppen());
+        aktualisiereTruppenLaender(dran); //darf nicht schon vorher gemacht werden weil damit berechnet wird, wie viele noch plaziert werden duerfen
         phase++;
         break;
       case 1 : //angreifen also eigenes Land auswaehlen
@@ -146,6 +147,7 @@ public class Spiel {
         break;
       case 4 : //angreifen also im Kampf
         if (nachLand.getAngreiferTruppen() == 0) {
+          aktualisiereTruppenLaender(dran);
           vonLand = null;
           nachLand = null;
           phase++;
@@ -221,12 +223,12 @@ public class Spiel {
     }
   }
   
-  private int getAnzahlLaender(Spieler spieler) {
-    
+  private int getAnzahlLaender(byte meinSpieler) {
+    return this.mitSpieler[meinSpieler].getGesamtLaender();
   }
   
-  private int getAnzahlTruppen(Spieler spieler) {
-    
+  private int getAnzahlTruppen(byte meinSpieler) {
+    return this.mitSpieler[meinSpieler].getGesamtTruppen();
   }
   
   private boolean einmarschieren(int anzahl) {
@@ -249,6 +251,7 @@ public class Spiel {
   private void kampf() {
     //..
     if (nachLand.getTruppen() == 0 || nachLand.getAngeiferTruppen == 0) {
+      aktualisiereTruppenLaender(nachLand.getHerrscher());
       phasenwechsel();
     }
   }
@@ -318,16 +321,19 @@ public class Spiel {
     }
     return truppen;
   }
-  private void berechneGesamtTruppen() {
+  private void berechneGesamtTruppen(byte meinSpieler) {
     int truppen = 0;
     for (byte i = 0; i < laender.length; i++) {
-      if (laender[i].getHerrscher() == dran) {
+      if (laender[i].getHerrscher() == meinSpieler) {
         truppen += laender[i].getTruppen();
       }
     }
     return truppen;
   }
-  
+  private void aktualisiereTruppenLaender(byte meinSpieler){
+    mitSpieler[meinSpieler].setGesamtTruppen(berechneGesamtTruppen(meinSpieler));
+  }
+
   public void schonDurchReset() {//extramethode??
     for (byte i = 0; i < laender.length; i++) {
       laender[i].resetSchonDurch();

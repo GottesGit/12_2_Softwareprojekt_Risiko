@@ -8,7 +8,7 @@ public class Kontinent{
   }
 
   public boolean beherrschtVon(byte herrscher){//herrscher = dran
-    for (i = 0; i < laender.length; i++) {
+    for (int i = 0; i < laender.length; i++) {
       if (laender[i].getHerrscher() != herrscher) {
         return false;
       }

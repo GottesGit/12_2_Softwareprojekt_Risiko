@@ -38,10 +38,18 @@ public class Spieler{
   }
   
   public void setGesamtTruppen(int anzahl){
-    this.gesamtTruppen = gesamtTruppen + anzahl;
+    this.gesamtTruppen = anzahl;
   }
   
   public int getGesamtTruppen(){
     return this.gesamtTruppen;
   }
- }
+  
+  public void setGesamtLaender(int anzahl){
+    this.gesamtTruppen = anzahl;
+  }
+  
+  public int getGesamtLaender(){
+    return this.gesamtLaender;
+  }
+}
