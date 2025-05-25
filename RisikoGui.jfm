@@ -1,5 +1,5 @@
 object FGUIForm: TFXGuiForm
-  Left = 1488
+  Left = 1082
   Top = 229
   BorderIcons = [biSystemMenu]
   Caption = 'RisikoGui'
