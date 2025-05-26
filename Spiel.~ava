@@ -202,7 +202,7 @@ public class Spiel {
     return istEinNachbar;
   }
   
-  public boolean istVerbunden(Land meinLand) {
+  public boolean istVerbunden(byte meinLand) {
     boolean istEinVerbundener = vonLand.getVerbunden(meinLand, dran);
     schonDurchReset();
     return istEinVerbundener;
@@ -291,10 +291,10 @@ public class Spiel {
   
   public void getLand(byte stelle) {
     if (stelle < laender.length) {
-      return laender[i];
+      return laender[stelle];
     } else {
       System.out.println("Error das Land gibt es nicht");
-      return null;
+      return -1;
     }
   }
   

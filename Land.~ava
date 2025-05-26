@@ -27,6 +27,7 @@ public class Land{
     this.angreiferTruppen = anzahl;
     this.angreiferSpieler = meinAngreifer;
   }
+  
   public int getAngreiferTruppen() {
     return this.anzahlTruppen;
   }

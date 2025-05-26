@@ -21,12 +21,17 @@ public class Spiel {
       mitSpieler[i] = new Spieler(spielerNamen[i]);
     }
     
-    String[42] laenderNamen = {"Argentinien", "Peru", "Brasilien", "Venezuela"}; //Erstellung der Laender und Kontinente
-    int[42][5] angrenzende = {//Todo (aeussere, innere Dimension)
-      {}
-    };// das ist so falsch, ich verstehe nicht mal, was das eigentlich sein soll 
-    int[6] kontinentLaender = {4, 9, 6, 6, 12, 4}; //Anzahl der Laender der jeweiligen Kontinente
-    String[6] kontinentNamen = {"Suedamerika", "Nordmerika", "Europa", "Afrika", "Asien", "Australien"};
+    String[] laenderNamen = {"Argentinien", "Peru", "Brasilien", "Venezuela"}; //Erstellung der Laender und Kontinente
+    byte[][] angrenzende = {//Todo (aeussere, innere Dimension)
+      {2, 3, 0, 0, 0, 0}, {1, 2, 3, 0, 0, 0}, {1, 2, 3, 0, 0, 0}, {2, 3, 0, 0, 0, 0}, //Suedamerika
+      {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Nordmerika
+      {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Europa
+      {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Afrika
+      {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Asien
+      {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Australien
+    }; //das ist gar nicht so falsch
+    byte[] kontinentLaender = {4, 9, 6, 6, 12, 4}; //Anzahl der Laender der jeweiligen Kontinente
+    String[] kontinentNamen = {"Suedamerika", "Nordmerika", "Europa", "Afrika", "Asien", "Australien"};
 
     for (byte i = 0; i < 42; i++) {
       laender[i] = new Land(angrenzende[i], laenderNamen[i], i);

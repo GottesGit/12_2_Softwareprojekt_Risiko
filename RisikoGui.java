@@ -267,7 +267,7 @@ public class RisikoGui extends Application {
   }
   
   public void kampfButton_gedrueckt() {
-    spiel.buttonKlickAktion((byte) 2, 1);//weiß nicht, ob das geht 
+    spiel.buttonKlickAktion((byte) 2, 1);//weiss nicht, ob das geht 
   }
   
   public void fertigButton_gedrueckt() {
