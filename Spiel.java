@@ -294,12 +294,12 @@ public class Spiel {
     }
   }
   
-  public void getLand(byte stelle) {
+  public Land getLand(byte stelle) {
     if (stelle < laender.length) {
       return laender[stelle];
     } else {
       System.out.println("Error das Land gibt es nicht");
-      return -1;
+      return null;
     }
   }
   

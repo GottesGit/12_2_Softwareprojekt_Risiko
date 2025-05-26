@@ -1,7 +1,8 @@
 
 public class Testprogramm {
-  private static String[] laenderSvg = new String[2];
+  private static String[] laenderSvg;
   public static void main(String[] args) {
+    laenderSvg = {"A", "B"};
     test(["a", "b"]);
   }
   public static void test(String stringarray[]){
