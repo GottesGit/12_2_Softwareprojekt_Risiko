@@ -23,9 +23,9 @@ public class Spieler{
       kartenAnzahl[2] = kartenAnzahl[2] - 3;
       return 8;
     } else if (kartenAnzahl[0] >= 1 && kartenAnzahl[1] >= 1 && kartenAnzahl[2] >= 1) {
-      kartenAnzahl[0]-1;
-      kartenAnzahl[1]-1;
-      kartenAnzahl[2]-1;
+      kartenAnzahl[0]--;
+      kartenAnzahl[1]--;
+      kartenAnzahl[2]--;
       return 10;
     } else {
       return 0;

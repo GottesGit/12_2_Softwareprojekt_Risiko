@@ -23,6 +23,7 @@ public class LandButton extends Button{//geht anscheinend nicht
   public byte getHerrscher() {
     return land.getHerrscher();
   }
+  
   public int getTruppen() {
     return land.getTruppen();
   }

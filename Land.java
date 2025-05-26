@@ -27,6 +27,7 @@ public class Land{
     this.angreiferTruppen = anzahl;
     this.angreiferSpieler = meinAngreifer;
   }
+  
   public int getAngreiferTruppen() {
     return this.anzahlTruppen;
   }
@@ -72,7 +73,7 @@ public class Land{
   }
   
   public void resetSchonDurch() {
-    this.setSchondurch = false;
+    this.schonDurch = false;
   }
   
   public byte getIndex() {

@@ -8,42 +8,46 @@ public class Spiel {
   private RisikoGui gui;
   private Land vonLand;
   private Land nachLand;
+  private String[] laenderNamen;
+  private String[] kontinentNamen;//keine ahnung, wo die hin sollten, deswegen erst mal global
+  private int[] kontinentLaender;
   private byte[] angeiferWuerfel = new byte[3];
-  private byte[] vertidigerWuerfel = new byte[2];
+  private byte[] verteidigerWuerfel = new byte[2];
   
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
     gui = meineGui;
     mitSpieler = new Spieler[spielerNamen.length]; //Erstellung der Spieler
-    for (i = 0; i < spielerNamen.length; i++) {
-            mitSpieler[i] = new Spieler(spielerNamen[i]);//array mitspieler müsste auf die Richtige Länge und dann mit Spielern gefüllt werden
+    for (int i = 0; i < spielerNamen.length; i++) {
+      mitSpieler[i] = new Spieler(spielerNamen[i]);
     }
     
     String[42] laenderNamen = {"Argentinien", "Peru", "Brasilien", "Venezuela"}; //Erstellung der Laender und Kontinente
     int[42][5] angrenzende = {//Todo (aeussere, innere Dimension)
       {}
-    };
+    };// das ist so falsch, ich verstehe nicht mal, was das eigentlich sein soll 
     int[6] kontinentLaender = {4, 9, 6, 6, 12, 4}; //Anzahl der Laender der jeweiligen Kontinente
     String[6] kontinentNamen = {"Suedamerika", "Nordmerika", "Europa", "Afrika", "Asien", "Australien"};
 
     for (byte i = 0; i < 42; i++) {
       laender[i] = new Land(angrenzende[i], laenderNamen[i], i);
     }
+    
     byte zuKontinentHinzugefuegt = 0;
+    
     for (byte i = 0; i < 6; i++) {
       Land[] hinzuzfuegendeLaender = new Land[kontinentLaender[i]];
       for (int j = 0; j < kontinentLaender[i]; i++) {
         hinzuzfuegendeLaender[j] = laender[zuKontinentHinzugefuegt++];
       }
       kontinente[i] = new Kontinent(hinzuzfuegendeLaender, kontinentNamen[i]);
-
-    }
+  }
   }
   
-  public void landKlickAktion(Land land, byte taste) {
+  public void landKlickAktion(Land land, int taste) {//int zu byte konversion ist kacke, deswegen kein byte  
     switch (phase) {
       case 0 : //truppenPlazieren, eigentlich je nach maustaste
-        truppenPlazieren(1, land);
-        if (berechneGesamtTruppen(dran) == mitSpieler[dran].getGesamtTruppen() + berchneZuPlazierendeTruppen()) {
+        land.setTruppen(dran, berechneZuPlazierendeTruppen());
+        if (berechneGesamtTruppen(dran) == mitSpieler[dran].getGesamtTruppen() + berechneZuPlazierendeTruppen()) {
           phasenWechsel();
         } else if (berechneGesamtTruppen(dran) > mitSpieler[dran].getGesamtTruppen() + berchneZuPlazierendeTruppen()) {
           System.out.println("Error zu viele Truppen wurden plaziert");
@@ -102,6 +106,7 @@ public class Spiel {
     }
     gui.grafikErneuern();
   }
+  
   public void buttonKlickAktion(byte knopf, byte taste) { //ok (1) und Kampfbutton (2)
     if (knopf == 1) {
       phasenWechsel(); //vllt geht das nicht immer einfach so?
@@ -186,6 +191,7 @@ public class Spiel {
       System.out.println("Error die Phase " + phase + " kann nicht geaendert werden");
     }
   }
+  
   public boolean istBenachbart(byte meinLand) {
     boolean istEinNachbar = false;
     for (byte i = 0; i < vonLand.getNachbarn().length; i++) {
@@ -195,7 +201,8 @@ public class Spiel {
     }
     return istEinNachbar;
   }
-  public boolean istVerbunden(byte meinLand) {
+  
+  public boolean istVerbunden(Land meinLand) {
     boolean istEinVerbundener = vonLand.getVerbunden(meinLand, dran);
     schonDurchReset();
     return istEinVerbundener;
@@ -204,15 +211,19 @@ public class Spiel {
   public byte getPhase() {
     return this.phase;
   }
+  
   public byte getDran() {
     return this.dran;
   }
+  
   public byte getNachLand() {
     return this.nachLand;
   }
+  
   public byte getVonLand() {
     return this.vonLand;
   }
+  
   private boolean truppenPlatzieren(int anzahl, Land meinLand) { //von LandKlickAktionen in Phase 0 aufgerufen
     if (dran == meinLand.getHerrscher()) {
       meinLand.setTruppen(dran, meinLand.getTruppen() + anzahl);
@@ -322,6 +333,7 @@ public class Spiel {
     }
     return truppen;
   }
+  
   private void berechneGesamtTruppen(byte meinSpieler) {
     int truppen = 0;
     for (byte i = 0; i < laender.length; i++) {
@@ -331,6 +343,7 @@ public class Spiel {
     }
     return truppen;
   }
+  
   private void aktualisiereTruppenLaender(byte meinSpieler){
     mitSpieler[meinSpieler].setGesamtTruppen(berechneGesamtTruppen(meinSpieler));
   }

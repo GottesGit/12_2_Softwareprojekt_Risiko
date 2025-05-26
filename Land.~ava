@@ -72,7 +72,7 @@ public class Land{
   }
   
   public void resetSchonDurch() {
-    this.setSchondurch = false;
+    this.schonDurch = false;
   }
   
   public byte getIndex() {
