@@ -1,7 +1,7 @@
 
 object FGUIForm: TFXGuiForm
-  Left = 509
-  Top = 231
+  Left = 906
+  Top = 223
   BorderIcons = [biSystemMenu]
   Caption = 'RisikoGui'
   ClientHeight = 329
@@ -22,7 +22,7 @@ object FGUIForm: TFXGuiForm
   OnCloseQuery = FormCloseQuery
   OnResize = FormResize
   FrameType = 8
-  Modified = True
+  Modified = False
   Resizable = True
   Undecorated = False
   Background = clBtnFace
