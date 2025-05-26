@@ -1,11 +1,11 @@
 
 object FGUIForm: TFXGuiForm
-  Left = 906
-  Top = 223
+  Left = 638
+  Top = 163
   BorderIcons = [biSystemMenu]
   Caption = 'RisikoGui'
-  ClientHeight = 329
-  ClientWidth = 437
+  ClientHeight = 349
+  ClientWidth = 500
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -22,7 +22,7 @@ object FGUIForm: TFXGuiForm
   OnCloseQuery = FormCloseQuery
   OnResize = FormResize
   FrameType = 8
-  Modified = False
+  Modified = True
   Resizable = True
   Undecorated = False
   Background = clBtnFace
@@ -41,8 +41,8 @@ object FGUIForm: TFXGuiForm
   TextHeight = 21
   object startButton: TFXButton
     Tag = 105
-    Left = 160
-    Top = 192
+    Left = 48
+    Top = 288
     Width = 96
     Height = 40
     Hint = 'button1'
@@ -54,8 +54,8 @@ object FGUIForm: TFXGuiForm
     Foreground = clBlack
     Background = clBtnFace
     JavaType = 'Button'
-    LayoutX = 160
-    LayoutY = 192
+    LayoutX = 48
+    LayoutY = 288
     Disable = False
     Cache = False
     dragOver = ''
@@ -78,8 +78,8 @@ object FGUIForm: TFXGuiForm
   end
   object textField1: TFXTextField
     Tag = 102
-    Left = 136
-    Top = 56
+    Left = 24
+    Top = 152
     Width = 152
     Height = 24
     Cursor = crIBeam
@@ -92,8 +92,8 @@ object FGUIForm: TFXGuiForm
     Foreground = clBlack
     Background = clWhite
     JavaType = 'TextField'
-    LayoutX = 136
-    LayoutY = 56
+    LayoutX = 24
+    LayoutY = 152
     Disable = False
     Cache = False
     dragOver = ''
@@ -109,8 +109,8 @@ object FGUIForm: TFXGuiForm
   end
   object textField2: TFXTextField
     Tag = 102
-    Left = 136
-    Top = 88
+    Left = 24
+    Top = 184
     Width = 152
     Height = 24
     Cursor = crIBeam
@@ -123,8 +123,8 @@ object FGUIForm: TFXGuiForm
     Foreground = clBlack
     Background = clWhite
     JavaType = 'TextField'
-    LayoutX = 136
-    LayoutY = 88
+    LayoutX = 24
+    LayoutY = 184
     Disable = False
     Cache = False
     dragOver = ''
@@ -140,8 +140,8 @@ object FGUIForm: TFXGuiForm
   end
   object textField3: TFXTextField
     Tag = 102
-    Left = 136
-    Top = 120
+    Left = 24
+    Top = 216
     Width = 152
     Height = 24
     Cursor = crIBeam
@@ -154,8 +154,8 @@ object FGUIForm: TFXGuiForm
     Foreground = clBlack
     Background = clWhite
     JavaType = 'TextField'
-    LayoutX = 136
-    LayoutY = 120
+    LayoutX = 24
+    LayoutY = 216
     Disable = False
     Cache = False
     dragOver = ''
@@ -171,8 +171,8 @@ object FGUIForm: TFXGuiForm
   end
   object textField4: TFXTextField
     Tag = 102
-    Left = 136
-    Top = 152
+    Left = 24
+    Top = 248
     Width = 152
     Height = 24
     Cursor = crIBeam
@@ -185,8 +185,8 @@ object FGUIForm: TFXGuiForm
     Foreground = clBlack
     Background = clWhite
     JavaType = 'TextField'
-    LayoutX = 136
-    LayoutY = 152
+    LayoutX = 24
+    LayoutY = 248
     Disable = False
     Cache = False
     dragOver = ''

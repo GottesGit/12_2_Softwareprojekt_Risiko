@@ -15,7 +15,7 @@ public class Spiel {
     gui = meineGui;
     mitSpieler = new Spieler[spielerNamen.length]; //Erstellung der Spieler
     for (i = 0; i < spielerNamen.length; i++) {
-      mitSpieler[i] = new Spieler(spielerNamen[i]);
+            mitSpieler[i] = new Spieler(spielerNamen[i]);//array mitspieler müsste auf die Richtige Länge und dann mit Spielern gefüllt werden
     }
     
     String[42] laenderNamen = {"Argentinien", "Peru", "Brasilien", "Venezuela"}; //Erstellung der Laender und Kontinente
@@ -35,6 +35,7 @@ public class Spiel {
         hinzuzfuegendeLaender[j] = laender[zuKontinentHinzugefuegt++];
       }
       kontinente[i] = new Kontinent(hinzuzfuegendeLaender, kontinentNamen[i]);
+
     }
   }
   

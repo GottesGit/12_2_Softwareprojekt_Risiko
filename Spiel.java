@@ -14,7 +14,7 @@ public class Spiel {
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
     gui = meineGui;
     mitSpieler = new Spieler[spielerNamen.length]; //Erstellung der Spieler
-    for (i = 0; i < spielerNamen.length; i++) {
+    for (int i = 0; i < spielerNamen.length; i++) {
       mitSpieler[i] = new Spieler(spielerNamen[i]);
     }
     
@@ -35,7 +35,6 @@ public class Spiel {
         hinzuzfuegendeLaender[j] = laender[zuKontinentHinzugefuegt++];
       }
       kontinente[i] = new Kontinent(hinzuzfuegendeLaender, kontinentNamen[i]);
-    }
   }
   
   public void landKlickAktion(Land land, byte taste) {

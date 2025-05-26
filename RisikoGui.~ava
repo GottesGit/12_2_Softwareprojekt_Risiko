@@ -4,6 +4,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;              
+import javafx.scene.image.ImageView;
 import javafx.scene.control.*;
 import je.NumberField;
 import javafx.event.*;
@@ -28,6 +30,12 @@ public class RisikoGui extends Application {
     Pane root = new Pane();
 
     Scene scene = new Scene(root, 437, 330);
+    
+    Image startImage = new Image("file:Start.png");
+    ImageView startImageView = new ImageView(startImage);
+    startImageView.setFitWidth(500);
+    startImageView.setPreserveRatio(true);
+    root.getChildren().add(0, startImageView);
     // Anfang Komponenten
     
     
@@ -81,6 +89,13 @@ public class RisikoGui extends Application {
     // Anfang Methoden
     Pane pane = new Pane();
     Scene scene2 = new Scene(pane, 1366, 728);
+    
+    Image image = new Image("file:Riskgameboard.png");
+    ImageView imageView = new ImageView(image);
+    imageView.setFitWidth(1366);
+    imageView.setPreserveRatio(true);
+    pane.getChildren().add(0, imageView);
+    
     String[] laenderSvg = {
     
     // Suedamerika
