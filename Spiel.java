@@ -13,7 +13,7 @@ public class Spiel {
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
     gui = meineGui;
     mitSpieler[] = new Spieler[spielerNamen.length];
-    for (i = 0; i < spielerNamen.length; i++) {
+    for (int i = 0; i < spielerNamen.length; i++) {
       mitSpieler[i] = new Spieler(spielerNamen[i]);//array mitspieler müsste auf die Richtige Länge und dann mit Spielern gefüllt werden
     }
   }
