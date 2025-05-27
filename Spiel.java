@@ -11,9 +11,9 @@ public class Spiel {
   private String[] laenderNamen;
   private String[] kontinentNamen;//keine ahnung, wo die hin sollten, deswegen erst mal global
   private int[] kontinentLaender;
-  /*private byte[] angreiferWuerfel = new byte[3];
-  private byte[] verteidigerWuerfel = new byte[2];*/
-  private int[][] wuerfel = new int[3][2];
+  //private int[][] wuerfel = new int[3][2];
+  private byte[] angreiferWuerfel = new byte[3];
+  private byte[] verteidigerWuerfel = new byte[2];
   
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
     gui = meineGui;
@@ -41,7 +41,7 @@ public class Spiel {
     byte zuKontinentHinzugefuegt = 0;
     
     for (byte i = 0; i < 6; i++) {
-      Land[] hinzuzfuegendeLaender = new Land[kontinentLaender[i]];
+      Land[] hinzuzfuegendeLaender = new Land[kontinentLaender[i]];       //was soll denn hinzuzfuegendeLaender bedeuten?
       for (int j = 0; j < kontinentLaender[i]; i++) {
         hinzuzfuegendeLaender[j] = laender[zuKontinentHinzugefuegt++];
       }
@@ -267,7 +267,33 @@ public class Spiel {
   }
   
   private void kampf() {
-    //..
+    byte angreiferWuerfelAnzahl;
+    byte verteidigerWuerfelAnzahl;
+    for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
+      angreiferWuerfel[i] = (byte)(Math.random() * 6) + 1;
+    }
+    for (byte j= 0; j < verteidigerWuerfelAnzahl; j++) {
+      verteidigerWuerfel[j] = (byte)(Math.random() * 6) + 1;
+    }
+    Arrays.sort(verteidigerWuerfel);
+    Arrays.sort(angreiferWuerfel);
+      if (angreiferWuerfel[angreiferWuerfelAnzahl] > verteidigerWuerfel[verteidigerWuerfelAnzahl]) {
+        nachLand.getTruppen()--;
+      } else if (angreiferWuerfel[angreiferWuerfelAnzahl] < verteidigerWuerfel[verteidigerWuerfelAnzahl]) {
+        nachLand.getAngreiferTruppen()--;       
+      } else {
+        nachLand.getAngreiferTruppen()--;       
+      } 
+    if (angreiferWuerfelAnzahl == 2 || verteidigerWuerfelAnzahl == 2) {
+       if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] > verteidigerWuerfel[verteidigerWuerfelAnzahl] -1) {
+        getTruppen--;
+      } else if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] < verteidigerWuerfel[verteidigerWuerfelAnzahl] - 1) {
+        getAngreiferTruppen--;       
+      } else {
+        getAngreiferTruppen--;       
+      } 
+    } // end of if
+    
     if (nachLand.getTruppen() == 0 || nachLand.getAngreiferTruppen() == 0) {
       aktualisiereTruppenLaender(nachLand.getHerrscher());
       phasenWechsel();
