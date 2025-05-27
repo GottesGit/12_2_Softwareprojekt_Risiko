@@ -326,11 +326,13 @@ public class Spiel {
   
   private int berchneZuPlazierendeTruppen() {
     int truppen = 0;
+    int truppenDurchDrei = 0;
     for (byte i = 0; i < laender.length; i++) {
       if (laender[i].getHerrscher() == dran) {
-        truppen++;//1 Truppe pro Land?
+        truppenDurchDrei++;//1 Truppe pro Land?   ->    Land durch 3 und dann Zahl vor dem Komma, aber mindestens drei
       }
     }
+    truppen = truppenDurchDrei / 3;
     for (byte i = 0; i < kontinente.length; i++) {
       if (kontinente[i].beherrschtVon(dran)) {
         truppen += kontinente[i].getExtraTruppen();
