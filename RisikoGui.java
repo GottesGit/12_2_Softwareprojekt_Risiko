@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;              
 import javafx.scene.image.ImageView;
+import java.util.Arrays;
 import javafx.scene.control.*;
 import je.NumberField;
 import javafx.event.*;
@@ -223,7 +224,7 @@ public class RisikoGui extends Application {
           alleSvgPfade[i].setStyle("-fx-fill: yellow;");                          //hier auch
         }
         switch (spiel.getPhase()) {
-          case 0 : //Truppen plazieren
+          case 0 : //Truppen platzieren
             if (landButtons[i].getHerrscher() == spiel.getDran()) { //nur eigene Laender enablen
               landButtons[i].setDisable(false);
             } else {
