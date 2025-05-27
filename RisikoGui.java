@@ -27,7 +27,7 @@ public class RisikoGui extends Application {
   //  private TextField textField3 = new TextField();
   //  private TextField textField4 = new TextField();
   private TextField[] namenFelder = new TextField[4];
-  private SVGPath[] alleSvgPfade = new SVGPath[42];
+  private SVGPath[] svgPfade = new SVGPath[42];
   // Ende Attribute
   
   public void start(Stage primaryStage) { 
@@ -179,7 +179,7 @@ public class RisikoGui extends Application {
       svgPfadLand.setScaleX(5.45);
       svgPfadLand.setScaleY(5.45);
       
-      alleSvgPfade[i] = svgPfadLand;      //um später noch einmal darauf zugreifen zu können
+      svgPfade[i] = svgPfadLand;      //um später noch einmal darauf zugreifen zu koennen - warum sollten wir, die sind dann ja in den laendern und wenn dann kann svgPfadLand weg
       
       landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i)); //hier Erstellung der landButtons
       landButtons[i].setStyle("-fx-background-color: transparent;");
@@ -211,17 +211,17 @@ public class RisikoGui extends Application {
   
   public void grafikErneuern() {
     if (spiel.getGewonnen() != 100) {
-      System.out.println("Spieler " + spiel.getGewonnen() + " hat gewonnen!");
+      System.out.println("Spieler " + spiel.getGewonnen() + " hat gewonnen!"); //muesste dann natuerlich auch in die Gui
     } else {
       for (byte i = 0; i < landButtons.length; i++) {
-        if (landButtons[i].getHerrscher() == /Spieler1) {                          //keine Ahnung was da hinkommt
-          alleSvgPfade[i].setStyle("-fx-fill: red;");                             //erst einmal Farebn deklariert, müssen wir wissen ob wir das dann noch per Variable lösen
-        } else if (landButtons[i].getHerrscher() == /Spieler2) {
-          alleSvgPfade[i].setStyle("-fx-fill: blue;");                            //hier auch
-        } else if (landButtons[i].getHerrscher() == /Spieler3) {
-          alleSvgPfade[i].setStyle("-fx-fill: green;");                           //hier auch
+        if (landButtons[i].getHerrscher() == 0) {
+          alleSvgPfade[i].setStyle("-fx-fill: red;"); //erst einmal Farben deklariert, sollte dann noch mit Zahl und AngreiferTruppen usw. vervollstaendigt werden
+        } else if (landButtons[i].getHerrscher() == 1) {
+          alleSvgPfade[i].setStyle("-fx-fill: blue;");
+        } else if (landButtons[i].getHerrscher() == 2) {
+          alleSvgPfade[i].setStyle("-fx-fill: green;");
         } else {
-          alleSvgPfade[i].setStyle("-fx-fill: yellow;");                          //hier auch
+          alleSvgPfade[i].setStyle("-fx-fill: yellow;");
         }
         switch (spiel.getPhase()) {
           case 0 : //Truppen platzieren

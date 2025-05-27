@@ -1,4 +1,4 @@
-object FGUIForm: TFXGuiForm
+object RisikoGui: TFXGuiForm
   Left = 850
   Top = 380
   BorderIcons = [biSystemMenu]
@@ -12,21 +12,20 @@ object FGUIForm: TFXGuiForm
   Font.Name = 'Segoe UI'
   Font.Style = []
   FormStyle = fsStayOnTop
+  OldCreateOrder = True
   Position = poDesigned
   Scaled = False
   ShowHint = True
   Visible = True
-  OnAfterMonitorDpiChanged = FormAfterMonitorDpiChanged
-  OnCanResize = FormCanResize
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
-  OnMouseActivate = FormMouseActivate
   OnResize = FormResize
   FrameType = 8
   Modified = False
   Resizable = True
   Undecorated = False
   Background = clBtnFace
+  showing = ''
   Title = 'RisikoGui'
   X = 0
   Y = 0
@@ -37,7 +36,7 @@ object FGUIForm: TFXGuiForm
   MaxWidth = 0
   MinHeight = 0
   MinWidth = 0
-  showing = ''
+  PixelsPerInch = 96
   TextHeight = 21
   object startButton: TFXButton
     Tag = 105
@@ -53,7 +52,6 @@ object FGUIForm: TFXGuiForm
     Font.Style = []
     Foreground = clBlack
     Background = clBtnFace
-    JavaType = 'Button'
     LayoutX = 48
     LayoutY = 288
     Disable = False
@@ -91,7 +89,6 @@ object FGUIForm: TFXGuiForm
     Font.Style = []
     Foreground = clBlack
     Background = clWhite
-    JavaType = 'TextField'
     LayoutX = 24
     LayoutY = 152
     Disable = False
@@ -122,7 +119,6 @@ object FGUIForm: TFXGuiForm
     Font.Style = []
     Foreground = clBlack
     Background = clWhite
-    JavaType = 'TextField'
     LayoutX = 24
     LayoutY = 184
     Disable = False
@@ -153,7 +149,6 @@ object FGUIForm: TFXGuiForm
     Font.Style = []
     Foreground = clBlack
     Background = clWhite
-    JavaType = 'TextField'
     LayoutX = 24
     LayoutY = 216
     Disable = False
@@ -184,7 +179,6 @@ object FGUIForm: TFXGuiForm
     Font.Style = []
     Foreground = clBlack
     Background = clWhite
-    JavaType = 'TextField'
     LayoutX = 24
     LayoutY = 248
     Disable = False
