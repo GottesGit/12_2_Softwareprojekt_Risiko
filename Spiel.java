@@ -32,20 +32,33 @@ public class Spiel {
     {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Australien
     }; //das ist gar nicht so falsch
     byte[] kontinentLaender = {4, 9, 6, 6, 12, 4}; //Anzahl der Laender der jeweiligen Kontinente
+    byte[] kontinentTruppen = {2, 5, 5, 3, 7, 2}; //Anzahl der Extratruppen der jeweiligen Kontinente
     String[] kontinentNamen = {"Suedamerika", "Nordmerika", "Europa", "Afrika", "Asien", "Australien"};
     
-    for (byte i = 0; i < 42; i++) {
-      laender[i] = new Land(angrenzende[i], laenderNamen[i], i);
+    for (byte i = 0; i < 42; i++) { // die laender muessen erst alle erstellt werden...
+      laender[i] = new Land(laenderNamen[i], i);
+    }
+    for (byte i = 0; i < 42; i++) { //...damit sie sich dann gegenseitig als Nachbarn bekommen koennen
+      byte anzahlNachbarn = 0;
+      for (int j = 0; j < 6; j++) {
+        if (angrenzende[i][j] != 0){
+          anzahlNachbarn++;
+        }
+      }
+      Land[] nachbarn = new Land[anzahlNachbarn];
+      for (int j = 0; j < anzahlNachbarn; j++) {
+        nachbarn[j] = laender[angrenzende[i][j]];
+      }
+      laender[i].setNachbarn(nachbarn);
     }
     
     byte zuKontinentHinzugefuegt = 0;
-    
-    for (byte i = 0; i < 6; i++) {
-      Land[] hinzuzfuegendeLaender = new Land[kontinentLaender[i]];       //was soll denn hinzuzfuegendeLaender bedeuten?
+    for (byte i = 0; i < 6; i++) { // fuer die 6 Kontinente
+      Land[] hinzuzfuegendeLaender = new Land[kontinentLaender[i]]; //was soll denn hinzuzfuegendeLaender bedeuten? Das ist das Array fuer die Laender, die dem Kontinent hinzugefuegt werden sollen
       for (int j = 0; j < kontinentLaender[i]; i++) {
         hinzuzfuegendeLaender[j] = laender[zuKontinentHinzugefuegt++];
       }
-      kontinente[i] = new Kontinent(hinzuzfuegendeLaender, kontinentNamen[i]);
+      kontinente[i] = new Kontinent(hinzuzfuegendeLaender, kontinentNamen[i], kontinentTruppen[i]);
     }
   }
   
@@ -267,35 +280,32 @@ public class Spiel {
   }
   
   private void kampf() {
-    byte angreiferWuerfelAnzahl;
+    byte angreiferWuerfelAnzahl; // die beiden muessten je nach Truppenzahlen eingestellt werden
     byte verteidigerWuerfelAnzahl;
     for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
-      angreiferWuerfel[i] = (byte)(Math.random() * 6) + 1;
+      angreiferWuerfel[i] = (byte) ((Math.random() * 6) + 1);
     }
-    for (byte j= 0; j < verteidigerWuerfelAnzahl; j++) {
-      verteidigerWuerfel[j] = (byte)(Math.random() * 6) + 1;
+    for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
+      verteidigerWuerfel[i] = (byte) ((Math.random() * 6) + 1);
     }
-    Arrays.sort(verteidigerWuerfel);
-    Arrays.sort(angreiferWuerfel);
-    if (angreiferWuerfel[angreiferWuerfelAnzahl] > verteidigerWuerfel[verteidigerWuerfelAnzahl]) {
-      nachLand.getTruppen()--;
-    } else if (angreiferWuerfel[angreiferWuerfelAnzahl] < verteidigerWuerfel[verteidigerWuerfelAnzahl]) {
-      nachLand.getAngreiferTruppen()--;       
-    } else {
-      nachLand.getAngreiferTruppen()--;       
-    } 
-    if (angreiferWuerfelAnzahl == 2 || verteidigerWuerfelAnzahl == 2) {
-      if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] > verteidigerWuerfel[verteidigerWuerfelAnzahl] -1) {
-        nachLand.getTruppen()--;
-      } else if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] < verteidigerWuerfel[verteidigerWuerfelAnzahl] - 1) {
-        nachLand.getAngreiferTruppen()--;       
-      } else {
-        nachLand().getAngreiferTruppen--;       
-      } 
-    } // end of if
-    
+    //Arrays.sort(verteidigerWuerfel); //das funktioniert nicht
+    //Arrays.sort(angreiferWuerfel);
+    do { 
+      if (angreiferWuerfel[angreiferWuerfelAnzahl] > verteidigerWuerfel[verteidigerWuerfelAnzahl]) {
+        nachLand.setTruppen(nachLand.getHerrscher(), nachLand.getTruppen() - 1);
+      } else if (angreiferWuerfel[angreiferWuerfelAnzahl] <= verteidigerWuerfel[verteidigerWuerfelAnzahl]) {
+        nachLand.setAngreiferTruppen(nachLand.getAngreiferTruppen() - 1);
+      }
+    } while (angreiferWuerfelAnzahl-- > 0 && verteidigerWuerfelAnzahl-- > 0);
+
     if (nachLand.getTruppen() == 0 || nachLand.getAngreiferTruppen() == 0) {
       aktualisiereTruppenLaender(nachLand.getHerrscher());
+      for (byte i = 0; i < 3; i++) {
+        angreiferWuerfel[i] = (byte) 0;
+      }
+      for (byte i = 0; i < 2; i++) {
+        verteidigerWuerfel[j] = (byte) 0;
+      }
       phasenWechsel();
     }
   }

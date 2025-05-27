@@ -1,9 +1,11 @@
 public class Kontinent{
   private Land[] laender;
   private byte truppen;
+  private String name;
   
-  public Kontinent(Land staaten[], byte extraTruppen) {
+  public Kontinent(Land staaten[], String meinName, byte extraTruppen) {
     this.laender = java.util.Arrays.copyOf(staaten, staaten.length);
+    this.name = meinName;
     this.truppen = extraTruppen;
   }
 

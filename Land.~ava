@@ -8,10 +8,12 @@ public class Land{
   private boolean schonDurch;
   private byte index;
   
-  public Land(Land[] angrenzend, String meinName, byte meinIndex){ // ist der name nicht unnoetig bzw sind zahlen nicht einfacher? - Das Land muss trotzdem einen Namen haben
-    this.nachbarn = java.util.Arrays.copyOf(angrenzend, angrenzend.length);
+  public Land(String meinName, byte meinIndex) { // ist der name nicht unnoetig bzw sind zahlen nicht einfacher? - Das Land muss trotzdem einen Namen haben
     this.name = meinName;
     this.index = meinIndex;
+  }
+  public void setNachbarn(Land[] angrenzend) {
+    this.nachbarn = java.util.Arrays.copyOf(angrenzend, angrenzend.length);
   }
  
   public void setTruppen(byte meinHerrscher, int anzahl) {
