@@ -1,6 +1,7 @@
 object FGUIForm: TFXGuiForm
-  Left = 1156
-  Top = 692
+  Left = 850
+  Top = 380
+
   BorderIcons = [biSystemMenu]
   Caption = 'RisikoGui'
   ClientHeight = 349
