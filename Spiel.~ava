@@ -286,7 +286,7 @@ public class Spiel {
       angreiferWuerfel[i] = (byte) ((Math.random() * 6) + 1);
     }
     for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
-      verteidigerWuerfel[i] = (byte) ((Math.random() * 6) + 1);
+      verteidigerWuerfel[j] = (byte) ((Math.random() * 6) + 1);
     }
     //Arrays.sort(verteidigerWuerfel); //das funktioniert nicht
     //Arrays.sort(angreiferWuerfel);
