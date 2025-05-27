@@ -23,16 +23,16 @@ public class Spiel {
     
     String[] laenderNamen = {"Argentinien", "Peru", "Brasilien", "Venezuela"}; //Erstellung der Laender und Kontinente
     byte[][] angrenzende = {//Todo (aeussere, innere Dimension)
-      {2, 3, 0, 0, 0, 0}, {1, 2, 3, 0, 0, 0}, {1, 2, 3, 0, 0, 0}, {2, 3, 0, 0, 0, 0}, //Suedamerika
-      {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Nordmerika
-      {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Europa
-      {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Afrika
-      {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Asien
-      {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Australien
+    {2, 3, 0, 0, 0, 0}, {1, 2, 3, 0, 0, 0}, {1, 2, 3, 0, 0, 0}, {2, 3, 0, 0, 0, 0}, //Suedamerika
+    {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Nordmerika
+    {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Europa
+    {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Afrika
+    {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Asien
+    {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Australien
     }; //das ist gar nicht so falsch
     byte[] kontinentLaender = {4, 9, 6, 6, 12, 4}; //Anzahl der Laender der jeweiligen Kontinente
     String[] kontinentNamen = {"Suedamerika", "Nordmerika", "Europa", "Afrika", "Asien", "Australien"};
-
+    
     for (byte i = 0; i < 42; i++) {
       laender[i] = new Land(angrenzende[i], laenderNamen[i], i);
     }
@@ -45,17 +45,17 @@ public class Spiel {
         hinzuzfuegendeLaender[j] = laender[zuKontinentHinzugefuegt++];
       }
       kontinente[i] = new Kontinent(hinzuzfuegendeLaender, kontinentNamen[i]);
-  }
+    }
   }
   
   public void landKlickAktion(Land land, int taste) {//int zu byte konversion ist kacke, deswegen kein byte  
     switch (phase) {
-      case 0 : //truppenPlazieren, eigentlich je nach maustaste
-        land.setTruppen(dran, berechneZuPlazierendeTruppen());
-        if (berechneGesamtTruppen(dran) == mitSpieler[dran].getGesamtTruppen() + berechneZuPlazierendeTruppen()) {
+      case 0 : //truppenplatzieren, eigentlich je nach maustaste
+        land.setTruppen(dran, berechneZuPlatzierendeTruppen());
+        if (berechneGesamtTruppen(dran) == mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen()) {
           phasenWechsel();
-        } else if (berechneGesamtTruppen(dran) > mitSpieler[dran].getGesamtTruppen() + berchneZuPlazierendeTruppen()) {
-          System.out.println("Error zu viele Truppen wurden plaziert");
+        } else if (berechneGesamtTruppen(dran) > mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen()) {
+          System.out.println("Error zu viele Truppen wurden Platziert");
           phasenWechsel();
         }
         break;
@@ -103,7 +103,7 @@ public class Spiel {
         break;
       case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
         if (land == nachLand) {
-          verschiebeTruppen();
+          verschiebeTruppen(dran);
         } else {
           System.out.println("Error falsches Land beim Verschieben ausgewaehlt");
         }
@@ -131,8 +131,8 @@ public class Spiel {
   public void phasenWechsel() {
     boolean fehler = false;
     switch (phase) {
-      case 0 : //truppenPlazieren
-        aktualisiereTruppenLaender(dran); //darf nicht schon vorher gemacht werden weil damit berechnet wird, wie viele noch plaziert werden duerfen
+      case 0 : //truppenPlatzieren
+        aktualisiereTruppenLaender(dran); //darf nicht schon vorher gemacht werden weil damit berechnet wird, wie viele noch Platziert werden duerfen
         phase++;
         break;
       case 1 : //angreifen also eigenes Land auswaehlen
@@ -207,12 +207,12 @@ public class Spiel {
     return istEinNachbar;
   }
   
-  public boolean istVerbunden(byte meinLand) {
-    boolean istEinVerbundener = vonLand.getVerbunden(meinLand, dran);
+  public boolean istVerbunden(byte mitLand) {
+    boolean istEinVerbundener = vonLand.getVerbunden(laender[mitLand], dran);
     schonDurchReset();
     return istEinVerbundener;
   }
-
+  
   public byte getPhase() {
     return this.phase;
   }
@@ -221,7 +221,7 @@ public class Spiel {
     return this.dran;
   }
   
-  public byte getNachLand() {
+  public Land getNachLand() {
     return this.nachLand;
   }
   
@@ -235,7 +235,7 @@ public class Spiel {
       return true;
     }
     else {
-      System.out.println("Error es werden Truppen in fremde Laender plaziert");
+      System.out.println("Error es werden Truppen in fremde Laender Platziert");
       return false;  
     }
   }
@@ -251,7 +251,7 @@ public class Spiel {
   private boolean einmarschieren(int anzahl) {
     if (dran != nachLand.getHerrscher()) {
       if (vonLand.getTruppen() > 1 + anzahl) {
-        vonLand.setTruppen(mitSpieler[dran], vonLand.getTruppen() - anzahl);
+        vonLand.setTruppen(dran, vonLand.getTruppen() - anzahl);
         nachLand.setAngreiferTruppen(mitSpieler[dran], nachLand.getAngreiferTruppen() + anzahl);
         return true;
       } else {
@@ -267,14 +267,14 @@ public class Spiel {
   
   private void kampf() {
     //..
-    if (nachLand.getTruppen() == 0 || nachLand.getAngeiferTruppen == 0) {
+    if (nachLand.getTruppen() == 0 || nachLand.getAngreiferTruppen() == 0) {
       aktualisiereTruppenLaender(nachLand.getHerrscher());
-      phasenwechsel();
+      phasenWechsel();
     }
   }
   
   public int[] getWuerfel() {//sollte dann von Gui abgefragt werden
-    
+    return ;
   }
   
   private boolean verschiebeTruppen(int anzahl) {
@@ -324,38 +324,36 @@ public class Spiel {
     return this.mitSpieler[sNr].getName();
   }
   
-  private int berchneZuPlazierendeTruppen() {
+  private int berechneZuPlatzierendeTruppen() {
+    public int berechneZuPlatzierendeTruppen() { //glaube ist gut so
+    int extraTruppen = 0;
+    for (int i = 0; i < kontinente.length; i++) {
+    if (kontinente[i].beherrschtVon(dran) == true) {
+    extraTruppen = extraTruppen + kontinente[i].getExtraTruppen();
+    } // end of if
+    } // end of for
+    return 3 + (int)(mitSpieler[dran].getGesamtLaender().length / 3) + extraTruppen;
+    
+    }}
+    
+    private int berechneGesamtTruppen(byte meinSpieler) {
     int truppen = 0;
     for (byte i = 0; i < laender.length; i++) {
-      if (laender[i].getHerrscher() == dran) {
-        truppen++;//1 Truppe pro Land?
-      }
+    if (laender[i].getHerrscher() == meinSpieler) {
+    truppen += laender[i].getTruppen();
     }
-    for (byte i = 0; i < kontinente.length; i++) {
-      if (kontinente[i].beherrschtVon(dran)) {
-        truppen += kontinente[i].getExtraTruppen();
-      }
     }
     return truppen;
-  }
-  
-  private void berechneGesamtTruppen(byte meinSpieler) {
-    int truppen = 0;
-    for (byte i = 0; i < laender.length; i++) {
-      if (laender[i].getHerrscher() == meinSpieler) {
-        truppen += laender[i].getTruppen();
-      }
     }
-    return truppen;
-  }
-  
-  private void aktualisiereTruppenLaender(byte meinSpieler){
+    
+    private void aktualisiereTruppenLaender(byte meinSpieler){
     mitSpieler[meinSpieler].setGesamtTruppen(berechneGesamtTruppen(meinSpieler));
-  }
-
-  public void schonDurchReset() {//extramethode??
-    for (byte i = 0; i < laender.length; i++) {
-      laender[i].resetSchonDurch();
     }
-  }
-}
+    
+    public void schonDurchReset() {//extramethode??
+    for (byte i = 0; i < laender.length; i++) {
+    laender[i].resetSchonDurch();
+    }
+    }
+    }
+  
