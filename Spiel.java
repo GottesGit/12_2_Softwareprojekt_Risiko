@@ -277,20 +277,20 @@ public class Spiel {
     }
     Arrays.sort(verteidigerWuerfel);
     Arrays.sort(angreiferWuerfel);
-      if (angreiferWuerfel[angreiferWuerfelAnzahl] > verteidigerWuerfel[verteidigerWuerfelAnzahl]) {
-        nachLand.getTruppen()--;
-      } else if (angreiferWuerfel[angreiferWuerfelAnzahl] < verteidigerWuerfel[verteidigerWuerfelAnzahl]) {
-        nachLand.getAngreiferTruppen()--;       
-      } else {
-        nachLand.getAngreiferTruppen()--;       
-      } 
+    if (angreiferWuerfel[angreiferWuerfelAnzahl] > verteidigerWuerfel[verteidigerWuerfelAnzahl]) {
+      nachLand.getTruppen()--;
+    } else if (angreiferWuerfel[angreiferWuerfelAnzahl] < verteidigerWuerfel[verteidigerWuerfelAnzahl]) {
+      nachLand.getAngreiferTruppen()--;       
+    } else {
+      nachLand.getAngreiferTruppen()--;       
+    } 
     if (angreiferWuerfelAnzahl == 2 || verteidigerWuerfelAnzahl == 2) {
-       if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] > verteidigerWuerfel[verteidigerWuerfelAnzahl] -1) {
-        getTruppen--;
+      if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] > verteidigerWuerfel[verteidigerWuerfelAnzahl] -1) {
+        nachLand.getTruppen()--;
       } else if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] < verteidigerWuerfel[verteidigerWuerfelAnzahl] - 1) {
-        getAngreiferTruppen--;       
+        nachLand.getAngreiferTruppen()--;       
       } else {
-        getAngreiferTruppen--;       
+        nachLand().getAngreiferTruppen--;       
       } 
     } // end of if
     
