@@ -11,8 +11,9 @@ public class Spiel {
   private String[] laenderNamen;
   private String[] kontinentNamen;//keine ahnung, wo die hin sollten, deswegen erst mal global
   private int[] kontinentLaender;
-  private byte[] angeiferWuerfel = new byte[3];
-  private byte[] verteidigerWuerfel = new byte[2];
+  /*private byte[] angreiferWuerfel = new byte[3];
+  private byte[] verteidigerWuerfel = new byte[2];*/
+  private int[][] wuerfel = new int[3][2];
   
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
     gui = meineGui;
@@ -225,7 +226,7 @@ public class Spiel {
     return this.nachLand;
   }
   
-  public byte getVonLand() {
+  public Land getVonLand() {
     return this.vonLand;
   }
   
@@ -273,8 +274,8 @@ public class Spiel {
     }
   }
   
-  public int[] getWuerfel() {//sollte dann von Gui abgefragt werden
-    return ;
+  public int[][] getWuerfel() {//sollte dann von Gui abgefragt werden
+    return wuerfel;
   }
   
   private boolean verschiebeTruppen(int anzahl) {
@@ -324,36 +325,34 @@ public class Spiel {
     return this.mitSpieler[sNr].getName();
   }
   
-  private int berechneZuPlatzierendeTruppen() {
-    public int berechneZuPlatzierendeTruppen() { //glaube ist gut so
+  private int berechneZuPlatzierendeTruppen() { //glaube ist gut so
     int extraTruppen = 0;
     for (int i = 0; i < kontinente.length; i++) {
-    if (kontinente[i].beherrschtVon(dran) == true) {
-    extraTruppen = extraTruppen + kontinente[i].getExtraTruppen();
-    } // end of if
+      if (kontinente[i].beherrschtVon(dran) == true) {
+        extraTruppen = extraTruppen + kontinente[i].getExtraTruppen();
+      } // end of if
     } // end of for
     return 3 + (int)(mitSpieler[dran].getGesamtLaender().length / 3) + extraTruppen;
-    
-    }}
-    
-    private int berechneGesamtTruppen(byte meinSpieler) {
+  }
+
+  private int berechneGesamtTruppen(byte meinSpieler) {
     int truppen = 0;
     for (byte i = 0; i < laender.length; i++) {
-    if (laender[i].getHerrscher() == meinSpieler) {
-    truppen += laender[i].getTruppen();
-    }
+      if (laender[i].getHerrscher() == meinSpieler) {
+        truppen += laender[i].getTruppen();
+      }
     }
     return truppen;
-    }
+  }
     
-    private void aktualisiereTruppenLaender(byte meinSpieler){
+  private void aktualisiereTruppenLaender(byte meinSpieler){
     mitSpieler[meinSpieler].setGesamtTruppen(berechneGesamtTruppen(meinSpieler));
-    }
+  }
     
-    public void schonDurchReset() {//extramethode??
+  public void schonDurchReset() {//extramethode??
     for (byte i = 0; i < laender.length; i++) {
-    laender[i].resetSchonDurch();
+      laender[i].resetSchonDurch();
     }
-    }
-    }
+  }
+}
   

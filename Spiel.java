@@ -11,8 +11,9 @@ public class Spiel {
   private String[] laenderNamen;
   private String[] kontinentNamen;//keine ahnung, wo die hin sollten, deswegen erst mal global
   private int[] kontinentLaender;
-  private byte[] angeiferWuerfel = new byte[3];
-  private byte[] verteidigerWuerfel = new byte[2];
+  /*private byte[] angreiferWuerfel = new byte[3];
+  private byte[] verteidigerWuerfel = new byte[2];*/
+  private int[][] wuerfel = new int[3][2];
   
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
     gui = meineGui;
@@ -225,7 +226,7 @@ public class Spiel {
     return this.nachLand;
   }
   
-  public byte getVonLand() {
+  public Land getVonLand() {
     return this.vonLand;
   }
   
@@ -252,7 +253,7 @@ public class Spiel {
     if (dran != nachLand.getHerrscher()) {
       if (vonLand.getTruppen() > 1 + anzahl) {
         vonLand.setTruppen(dran, vonLand.getTruppen() - anzahl);
-        nachLand.setAngreiferTruppen(mitSpieler[dran], nachLand.getAngreiferTruppen() + anzahl);
+        nachLand.setAngreiferTruppen(/*mitSpieler[dran]*/ dran, nachLand.getAngreiferTruppen() + anzahl);
         return true;
       } else {
         System.out.println("Error es werden zu viele Truppen zum Angreifen verwendet"); //bis jetzt ist diese Fehlermeldung einfach auszuloesen
@@ -273,15 +274,15 @@ public class Spiel {
     }
   }
   
-  public int[] getWuerfel() {//sollte dann von Gui abgefragt werden
-    return ;
+  public int[][] getWuerfel() {//sollte dann von Gui abgefragt werden
+    return wuerfel;
   }
   
   private boolean verschiebeTruppen(int anzahl) {
     if (dran == vonLand.getHerrscher() && dran == nachLand.getHerrscher()) {
       if (vonLand.getTruppen() > 1 + anzahl) {
-        vonLand.setTruppen(mitSpieler[dran], vonLand.getTruppen() - anzahl);
-        nachLand.setTruppen(mitSpieler[dran], nachLand.getTruppen() + anzahl);
+        vonLand.setTruppen(/*mitSpieler[dran]*/ dran, vonLand.getTruppen() - anzahl);
+        nachLand.setTruppen(/*mitSpieler[dran]*/ dran, nachLand.getTruppen() + anzahl);
         return true;
       } else {
         System.out.println("Error es werden zu viele Truppen verschoben"); //bis jetzt ist diese Fehlermeldung einfach auszuloesen
@@ -331,7 +332,7 @@ public class Spiel {
         extraTruppen = extraTruppen + kontinente[i].getExtraTruppen();
       } // end of if
     } // end of for
-    return 3 + (int)(mitSpieler[dran].getGesamtLaender().length / 3) + extraTruppen;
+    return 3 + (int)(mitSpieler[dran].getGesamtLaender() / 3) + extraTruppen;
   }
 
   private int berechneGesamtTruppen(byte meinSpieler) {
