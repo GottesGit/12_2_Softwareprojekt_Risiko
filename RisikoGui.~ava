@@ -76,6 +76,7 @@ public class RisikoGui extends Application {
     //    textField4.setPromptText("Spielername eingeben...");
     //    root.getChildren().add(textField4);
     for (byte i = 0; i < 4; i++) {
+      namenFelder[i] = new TextField();
       namenFelder[i].setLayoutX(24);
       namenFelder[i].setLayoutY(152 + 32 * i);
       namenFelder[i].setPrefHeight(24);

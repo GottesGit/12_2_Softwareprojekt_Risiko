@@ -1,4 +1,5 @@
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
+import javafx.event.*;
 
 public class LandButton extends Button{//geht anscheinend nicht
   private String positionSvg;

@@ -22,7 +22,7 @@ public class Spiel {
       mitSpieler[i] = new Spieler(spielerNamen[i]);
     }
     
-    String[] laenderNamen = {"Argentinien", "Peru", "Brasilien", "Venezuela"}; //Erstellung der Laender und Kontinente
+    String[] laenderNamen = {"Argentinien", "Peru", "Brasilien", "Venezuela", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a"}; //Erstellung der Laender und Kontinente
     byte[][] angrenzende = {//Todo (aeussere, innere Dimension)
     {2, 3, 0, 0, 0, 0}, {1, 2, 3, 0, 0, 0}, {1, 2, 3, 0, 0, 0}, {2, 3, 0, 0, 0, 0}, //Suedamerika
     {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Nordmerika
@@ -34,8 +34,9 @@ public class Spiel {
     byte[] kontinentLaender = {4, 9, 6, 6, 12, 4}; //Anzahl der Laender der jeweiligen Kontinente
     byte[] kontinentTruppen = {2, 5, 5, 3, 7, 2}; //Anzahl der Extratruppen der jeweiligen Kontinente
     String[] kontinentNamen = {"Suedamerika", "Nordmerika", "Europa", "Afrika", "Asien", "Australien"};
-    
-    for (byte i = 0; i < 42; i++) { // die laender muessen erst alle erstellt werden...
+    laender = new Land[42]; //das koennte vllt auch nach oben zur Erstellung des Arrays?
+    asdfdfagsth
+    for (byte i = 0; i < 4; i++) { // die laender muessen erst alle erstellt werden...
       laender[i] = new Land(laenderNamen[i], i);
     }
     for (byte i = 0; i < 42; i++) { //...damit sie sich dann gegenseitig als Nachbarn bekommen koennen
@@ -280,13 +281,13 @@ public class Spiel {
   }
   
   private void kampf() {
-    byte angreiferWuerfelAnzahl; // die beiden muessten je nach Truppenzahlen eingestellt werden
-    byte verteidigerWuerfelAnzahl;
+    byte angreiferWuerfelAnzahl = (byte) ((nachLand.getAngreiferTruppen() >= 3)?3:nachLand.getAngreiferTruppen()); // die beiden muessten je nach Truppenzahlen eingestellt werden
+    byte verteidigerWuerfelAnzahl = (byte) ((nachLand.getTruppen() >= 2)?2:1);
     for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
       angreiferWuerfel[i] = (byte) ((Math.random() * 6) + 1);
     }
     for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
-      verteidigerWuerfel[j] = (byte) ((Math.random() * 6) + 1);
+      verteidigerWuerfel[i] = (byte) ((Math.random() * 6) + 1);
     }
     //Arrays.sort(verteidigerWuerfel); //das funktioniert nicht
     //Arrays.sort(angreiferWuerfel);
@@ -294,7 +295,7 @@ public class Spiel {
       if (angreiferWuerfel[angreiferWuerfelAnzahl] > verteidigerWuerfel[verteidigerWuerfelAnzahl]) {
         nachLand.setTruppen(nachLand.getHerrscher(), nachLand.getTruppen() - 1);
       } else if (angreiferWuerfel[angreiferWuerfelAnzahl] <= verteidigerWuerfel[verteidigerWuerfelAnzahl]) {
-        nachLand.setAngreiferTruppen(nachLand.getAngreiferTruppen() - 1);
+        nachLand.setAngreiferTruppen(dran, nachLand.getAngreiferTruppen() - 1);
       }
     } while (angreiferWuerfelAnzahl-- > 0 && verteidigerWuerfelAnzahl-- > 0);
 
@@ -304,14 +305,17 @@ public class Spiel {
         angreiferWuerfel[i] = (byte) 0;
       }
       for (byte i = 0; i < 2; i++) {
-        verteidigerWuerfel[j] = (byte) 0;
+        verteidigerWuerfel[i] = (byte) 0;
       }
       phasenWechsel();
     }
   }
   
-  public int[][] getWuerfel() {//sollte dann von Gui abgefragt werden
-    return wuerfel;
+  public byte[] getVerteidigerWuerfel() {//sollte dann von Gui abgefragt werden
+    return this.verteidigerWuerfel;
+  }
+  public byte[] getAngreiferWuerfel() {//sollte dann von Gui abgefragt werden
+    return this.angreiferWuerfel;
   }
   
   private boolean verschiebeTruppen(int anzahl) {
