@@ -22,10 +22,6 @@ public class RisikoGui extends Application {
   private Label wuerfelLabel;
   // private String[] laenderSvg;
   private Button startButton = new Button();
-  //  private TextField textField1 = new TextField();
-  //  private TextField textField2 = new TextField();
-  //  private TextField textField3 = new TextField();
-  //  private TextField textField4 = new TextField();
   private TextField[] namenFelder = new TextField[4];
   private SVGPath[] svgPfade = new SVGPath[42];
   // Ende Attribute
@@ -51,30 +47,6 @@ public class RisikoGui extends Application {
     (event) -> {startButton_Action(event);} 
     );
     root.getChildren().add(startButton);
-    //    textField1.setLayoutX(24);
-    //    textField1.setLayoutY(152);
-    //    textField1.setPrefHeight(24);
-    //    textField1.setPrefWidth(152);
-    //    textField1.setPromptText("Spielername eingeben...");
-    //    root.getChildren().add(textField1);
-    //    textField2.setLayoutX(24);
-    //    textField2.setLayoutY(184);
-    //    textField2.setPrefHeight(24);
-    //    textField2.setPrefWidth(152);
-    //    textField2.setPromptText("Spielername eingeben...");
-    //    root.getChildren().add(textField2);
-    //    textField3.setLayoutX(24);
-    //    textField3.setLayoutY(216);
-    //    textField3.setPrefHeight(24);
-    //    textField3.setPrefWidth(152);
-    //    textField3.setPromptText("Spielername eingeben...");
-    //    root.getChildren().add(textField3);
-    //    textField4.setLayoutX(24);
-    //    textField4.setLayoutY(248);
-    //    textField4.setPrefHeight(24);
-    //    textField4.setPrefWidth(152);
-    //    textField4.setPromptText("Spielername eingeben...");
-    //    root.getChildren().add(textField4);
     for (byte i = 0; i < 4; i++) {
       namenFelder[i] = new TextField();
       namenFelder[i].setLayoutX(24);
