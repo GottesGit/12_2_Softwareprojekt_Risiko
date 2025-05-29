@@ -22,11 +22,11 @@ public class Spiel {
       mitSpieler[i] = new Spieler(spielerNamen[i]);
     }
     
-    String[] laenderNamen = {"Argentinien", "Peru", "Brasilien", "Venezuela", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a"}; //Erstellung der Laender und Kontinente
+    String[] laenderNamen = {"Argentinien", "Peru", "Brasilien", "Venezuela", "Mittelamerika", "Oststaaten", "Weststaaten", "Ontario", "Alberta", "Alaska", "Nordwest-Territorium", "Ostkanada", "Groenland", "Island", "Skandinavien", "Grossbritannien", "Westeuropa", "Suedeuropa", "Nordeuropa", "Russland", "Nordafrika", "Aegypten", "Ostafrika", "Zentralafrika", "Suedafrika", "Madagaskar", "Naher Osten", "Afghanistan", "Indien", "Ural", "China", "Suedostasien", "Sibirien", "Mongolei", "Irkutsk", "Jakutien", "Kamtschatka", "Japan", "Indonesien", "Neuguinea", "Ostaustralien", "Westaustralien"}; //Erstellung der Laender und Kontinente
     byte[][] angrenzende = {//Todo (aeussere, innere Dimension)
-    {2, 3, 0, 0, 0, 0}, {1, 2, 3, 0, 0, 0}, {1, 2, 3, 0, 0, 0}, {2, 3, 0, 0, 0, 0}, //Suedamerika
-    {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Nordmerika
-    {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Europa
+    {1, 2, 100, 100, 100, 100}, {0, 2, 3, 100, 100, 100}, {0, 1, 3, 20, 100, 100}, {1, 2, 4, 100, 100, 100}, //Suedamerika
+    {3, 5, 6, 100, 100, 100}, {4, 6, 7, 11, 100, 100}, {4, 5, 7, 8, 100, 100}, {5, 6, 8, 10, 11, 12}, {6, 7, 9, 10, 100, 100}, {8, 10, 36, 100, 100, 100}, {7, 8, 9, 12, 100, 100}, {5, 7, 12, 100, 100, 100}, {7, 10, 11, 13, 100, 100}, //Nordamerika
+    {12, 14, 15, 100, 100, 100}, {13, 14, 18, 19, 100, 100}, {13, 14, 16, 18, 100, 100}, {15, 17, 18, 20, 100, 100}, {16, 18, 20, 21, 26, 100}, {14, 15, 16, 17, 19, 100}, {14, 17, 18, 26, 27, 29}, //Europa
     {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Afrika
     {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Asien
     {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0}, //Australien

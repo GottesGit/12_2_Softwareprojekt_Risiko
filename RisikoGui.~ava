@@ -81,7 +81,6 @@ public class RisikoGui extends Application {
     for (byte i = 0; i < spielerAnzahl; i++) {
       namen[i] = namenFelder[i].getText();
     }
-    // String[] namen = {textField1.getText(), textField2.getText(), textField3.getText(), textField4.getText()};//da fehlt natuerlich noch die Startseite (das sollte nicht in main oder?)
     spiel = new Spiel(namen, this);
     
     String[] laenderSvg = {
