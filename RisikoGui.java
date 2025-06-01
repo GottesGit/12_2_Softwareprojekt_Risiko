@@ -197,10 +197,10 @@ public class RisikoGui extends Application {
     }
     
     fertigButton = new Button();
-    fertigButton.setLayoutX(300);
-    fertigButton.setLayoutY(200);
-    fertigButton.setPrefHeight(200);
-    fertigButton.setPrefWidth(200);
+    fertigButton.setLayoutX(1266);
+    fertigButton.setLayoutY(600);
+    fertigButton.setPrefHeight(70);
+    fertigButton.setPrefWidth(70);
     fertigButton.setText("Weiter");
     fertigButton.setOnAction(
     (event) -> {fertigButton_gedrueckt(event);} 
