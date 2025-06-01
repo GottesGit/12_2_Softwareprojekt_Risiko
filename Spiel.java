@@ -40,7 +40,8 @@ public class Spiel {
       laender[i] = new Land(laenderNamen[i], i);
       byte herrscher;
       do {
-        herrscher = (byte)(Math.random() * 4);
+        herrscher = (byte) (Math.random() * mitSpieler.length);
+        System.out.println(herrscher);
       } while (mitSpieler[herrscher].getGesamtTruppen() < maxLaender);
       laender[i].setTruppen(herrscher, 1);
       mitSpieler[herrscher].setGesamtTruppen(mitSpieler[herrscher].getGesamtTruppen() + 1);
