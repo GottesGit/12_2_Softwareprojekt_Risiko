@@ -209,7 +209,7 @@ public class RisikoGui extends Application {
     
     spielerLabel = new Label[spielerAnzahl -1];
      
-    for (byte k = 0; k < (spielerAnzahl -1); k++) { //Spieler-Label
+    for (byte k = 0; k < spielerAnzahl; k++) { //Spieler-Label
       spielerLabel[k] = new Label();
       spielerLabel[k].setLayoutX(50);
       spielerLabel[k].setLayoutY(400 + k * 30);

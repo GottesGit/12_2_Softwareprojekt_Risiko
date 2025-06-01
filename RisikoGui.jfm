@@ -23,7 +23,7 @@ object FGUIForm: TFXGuiForm
   OnMouseActivate = FormMouseActivate
   OnResize = FormResize
   FrameType = 8
-  Modified = False
+  Modified = True
   Resizable = True
   Undecorated = False
   Background = clBtnFace
