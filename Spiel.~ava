@@ -3,7 +3,6 @@ public class Spiel {
   private byte phase;
   private byte zugNummer;
   private Spieler[] mitSpieler;
-  private Kontinent[] kontinente;
   private Land[] laender = new Land[42];
   private Kontinent[] kontinente = new Kontinent[6];
   private RisikoGui gui;

@@ -11,7 +11,6 @@ import javafx.scene.control.*;
 import je.NumberField;
 import javafx.event.*;
 
-
 public class RisikoGui extends Application {
   // Anfang Attribute
   private byte spielerAnzahl = 0;
@@ -20,7 +19,6 @@ public class RisikoGui extends Application {
   private Button kampfButton;
   private Button fertigButton;
   private Label wuerfelLabel;
-  // private String[] laenderSvg;
   private Button startButton = new Button();
   private TextField[] namenFelder = new TextField[4];
   private SVGPath[] svgPfade = new SVGPath[42];
@@ -162,7 +160,7 @@ public class RisikoGui extends Application {
       svgPfadLand.setScaleX(5.45);
       svgPfadLand.setScaleY(5.45);
       
-      svgPfade[i] = svgPfadLand;      //um spaeter noch einmal darauf zugreifen zu koennen - warum sollten wir, die sind dann ja in den laendern und wenn dann kann svgPfadLand weg     - wir müssen das Ding ja färben
+      svgPfade[i] = svgPfadLand; //um spaeter noch einmal darauf zugreifen zu koennen - warum sollten wir, die sind dann ja in den laendern und wenn dann kann svgPfadLand weg     - wir müssen das Ding ja färben
       
       landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i)); //hier Erstellung der landButtons
       landButtons[i].setStyle("-fx-background-color: transparent;");
@@ -173,6 +171,9 @@ public class RisikoGui extends Application {
       landButtons[i].setMinSize(0, 0);
       landButtons[i].setPrefHeight(0.1);
       landButtons[i].setPrefWidth(0.1);
+      landButtons[i].setOnAction(
+      (event) -> {landButtons[i].landButton_gedrueckt(event);} 
+      );
       spielPane.getChildren().add(landButtons[i]);
     }
     Stage spielPlan = new Stage();
