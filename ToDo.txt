@@ -1,0 +1,6 @@
+UML Pflegen
+Ordner aufräumen
+Fehler beheben
+Starttruppen verteilen (automatisch und von den spielern)
+ToDO Liste pflegen
+Aktualisieren der Gui fertig machen

@@ -1,6 +1,6 @@
 public class Spiel {
   private byte dran;
-  private byte phase;
+  private byte phase = 100;
   private byte zugNummer;
   private Spieler[] mitSpieler;
   private Land[] laender = new Land[42];
@@ -11,7 +11,6 @@ public class Spiel {
   private String[] laenderNamen;
   private String[] kontinentNamen;//keine ahnung, wo die hin sollten, deswegen erst mal global
   private int[] kontinentLaender;
-  //private int[][] wuerfel = new int[3][2];
   private byte[] angreiferWuerfel = new byte[3];
   private byte[] verteidigerWuerfel = new byte[2];
   
