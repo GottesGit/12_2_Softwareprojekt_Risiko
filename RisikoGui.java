@@ -10,6 +10,7 @@ import java.util.Arrays;
 import javafx.scene.control.*;
 import je.NumberField;
 import javafx.event.*;
+import java.awt.Event;
 
 public class RisikoGui extends Application {
   // Anfang Attribute
@@ -267,16 +268,23 @@ public class RisikoGui extends Application {
               landButtons[i].setDisable(true);
             }
             break;
+          case 100 : //Anfangs Truppen plazieren
+            if (landButtons[i].getHerrscher() == spiel.getDran()) {
+              landButtons[i].setDisable(false);
+            } else {
+              landButtons[i].setDisable(true);
+            }
+            break;
         }
       }
     }
   }
   
-  public void kampfButton_gedrueckt() {
+  public void kampfButton_gedrueckt(Event evt) {
     spiel.buttonKlickAktion((byte) 2, (byte) 1);//weiss nicht, ob das geht 
   }
   
-  public void fertigButton_gedrueckt() {
+  public void fertigButton_gedrueckt(Event evt) {
     spiel.buttonKlickAktion((byte) 1, (byte) 1);
   }
 }
