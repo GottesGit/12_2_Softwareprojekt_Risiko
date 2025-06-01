@@ -13,7 +13,7 @@ public class LandButton extends Button{//geht anscheinend nicht
     refresh();
   }
   
-  public void landButton_gedrueckt() {
+  public void landButton_gedrueckt(Event evt) {
     spiel.landKlickAktion(land, 1);//erstmal nur linke Maustaste
   }
   
