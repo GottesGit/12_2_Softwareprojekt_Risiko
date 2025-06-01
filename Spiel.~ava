@@ -67,7 +67,6 @@ public class Spiel {
       }
       kontinente[i] = new Kontinent(hinzuzfuegendeLaender, kontinentNamen[i], kontinentTruppen[i]);
     }
-    gui.grafikErneuern();
   }
   
   public void landKlickAktion(Land land, int taste) {//int zu byte konversion ist kacke, deswegen kein byte  
@@ -77,10 +76,10 @@ public class Spiel {
           land.setTruppen(dran, (land.getTruppen() + 1));
           mitSpieler[dran].setGesamtTruppen(mitSpieler[dran++].getGesamtTruppen() + 1);
         }
-        if (dran >= mitSpieler.length) {
+        if (dran >= (mitSpieler.length - 1)) {
           dran = 0;
         }
-        if (mitSpieler[mitSpieler.length].getGesamtTruppen() >= 35) {
+        if (mitSpieler[(mitSpieler.length -1)].getGesamtTruppen() >= 35) {
           phasenWechsel();
         }
         break;

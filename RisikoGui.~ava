@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;              
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import java.util.Arrays;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -24,6 +25,7 @@ public class RisikoGui extends Application {
   private Button startButton = new Button();
   private TextField[] namenFelder = new TextField[4];
   private SVGPath[] svgPfade = new SVGPath[42];
+  private Text[] landTexte = new Text[42];
   // Ende Attribute
   public void start(Stage primaryStage) { 
     Pane root = new Pane();
@@ -175,25 +177,31 @@ public class RisikoGui extends Application {
     spielPane.getChildren().add(0, imageView);
     
     for (byte i = 0; i < 42; i++) {
-      SVGPath svgPfadLand = new SVGPath();
-      svgPfadLand.setContent(laenderSvg[i]);
-      svgPfadLand.setScaleX(5.45);
-      svgPfadLand.setScaleY(5.45);
+      svgPfade[i] = new SVGPath();
+      svgPfade[i].setContent(laenderSvg[i]);
+      svgPfade[i].setScaleX(5.45);
+      svgPfade[i].setScaleY(5.45);
+      svgPfade[i].setStyle("-fx-fill: orange;");
       
-      svgPfade[i] = svgPfadLand; //um spaeter noch einmal darauf zugreifen zu koennen - warum sollten wir, die sind dann ja in den laendern und wenn dann kann svgPfadLand weg     - wir müssen das Ding ja färben
+      landTexte[i] = new Text("Gpi");
+      landTexte[i].setLayoutX(laenderPositionen[i][0] + 5); // leichte Verschiebung zur besseren Sichtbarkeit
+      landTexte[i].setLayoutY(laenderPositionen[i][1] + 5);
+      landTexte[i].setStyle("-fx-fill: white; -fx-font-size: 20px;");
       
-      landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i)); //hier Erstellung der landButtons
+      landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i), landTexte[i]); //hier Erstellung der landButtons
       landButtons[i].setStyle("-fx-background-color: transparent;");
-      landButtons[i].setGraphic(svgPfadLand);
+      landButtons[i].setGraphic(svgPfade[i]);
       landButtons[i].setPickOnBounds(false);
       landButtons[i].setLayoutX(laenderPositionen[i][0]);
       landButtons[i].setLayoutY(laenderPositionen[i][1]);
       landButtons[i].setMinSize(0, 0);
-      landButtons[i].setPrefHeight(0.1);
-      landButtons[i].setPrefWidth(0.1);
+      landButtons[i].setPrefHeight(10); //muss 0.1 sein
+      landButtons[i].setPrefWidth(10); //ebenfalls
       LandButton btn = landButtons[i];
       btn.setOnAction((event) -> btn.landButton_gedrueckt(event));
       spielPane.getChildren().add(landButtons[i]);
+      
+      spielPane.getChildren().add(landTexte[i]);
     }
     
     fertigButton = new Button(); //Weiter-Button
@@ -284,7 +292,7 @@ public class RisikoGui extends Application {
             break;
           case 2 : //angreifen also Feind auswaehlen
             if (landButtons[i].getHerrscher() != spiel.getDran() && spiel.istBenachbart(i)) { //nur fremde, benachbarte Laender enablen
-              landButtons[i].setDisable(false);
+              landButtons[i].setDisable(true);
             } else {
               landButtons[i].setDisable(false);
             }
