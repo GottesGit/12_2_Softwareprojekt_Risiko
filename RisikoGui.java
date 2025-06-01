@@ -53,6 +53,7 @@ public class RisikoGui extends Application {
     (event) -> {startButton_Action(event);} 
     );
     root.getChildren().add(startButton);
+    
     for (byte i = 0; i < 4; i++) {
       namenFelder[i] = new TextField();
       namenFelder[i].setLayoutX(24);
@@ -195,6 +196,17 @@ public class RisikoGui extends Application {
       
       spielPane.getChildren().add(landButtons[i]);
     }
+    
+    fertigButton = new Button();
+    fertigButton.setLayoutX(300);
+    fertigButton.setLayoutY(200);
+    fertigButton.setPrefHeight(200);
+    fertigButton.setPrefWidth(200);
+    fertigButton.setText("Weiter");
+    fertigButton.setOnAction(
+    (event) -> {fertigButton_gedrueckt()(event);} 
+    );
+    spielPane.getChildren().add(fertigButton);
     
     spielPlan.setTitle("Risiko");
     spielPlan.setScene(spielSzene);
