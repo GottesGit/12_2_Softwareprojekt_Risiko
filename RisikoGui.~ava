@@ -11,7 +11,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import je.NumberField;
 import javafx.event.*;
-import java.awt.Event;
 
 public class RisikoGui extends Application {
   // Anfang Attribute
