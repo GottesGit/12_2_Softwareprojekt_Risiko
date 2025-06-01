@@ -13,10 +13,11 @@ import je.NumberField;
 import javafx.event.*;
 
 public class RisikoGui extends Application {
-  // Anfang Attribute
   private byte spielerAnzahl = 0;
+  // Anfang Attribute
   private Spiel spiel;
   private LandButton[] landButtons = new LandButton[42];//hiermit ist das natuerlich fest, das muesste angepasst werden, wenn das fuer verschiedene Maps funktionieren soll     dafür musst du erstmal ne neue Map machen
+  private Label[] spielerLabel;
   private Button kampfButton;
   private Button fertigButton;
   private Label wuerfelLabel;
@@ -24,7 +25,6 @@ public class RisikoGui extends Application {
   private TextField[] namenFelder = new TextField[4];
   private SVGPath[] svgPfade = new SVGPath[42];
   // Ende Attribute
-  
   public void start(Stage primaryStage) { 
     Pane root = new Pane();
     Scene startSzene = new Scene(root, 500, 350);
@@ -39,7 +39,6 @@ public class RisikoGui extends Application {
     for (int j = 0; j < 4; j++) {
       startBilder[j] = new Image("file:Startbildschirme/Startbildschirm" + j + ".png");
     }
-    // Anfang Komponenten
     
     
     startButton.setLayoutX(48);
@@ -67,7 +66,6 @@ public class RisikoGui extends Application {
       
       root.getChildren().add(namenFelder[i]);
     }
-    // Ende Komponenten
     primaryStage.setOnCloseRequest(e -> System.exit(0));
     primaryStage.setTitle("RisikoGui");
     primaryStage.setScene(startSzene);
@@ -77,7 +75,10 @@ public class RisikoGui extends Application {
   public void startButton_Action(Event evt) {
     Stage primaryStage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
     primaryStage.close();
+    // Anfang Komponenten
+    // Ende Komponenten
     spielStart();
+    // Anfang Methoden
   }
   
   private void spielStart() {
@@ -178,7 +179,6 @@ public class RisikoGui extends Application {
       svgPfadLand.setContent(laenderSvg[i]);
       svgPfadLand.setScaleX(5.45);
       svgPfadLand.setScaleY(5.45);
-      svgPfadLand.setStyle("-fx-fill: red;");
       
       svgPfade[i] = svgPfadLand; //um spaeter noch einmal darauf zugreifen zu koennen - warum sollten wir, die sind dann ja in den laendern und wenn dann kann svgPfadLand weg     - wir müssen das Ding ja färben
       
@@ -196,7 +196,7 @@ public class RisikoGui extends Application {
       spielPane.getChildren().add(landButtons[i]);
     }
     
-    fertigButton = new Button();
+    fertigButton = new Button(); //Weiter-Button
     fertigButton.setLayoutX(1266);
     fertigButton.setLayoutY(600);
     fertigButton.setPrefHeight(70);
@@ -206,6 +206,19 @@ public class RisikoGui extends Application {
     (event) -> {fertigButton_gedrueckt(event);} 
     );
     spielPane.getChildren().add(fertigButton);
+    
+    spielerLabel = new Label[spielerAnzahl -1];
+     
+    for (byte k = 0; k < (spielerAnzahl -1); k++) { //Spieler-Label
+      spielerLabel[k] = new Label();
+      spielerLabel[k].setLayoutX(50);
+      spielerLabel[k].setLayoutY(400 + k * 30);
+      spielerLabel[k].setPrefHeight(20);
+      spielerLabel[k].setPrefWidth(100);
+      spielerLabel[k].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-background-color: lightgray;"); //passen wir noch an
+      spielerLabel[k].setText(namenFelder[k].getText());
+      spielPane.getChildren().add(spielerLabel[k]);
+    }
     
     spielPlan.setTitle("Risiko");
     spielPlan.setScene(spielSzene);
@@ -231,6 +244,29 @@ public class RisikoGui extends Application {
         } else {
           svgPfade[i].setStyle("-fx-fill: yellow;");
         }
+        
+        if (spiel.getDran() == 0) {   // passen wir noch an
+          spielerLabel[0].setStyle("-fx-background-color: red;");
+          spielerLabel[1].setStyle("-fx-background-color: lightgray;");
+          spielerLabel[2].setStyle("-fx-background-color: lightgray;");
+          spielerLabel[3].setStyle("-fx-background-color: lightgray;");
+        } else if (spiel.getDran() == 1) {
+          spielerLabel[0].setStyle("-fx-background-color: lightgray;");
+          spielerLabel[1].setStyle("-fx-background-color: blue;");
+          spielerLabel[2].setStyle("-fx-background-color: lightgray;");
+          spielerLabel[3].setStyle("-fx-background-color: lightgray;");
+        } else if (spiel.getDran() == 2) {
+          spielerLabel[0].setStyle("-fx-background-color: lightgray;");
+          spielerLabel[1].setStyle("-fx-background-color: lightgray;");
+          spielerLabel[2].setStyle("-fx-background-color: gruen;");
+          spielerLabel[3].setStyle("-fx-background-color: lightgray;");
+        } else {
+          spielerLabel[0].setStyle("-fx-background-color: lightgray;");
+          spielerLabel[1].setStyle("-fx-background-color: lightgrayy;");
+          spielerLabel[2].setStyle("-fx-background-color: lightgray;");
+          spielerLabel[3].setStyle("-fx-background-color: gelb;");
+        }
+        
         switch (spiel.getPhase()) {
           case 0 : //Truppen platzieren
             if (landButtons[i].getHerrscher() == spiel.getDran()) { //nur eigene Laender enablen
@@ -304,4 +340,4 @@ public class RisikoGui extends Application {
     spiel.buttonKlickAktion((byte) 1, (byte) 1);
   }
 }
-// Ende Methoden
+  // Ende Methoden
