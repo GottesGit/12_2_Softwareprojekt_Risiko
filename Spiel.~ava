@@ -65,7 +65,7 @@ public class Spiel {
   public void landKlickAktion(Land land, int taste) {//int zu byte konversion ist kacke, deswegen kein byte  
     switch (phase) {
       case 0 : //truppenplatzieren, eigentlich je nach maustaste
-        land.setTruppen(dran, berechneZuPlatzierendeTruppen());
+        land.setTruppen(dran, 1);
         if (berechneGesamtTruppen(dran) == mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen()) {
           phasenWechsel();
         } else if (berechneGesamtTruppen(dran) > mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen()) {

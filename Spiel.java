@@ -37,6 +37,12 @@ public class Spiel {
     //laender = new Land[42]; //das koennte vllt auch nach oben zur Erstellung des Arrays? - ist es
     for (byte i = 0; i < 42; i++) { // die laender muessen erst alle erstellt werden...
       laender[i] = new Land(laenderNamen[i], i);
+      byte herrscher = random;
+      if (mitSpieler[herrscher]) {
+        
+      }
+      laender[i].setTruppen(herrscher, 1);
+      mitSpieler[herrscher].setGesamtTruppen(mitSpieler[herrscher].getGesamtTruppen() + 1);
     }
     for (byte i = 0; i < 42; i++) { //...damit sie sich dann gegenseitig als Nachbarn bekommen koennen
       byte anzahlNachbarn = 0;
@@ -65,7 +71,7 @@ public class Spiel {
   public void landKlickAktion(Land land, int taste) {//int zu byte konversion ist kacke, deswegen kein byte  
     switch (phase) {
       case 0 : //truppenplatzieren, eigentlich je nach maustaste
-        land.setTruppen(dran, berechneZuPlatzierendeTruppen());
+        land.setTruppen(dran, 1);
         if (berechneGesamtTruppen(dran) == mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen()) {
           phasenWechsel();
         } else if (berechneGesamtTruppen(dran) > mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen()) {

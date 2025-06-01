@@ -1,5 +1,5 @@
 object RisikoGui: TFXGuiForm
-  Left = 1329
+  Left = 850
   Top = 319
   BorderIcons = [biSystemMenu]
   Caption = 'RisikoGui'

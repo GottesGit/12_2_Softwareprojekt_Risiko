@@ -179,9 +179,8 @@ public class RisikoGui extends Application {
       landButtons[i].setMinSize(0, 0);
       landButtons[i].setPrefHeight(0.1);
       landButtons[i].setPrefWidth(0.1);
-      landButtons[i].setOnAction(
-      (event) -> {landButtons[i].landButton_gedrueckt(event);} 
-      );
+      LandButton btn = landButtons[i];
+      btn.setOnAction((event) -> btn.landButton_gedrueckt(event));
       spielPane.getChildren().add(landButtons[i]);
     }
     Stage spielPlan = new Stage();
