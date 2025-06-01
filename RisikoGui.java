@@ -203,7 +203,7 @@ public class RisikoGui extends Application {
     fertigButton.setPrefWidth(200);
     fertigButton.setText("Weiter");
     fertigButton.setOnAction(
-    (event) -> {fertigButton_gedrueckt()(event);} 
+    (event) -> {fertigButton_gedrueckt(event);} 
     );
     spielPane.getChildren().add(fertigButton);
     
@@ -292,7 +292,7 @@ public class RisikoGui extends Application {
     spiel.buttonKlickAktion((byte) 2, (byte) 1);//weiss nicht, ob das geht 
   }
   
-  public void fertigButton_gedrueckt() {
+  public void fertigButton_gedrueckt(Event evt) {
     spiel.buttonKlickAktion((byte) 1, (byte) 1);
   }
 }
