@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import je.NumberField;
 import javafx.event.*;
 
-
 public class RisikoGui extends Application {
   // Anfang Attribute
   private byte spielerAnzahl = 0;
@@ -21,7 +20,6 @@ public class RisikoGui extends Application {
   private Button kampfButton;
   private Button fertigButton;
   private Label wuerfelLabel;
-  // private String[] laenderSvg;
   private Button startButton = new Button();
   private TextField[] namenFelder = new TextField[4];
   private SVGPath[] svgPfade = new SVGPath[42];
@@ -193,7 +191,8 @@ public class RisikoGui extends Application {
       landButtons[i].setMinSize(0, 0);
       landButtons[i].setPrefHeight(0.1);
       landButtons[i].setPrefWidth(0.1);
-      
+      LandButton btn = landButtons[i];
+      btn.setOnAction((event) -> btn.landButton_gedrueckt(event));
       spielPane.getChildren().add(landButtons[i]);
     }
     

@@ -33,7 +33,7 @@ public class Spieler{
   }
  
   public void karteZiehen(int[] kartenanzahl){
-    int zahl = (int)(Math.random() * 3);// sollte glaube 0, 1 oder 2 geben  }warum ist da ne klammer?
+    int zahl = (int)(Math.random() * 3);// sollte glaube 0, 1 oder 2 geben - ja }warum ist da ne klammer?
     this.kartenAnzahl[zahl]++;
   }
   

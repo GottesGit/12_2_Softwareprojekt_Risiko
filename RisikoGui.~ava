@@ -11,7 +11,6 @@ import javafx.scene.control.*;
 import je.NumberField;
 import javafx.event.*;
 
-
 public class RisikoGui extends Application {
   // Anfang Attribute
   private byte spielerAnzahl = 0;
@@ -20,7 +19,6 @@ public class RisikoGui extends Application {
   private Button kampfButton;
   private Button fertigButton;
   private Label wuerfelLabel;
-  // private String[] laenderSvg;
   private Button startButton = new Button();
   private TextField[] namenFelder = new TextField[4];
   private SVGPath[] svgPfade = new SVGPath[42];
@@ -183,46 +181,34 @@ double[][] laenderPositionen = {
     // Asien
     {822.5, 332}, {879.5, 272.7}, {936, 351.8}, {935, 188}, {1005.3, 295.4}, {1007.8, 376.5}, {1000, 166.7}, {1061.8, 263.5}, {1065.5, 205}, {1121, 148}, {1204.2, 194.2}, {1172, 305.2},
     // Australien
-    {1055.5, 485}, {1181, 468.5}, {1192, 554}, {1131, 562.5}}; // wie gehabt
 
-// Originalgröße des Spielbretts (muss zum Originalbild passen)
-double originalImageWidth = image.getWidth();
-double originalImageHeight = image.getHeight();
-
-// Länder-Buttons erstellen
-for (byte i = 0; i < 42; i++) {
-    SVGPath svgPfadLand = new SVGPath();
-    svgPfadLand.setContent(laenderSvg[i]);
-    svgPfadLand.setScaleX(5.45);
-    svgPfadLand.setScaleY(5.45);
-    svgPfadLand.setStyle("-fx-fill: red;");
-
-    svgPfade[i] = svgPfadLand;
-
-    LandButton landButton = new LandButton(spiel, laenderSvg[i], spiel.getLand(i));
-    landButton.setStyle("-fx-background-color: transparent;");
-    landButton.setGraphic(svgPfadLand);
-    landButton.setPickOnBounds(false);
-    landButton.setMinSize(0, 0);
-    landButton.setPrefHeight(0.1);
-    landButton.setPrefWidth(0.1);
-
-    spielPane.getChildren().add(landButton);
-    landButtons[i] = landButton;
-}
-
-// Koordinaten dynamisch an Bild anpassen
-imageView.boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-    double offsetX = newBounds.getMinX();
-    double offsetY = newBounds.getMinY();
-    double scaleX = newBounds.getWidth() / originalImageWidth;
-    double scaleY = newBounds.getHeight() / originalImageHeight;
-
-    for (int i = 0; i < 42; i++) {
-        double posX = laenderPositionen[i][0] * scaleX + offsetX;
-        double posY = laenderPositionen[i][1] * scaleY + offsetY;
-        landButtons[i].setLayoutX(posX);
-        landButtons[i].setLayoutY(posY);
+    {1055.5, 485}, {1181, 468.5}, {1192, 554}, {1131, 562.5}
+    };
+    
+    Pane spielPane = new Pane(); // Es gibt schon eine pane fuer das erste Fenster also sollte diese anders heissen, am besten geben wir den roots, panes und scenes allen sinnvolle Namen, damit kann ich naehmlich nichts anfangen
+    Scene spielSzene = new Scene(spielPane, 1366, 728);
+    
+    for (byte i = 0; i < 42; i++) {
+      SVGPath svgPfadLand = new SVGPath();
+      svgPfadLand.setContent(laenderSvg[i]);
+      svgPfadLand.setScaleX(5.45);
+      svgPfadLand.setScaleY(5.45);
+      svgPfadLand.setStyle("-fx-fill: red;");
+      
+      svgPfade[i] = svgPfadLand; //um spaeter noch einmal darauf zugreifen zu koennen - warum sollten wir, die sind dann ja in den laendern und wenn dann kann svgPfadLand weg     - wir müssen das Ding ja färben
+      
+      landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i)); //hier Erstellung der landButtons
+      landButtons[i].setStyle("-fx-background-color: transparent;");
+      landButtons[i].setGraphic(svgPfadLand);
+      landButtons[i].setPickOnBounds(false);
+      landButtons[i].setLayoutX(laenderPositionen[i][0]);
+      landButtons[i].setLayoutY(laenderPositionen[i][1]);
+      landButtons[i].setMinSize(0, 0);
+      landButtons[i].setPrefHeight(0.1);
+      landButtons[i].setPrefWidth(0.1);
+      LandButton btn = landButtons[i];
+      btn.setOnAction((event) -> btn.landButton_gedrueckt(event));
+      spielPane.getChildren().add(landButtons[i]);
     }
 });
 
