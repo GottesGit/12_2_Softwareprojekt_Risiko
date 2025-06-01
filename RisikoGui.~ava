@@ -195,6 +195,7 @@ public class RisikoGui extends Application {
       spielPane.getChildren().add(landButtons[i]);
     }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     Stage spielPlan = new Stage();
     
     Image image = new Image("file:Riskgameboard.png");
@@ -202,6 +203,8 @@ public class RisikoGui extends Application {
     imageView.setFitWidth(1366);
     imageView.setPreserveRatio(true);
     spielPane.getChildren().add(0, imageView);
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     
