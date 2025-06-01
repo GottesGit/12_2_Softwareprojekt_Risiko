@@ -3,8 +3,8 @@ public class Spiel {
   private byte phase;
   private byte zugNummer;
   private Spieler[] mitSpieler;
-  private Kontinent[] kontinente;
-  private Land[] laender;
+  private Land[] laender = new Land[42];
+  private Kontinent[] kontinente = new Kontinent[6];
   private RisikoGui gui;
   private Land vonLand;
   private Land nachLand;
@@ -34,14 +34,14 @@ public class Spiel {
     byte[] kontinentLaender = {4, 9, 6, 6, 12, 4}; //Anzahl der Laender der jeweiligen Kontinente
     byte[] kontinentTruppen = {2, 5, 5, 3, 7, 2}; //Anzahl der Extratruppen der jeweiligen Kontinente
     String[] kontinentNamen = {"Suedamerika", "Nordmerika", "Europa", "Afrika", "Asien", "Australien"};
-    laender = new Land[42]; //das koennte vllt auch nach oben zur Erstellung des Arrays?
-    for (byte i = 0; i < 4; i++) { // die laender muessen erst alle erstellt werden...
+    //laender = new Land[42]; //das koennte vllt auch nach oben zur Erstellung des Arrays? - ist es
+    for (byte i = 0; i < 42; i++) { // die laender muessen erst alle erstellt werden...
       laender[i] = new Land(laenderNamen[i], i);
     }
     for (byte i = 0; i < 42; i++) { //...damit sie sich dann gegenseitig als Nachbarn bekommen koennen
       byte anzahlNachbarn = 0;
       for (int j = 0; j < 6; j++) {
-        if (angrenzende[i][j] != 0){
+        if (angrenzende[i][j] != 100){
           anzahlNachbarn++;
         }
       }
@@ -55,7 +55,7 @@ public class Spiel {
     byte zuKontinentHinzugefuegt = 0;
     for (byte i = 0; i < 6; i++) { // fuer die 6 Kontinente
       Land[] hinzuzfuegendeLaender = new Land[kontinentLaender[i]]; //was soll denn hinzuzfuegendeLaender bedeuten? Das ist das Array fuer die Laender, die dem Kontinent hinzugefuegt werden sollen
-      for (int j = 0; j < kontinentLaender[i]; i++) {
+      for (int j = 0; j < kontinentLaender[i]; j++) {
         hinzuzfuegendeLaender[j] = laender[zuKontinentHinzugefuegt++];
       }
       kontinente[i] = new Kontinent(hinzuzfuegendeLaender, kontinentNamen[i], kontinentTruppen[i]);
