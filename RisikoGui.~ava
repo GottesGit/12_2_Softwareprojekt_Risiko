@@ -35,6 +35,11 @@ public class RisikoGui extends Application {
     startImageView.setFitWidth(500);
     startImageView.setPreserveRatio(true);
     root.getChildren().add(0, startImageView);
+    
+    Image[] startBilder = new Image[4];
+    for (int j = 0; j < 4; j++) {
+      startBilder[j] = new Image("file:Startbildschirme/Startbildschirm" + j + ".png");
+    }
     // Anfang Komponenten
     
     
@@ -54,6 +59,12 @@ public class RisikoGui extends Application {
       namenFelder[i].setPrefHeight(24);
       namenFelder[i].setPrefWidth(152);
       namenFelder[i].setPromptText("Spielername eingeben...");
+      
+      final int ii = i;
+      namenFelder[i].setOnMouseClicked(event -> {
+        startImageView.setImage(startBilder[ii]);
+      });
+      
       root.getChildren().add(namenFelder[i]);
     }
     // Ende Komponenten
@@ -151,7 +162,7 @@ public class RisikoGui extends Application {
       svgPfadLand.setScaleX(5.45);
       svgPfadLand.setScaleY(5.45);
       
-      svgPfade[i] = svgPfadLand;      //um später noch einmal darauf zugreifen zu koennen - warum sollten wir, die sind dann ja in den laendern und wenn dann kann svgPfadLand weg     - wir müssen das Ding ja färben
+      svgPfade[i] = svgPfadLand;      //um spaeter noch einmal darauf zugreifen zu koennen - warum sollten wir, die sind dann ja in den laendern und wenn dann kann svgPfadLand weg     - wir müssen das Ding ja färben
       
       landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i)); //hier Erstellung der landButtons
       landButtons[i].setStyle("-fx-background-color: transparent;");

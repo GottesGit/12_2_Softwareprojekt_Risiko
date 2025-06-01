@@ -162,7 +162,7 @@ public class RisikoGui extends Application {
       svgPfadLand.setScaleX(5.45);
       svgPfadLand.setScaleY(5.45);
       
-      svgPfade[i] = svgPfadLand;      //um spaeter noch einmal darauf zugreifen zu koennen - warum sollten wir, die sind dann ja in den laendern und wenn dann kann svgPfadLand weg     - wir müssen das Ding ja färben
+      svgPfade[i] = svgPfadLand; //um spaeter noch einmal darauf zugreifen zu koennen - warum sollten wir, die sind dann ja in den laendern und wenn dann kann svgPfadLand weg     - wir müssen das Ding ja färben
       
       landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i)); //hier Erstellung der landButtons
       landButtons[i].setStyle("-fx-background-color: transparent;");
