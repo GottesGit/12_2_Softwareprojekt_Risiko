@@ -76,8 +76,8 @@ public class Spiel {
     switch (phase) {
       case 100:
         if (mitSpieler[dran].getGesamtTruppen() < 35) {
-          land.setTruppen(dran, (land.getTruppen() + 1));
-          mitSpieler[dran].setGesamtTruppen(mitSpieler[dran++].getGesamtTruppen() + 1);
+          land.setTruppen(dran++, (land.getTruppen() + 1));
+          mitSpieler[dran].setGesamtTruppen(mitSpieler[dran].getGesamtTruppen() + 1);
         }
         if (dran >= mitSpieler.length) {
           dran = 0;
