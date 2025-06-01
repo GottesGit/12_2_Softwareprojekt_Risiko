@@ -1,6 +1,6 @@
 public class Spiel {
-  private byte dran;
   private byte phase = 100;
+  private byte dran = 0;
   private byte zugNummer;
   private Spieler[] mitSpieler;
   private Land[] laender = new Land[42];
@@ -33,16 +33,19 @@ public class Spiel {
     byte[] kontinentLaender = {4, 9, 6, 6, 12, 4}; //Anzahl der Laender der jeweiligen Kontinente
     byte[] kontinentTruppen = {2, 5, 5, 3, 7, 2}; //Anzahl der Extratruppen der jeweiligen Kontinente
     String[] kontinentNamen = {"Suedamerika", "Nordmerika", "Europa", "Afrika", "Asien", "Australien"};
+    
+    int maxLaender = (int) (42 / mitSpieler.length + 0.99);
     //laender = new Land[42]; //das koennte vllt auch nach oben zur Erstellung des Arrays? - ist es
     for (byte i = 0; i < 42; i++) { // die laender muessen erst alle erstellt werden...
       laender[i] = new Land(laenderNamen[i], i);
-      byte herrscher = random;
-      if (mitSpieler[herrscher]) {
-        
-      }
+      byte herrscher;
+      do {
+        herrscher = (byte)(Math.random() * 4);
+      } while (mitSpieler[herrscher].getGesamtTruppen() < maxLaender);
       laender[i].setTruppen(herrscher, 1);
       mitSpieler[herrscher].setGesamtTruppen(mitSpieler[herrscher].getGesamtTruppen() + 1);
     }
+    
     for (byte i = 0; i < 42; i++) { //...damit sie sich dann gegenseitig als Nachbarn bekommen koennen
       byte anzahlNachbarn = 0;
       for (int j = 0; j < 6; j++) {
@@ -69,6 +72,18 @@ public class Spiel {
   
   public void landKlickAktion(Land land, int taste) {//int zu byte konversion ist kacke, deswegen kein byte  
     switch (phase) {
+      case 100:
+        if (mitSpieler[dran].getGesamtTruppen() < 35) {
+          land.setTruppen(dran++, (land.getTruppen() + 1));
+          mitSpieler[dran].setGesamtTruppen(mitSpieler[dran].getGesamtTruppen() + 1);
+        }
+        if (dran >= mitSpieler.length) {
+          dran = 0;
+        }
+        if (mitSpieler[mitSpieler.length].getGesamtTruppen() >= 35) {
+          phasenWechsel();
+        }
+        break;
       case 0 : //truppenplatzieren, eigentlich je nach maustaste
         land.setTruppen(dran, 1);
         if (berechneGesamtTruppen(dran) == mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen()) {
@@ -150,6 +165,9 @@ public class Spiel {
   public void phasenWechsel() {
     boolean fehler = false;
     switch (phase) {
+      case 100:
+        phase = 0;
+        break;
       case 0 : //truppenPlatzieren
         aktualisiereTruppenLaender(dran); //darf nicht schon vorher gemacht werden weil damit berechnet wird, wie viele noch Platziert werden duerfen
         phase++;
