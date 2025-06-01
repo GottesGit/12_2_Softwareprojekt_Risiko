@@ -184,8 +184,8 @@ public class RisikoGui extends Application {
       svgPfade[i].setStyle("-fx-fill: orange;");
       
       landTexte[i] = new Text("Gpi");
-      landTexte[i].setLayoutX(laenderPositionen[i][0] + 5); // leichte Verschiebung zur besseren Sichtbarkeit
-      landTexte[i].setLayoutY(laenderPositionen[i][1] + 5);
+      landTexte[i].setLayoutX(laenderPositionen[i][0]);
+      landTexte[i].setLayoutY(laenderPositionen[i][1]);
       landTexte[i].setStyle("-fx-fill: white; -fx-font-size: 20px;");
       
       landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i), landTexte[i]); //hier Erstellung der landButtons
@@ -243,6 +243,7 @@ public class RisikoGui extends Application {
       System.out.println("Spieler " + spiel.getGewonnen() + " hat gewonnen!"); //muesste dann natuerlich auch in die Gui
     } else {
       for (byte i = 0; i < landButtons.length; i++) {
+        landButtons[i].refresh();
         if (landButtons[i].getHerrscher() == 0) {
           svgPfade[i].setStyle("-fx-fill: red;"); //erst einmal Farben deklariert, sollte dann noch mit Zahl und AngreiferTruppen usw. vervollstaendigt werden
         } else if (landButtons[i].getHerrscher() == 1) {
@@ -270,9 +271,9 @@ public class RisikoGui extends Application {
           spielerLabel[3].setStyle("-fx-background-color: lightgray;");
         } else {
           spielerLabel[0].setStyle("-fx-background-color: lightgray;");
-          spielerLabel[1].setStyle("-fx-background-color: lightgrayy;");
+          spielerLabel[1].setStyle("-fx-background-color: lightgray;");
           spielerLabel[2].setStyle("-fx-background-color: lightgray;");
-          spielerLabel[3].setStyle("-fx-background-color: gelb;");
+          spielerLabel[3].setStyle("-fx-background-color: yellow;");
         }
         
         switch (spiel.getPhase()) {
@@ -285,9 +286,9 @@ public class RisikoGui extends Application {
             break;
           case 1 : //angreifen also eigenes Land auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 0) { //nur eigene Laender mit mehr als 1 Truppe enablen
-              landButtons[i].setDisable(false);
-            } else {
               landButtons[i].setDisable(true);
+            } else {
+              landButtons[i].setDisable(false);
             }
             break;
           case 2 : //angreifen also Feind auswaehlen

@@ -73,14 +73,15 @@ public class Spiel {
     System.out.println(land.getName() + " inPhase " + phase);
     switch (phase) {
       case 100:
-        if (mitSpieler[dran].getGesamtTruppen() < 35) {
+        if (mitSpieler[dran].getGesamtTruppen() < 15) {
           land.setTruppen(dran, (land.getTruppen() + 1));
+          System.out.println("GesamtTruppen:" + mitSpieler[dran].getGesamtTruppen());
           mitSpieler[dran].setGesamtTruppen(mitSpieler[dran++].getGesamtTruppen() + 1);
         }
-        if (dran >= (mitSpieler.length - 1)) {
+        if (dran >= (mitSpieler.length)) {
           dran = 0;
         }
-        if (mitSpieler[(mitSpieler.length -1)].getGesamtTruppen() >= 35) {
+        if (mitSpieler[(mitSpieler.length -1)].getGesamtTruppen() >= 15) {
           phasenWechsel();
         }
         break;
@@ -166,7 +167,7 @@ public class Spiel {
     boolean fehler = false;
     switch (phase) {
       case 100:
-        phase = 0;
+        phase = 1;
         break;
       case 0 : //truppenPlatzieren
         aktualisiereTruppenLaender(dran); //darf nicht schon vorher gemacht werden weil damit berechnet wird, wie viele noch Platziert werden duerfen

@@ -18,11 +18,11 @@ public class LandButton extends Button{//geht anscheinend nicht
   }
   
   public void landButton_gedrueckt(Event evt) {
+    System.out.println(land.getName() + "gedrueckt");
     spiel.landKlickAktion(land, 1);//erstmal nur linke Maustaste
   }
   
   public void refresh() {
-    System.out.println("HI");
     this.schriftzug.setText(land.getName() + " " + land.getTruppen());
   }
   

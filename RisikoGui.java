@@ -243,6 +243,7 @@ public class RisikoGui extends Application {
       System.out.println("Spieler " + spiel.getGewonnen() + " hat gewonnen!"); //muesste dann natuerlich auch in die Gui
     } else {
       for (byte i = 0; i < landButtons.length; i++) {
+        landButtons[i].refresh();
         if (landButtons[i].getHerrscher() == 0) {
           svgPfade[i].setStyle("-fx-fill: red;"); //erst einmal Farben deklariert, sollte dann noch mit Zahl und AngreiferTruppen usw. vervollstaendigt werden
         } else if (landButtons[i].getHerrscher() == 1) {
@@ -270,9 +271,9 @@ public class RisikoGui extends Application {
           spielerLabel[3].setStyle("-fx-background-color: lightgray;");
         } else {
           spielerLabel[0].setStyle("-fx-background-color: lightgray;");
-          spielerLabel[1].setStyle("-fx-background-color: lightgrayy;");
+          spielerLabel[1].setStyle("-fx-background-color: lightgray;");
           spielerLabel[2].setStyle("-fx-background-color: lightgray;");
-          spielerLabel[3].setStyle("-fx-background-color: gelb;");
+          spielerLabel[3].setStyle("-fx-background-color: yellow;");
         }
         
         switch (spiel.getPhase()) {
@@ -284,7 +285,7 @@ public class RisikoGui extends Application {
             }
             break;
           case 1 : //angreifen also eigenes Land auswaehlen
-            if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 0) { //nur eigene Laender mit mehr als 1 Truppe enablen
+            if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
               landButtons[i].setDisable(false);
             } else {
               landButtons[i].setDisable(true);
@@ -292,9 +293,9 @@ public class RisikoGui extends Application {
             break;
           case 2 : //angreifen also Feind auswaehlen
             if (landButtons[i].getHerrscher() != spiel.getDran() && spiel.istBenachbart(i)) { //nur fremde, benachbarte Laender enablen
-              landButtons[i].setDisable(true);
-            } else {
               landButtons[i].setDisable(false);
+            } else {
+              landButtons[i].setDisable(true);
             }
             break;
           case 3 : //angreifen also Truppen nach Zielland verschieben
@@ -316,9 +317,9 @@ public class RisikoGui extends Application {
             break;
           case 6 : //Truppen verschieben also Zielland auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && i == spiel.getVonLand().getIndex() && spiel.istVerbunden(i)) { //nur eigene, verbundene Laender enablen
-              landButtons[i].setDisable(false);
-            } else {
               landButtons[i].setDisable(true);
+            } else {
+              landButtons[i].setDisable(false);
             }
             break;
           case 7 : //Truppen verschieben also Truppen nach Zielland verschieben

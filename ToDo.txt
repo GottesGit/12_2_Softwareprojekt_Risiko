@@ -4,3 +4,6 @@ Fehler beheben
 Starttruppen verteilen (von den spielern)
 ToDo Liste pflegen
 Aktualisieren der Gui fertig machen
+Klickaktionen fuer verschiedene Maustasten
+Tab fixen bei Startbildschirm
+phase 0 
