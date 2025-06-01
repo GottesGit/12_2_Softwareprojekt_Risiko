@@ -207,9 +207,9 @@ public class RisikoGui extends Application {
     );
     spielPane.getChildren().add(fertigButton);
     
-    spielerLabel = new Label[spielerAnzahl -1];
+    spielerLabel = new Label[spielerAnzahl];
      
-    for (byte k = 0; k < (spielerAnzahl -1); k++) { //Spieler-Label
+    for (byte k = 0; k < (spielerAnzahl); k++) { //Spieler-Label
       spielerLabel[k] = new Label();
       spielerLabel[k].setLayoutX(50);
       spielerLabel[k].setLayoutY(400 + k * 30);
@@ -258,7 +258,7 @@ public class RisikoGui extends Application {
         } else if (spiel.getDran() == 2) {
           spielerLabel[0].setStyle("-fx-background-color: lightgray;");
           spielerLabel[1].setStyle("-fx-background-color: lightgray;");
-          spielerLabel[2].setStyle("-fx-background-color: gruen;");
+          spielerLabel[2].setStyle("-fx-background-color: green;");
           spielerLabel[3].setStyle("-fx-background-color: lightgray;");
         } else {
           spielerLabel[0].setStyle("-fx-background-color: lightgray;");
