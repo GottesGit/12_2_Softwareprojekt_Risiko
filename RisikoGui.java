@@ -35,6 +35,11 @@ public class RisikoGui extends Application {
     startImageView.setFitWidth(500);
     startImageView.setPreserveRatio(true);
     root.getChildren().add(0, startImageView);
+    
+    Image[] startBilder = new Image[4];
+    for (int j = 0; j < 4; j++) {
+      startBilder[j] = new Image("file:Startbildschirme/Startbildschirm" + j + ".png");
+    }
     // Anfang Komponenten
     
     
@@ -54,6 +59,12 @@ public class RisikoGui extends Application {
       namenFelder[i].setPrefHeight(24);
       namenFelder[i].setPrefWidth(152);
       namenFelder[i].setPromptText("Spielername eingeben...");
+      
+      final int ii = i;
+      namenFelder[i].setOnMouseClicked(event -> {
+        startImageView.setImage(startBilder[ii]);
+      });
+      
       root.getChildren().add(namenFelder[i]);
     }
     // Ende Komponenten
@@ -151,7 +162,7 @@ public class RisikoGui extends Application {
       svgPfadLand.setScaleX(5.45);
       svgPfadLand.setScaleY(5.45);
       
-      svgPfade[i] = svgPfadLand;      //um später noch einmal darauf zugreifen zu koennen - warum sollten wir, die sind dann ja in den laendern und wenn dann kann svgPfadLand weg
+      svgPfade[i] = svgPfadLand;      //um spaeter noch einmal darauf zugreifen zu koennen - warum sollten wir, die sind dann ja in den laendern und wenn dann kann svgPfadLand weg     - wir müssen das Ding ja färben
       
       landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i)); //hier Erstellung der landButtons
       landButtons[i].setStyle("-fx-background-color: transparent;");
@@ -187,13 +198,13 @@ public class RisikoGui extends Application {
     } else {
       for (byte i = 0; i < landButtons.length; i++) {
         if (landButtons[i].getHerrscher() == 0) {
-          landButtons[i].setStyle("-fx-fill: red;"); //erst einmal Farben deklariert, sollte dann noch mit Zahl und AngreiferTruppen usw. vervollstaendigt werden
+          svgPfade[i].setStyle("-fx-fill: red;"); //erst einmal Farben deklariert, sollte dann noch mit Zahl und AngreiferTruppen usw. vervollstaendigt werden
         } else if (landButtons[i].getHerrscher() == 1) {
-          landButtons[i].setStyle("-fx-fill: blue;");
+          svgPfade[i].setStyle("-fx-fill: blue;");
         } else if (landButtons[i].getHerrscher() == 2) {
-          landButtons[i].setStyle("-fx-fill: green;");
+          svgPfade[i].setStyle("-fx-fill: green;");
         } else {
-          landButtons[i].setStyle("-fx-fill: yellow;");
+          svgPfade[i].setStyle("-fx-fill: yellow;");
         }
         switch (spiel.getPhase()) {
           case 0 : //Truppen platzieren
