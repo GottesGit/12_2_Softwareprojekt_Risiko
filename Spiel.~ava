@@ -34,14 +34,16 @@ public class Spiel {
     byte[] kontinentTruppen = {2, 5, 5, 3, 7, 2}; //Anzahl der Extratruppen der jeweiligen Kontinente
     String[] kontinentNamen = {"Suedamerika", "Nordmerika", "Europa", "Afrika", "Asien", "Australien"};
     
-    int maxLaender = (int) (42 / mitSpieler.length + 0.99);
+    int maxLaender = (int) ((42 / mitSpieler.length) + 0.99);
+    System.out.println("m: " + maxLaender);
     //laender = new Land[42]; //das koennte vllt auch nach oben zur Erstellung des Arrays? - ist es
     for (byte i = 0; i < 42; i++) { // die laender muessen erst alle erstellt werden...
       laender[i] = new Land(laenderNamen[i], i);
       byte herrscher;
       do {
-        herrscher = (byte)(Math.random() * (mitSpieler.length -1));
-      } while (mitSpieler[herrscher].getGesamtTruppen() < maxLaender);
+        herrscher = (byte) (Math.random() * mitSpieler.length);
+        //System.out.println(herrscher);
+      } while (mitSpieler[herrscher].getGesamtTruppen() >= maxLaender);
       laender[i].setTruppen(herrscher, 1);
       mitSpieler[herrscher].setGesamtTruppen(mitSpieler[herrscher].getGesamtTruppen() + 1);
     }
