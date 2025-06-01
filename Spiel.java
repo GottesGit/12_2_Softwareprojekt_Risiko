@@ -69,17 +69,18 @@ public class Spiel {
     }
   }
   
-  public void landKlickAktion(Land land, int taste) {//int zu byte konversion ist kacke, deswegen kein byte  
+  public void landKlickAktion(Land land, int taste) {//int zu byte konversion ist kacke, deswegen kein byte 
+    System.out.println(land.getName() + " inPhase " + phase);
     switch (phase) {
       case 100:
         if (mitSpieler[dran].getGesamtTruppen() < 35) {
           land.setTruppen(dran, (land.getTruppen() + 1));
           mitSpieler[dran].setGesamtTruppen(mitSpieler[dran++].getGesamtTruppen() + 1);
         }
-        if (dran >= mitSpieler.length) {
+        if (dran >= (mitSpieler.length - 1)) {
           dran = 0;
         }
-        if (mitSpieler[mitSpieler.length].getGesamtTruppen() >= 35) {
+        if (mitSpieler[(mitSpieler.length -1)].getGesamtTruppen() >= 35) {
           phasenWechsel();
         }
         break;
@@ -319,7 +320,7 @@ public class Spiel {
         nachLand.setAngreiferTruppen(dran, nachLand.getAngreiferTruppen() - 1);
       }
     } while (angreiferWuerfelAnzahl-- > 0 && verteidigerWuerfelAnzahl-- > 0);
-
+    
     if (nachLand.getTruppen() == 0 || nachLand.getAngreiferTruppen() == 0) {
       aktualisiereTruppenLaender(nachLand.getHerrscher());
       for (byte i = 0; i < 3; i++) {
