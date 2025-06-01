@@ -60,9 +60,9 @@ public class RisikoGui extends Application {
       namenFelder[i].setPrefWidth(152);
       namenFelder[i].setPromptText("Spielername eingeben...");
       
-      final int ii = i;
+      final int finaleohoho = i;
       namenFelder[i].setOnMouseClicked(event -> {
-        startImageView.setImage(startBilder[ii]);
+        startImageView.setImage(startBilder[finaleohoho]);
       });
       
       root.getChildren().add(namenFelder[i]);

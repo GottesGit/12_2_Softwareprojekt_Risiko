@@ -60,9 +60,9 @@ public class RisikoGui extends Application {
       namenFelder[i].setPrefWidth(152);
       namenFelder[i].setPromptText("Spielername eingeben...");
       
-      final int ii = i;
+      final int finaleohoho = i;
       namenFelder[i].setOnMouseClicked(event -> {
-        startImageView.setImage(startBilder[ii]);
+        startImageView.setImage(startBilder[finaleohoho]);
       });
       
       root.getChildren().add(namenFelder[i]);
@@ -162,6 +162,7 @@ public class RisikoGui extends Application {
     
     Pane spielPane = new Pane(); // Es gibt schon eine pane fuer das erste Fenster also sollte diese anders heissen, am besten geben wir den roots, panes und scenes allen sinnvolle Namen, damit kann ich naehmlich nichts anfangen
     Scene spielSzene = new Scene(spielPane, 1366, 728);
+    
     for (byte i = 0; i < 42; i++) {
       SVGPath svgPfadLand = new SVGPath();
       svgPfadLand.setContent(laenderSvg[i]);
@@ -169,7 +170,7 @@ public class RisikoGui extends Application {
       svgPfadLand.setScaleY(5.45);
       svgPfadLand.setStyle("-fx-fill: red;");
       
-      svgPfade[i] = svgPfadLand;      //um spaeter noch einmal darauf zugreifen zu koennen - warum sollten wir, die sind dann ja in den laendern und wenn dann kann svgPfadLand weg     - wir müssen das Ding ja färben
+      svgPfade[i] = svgPfadLand; //um spaeter noch einmal darauf zugreifen zu koennen - warum sollten wir, die sind dann ja in den laendern und wenn dann kann svgPfadLand weg     - wir müssen das Ding ja färben
       
       landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i)); //hier Erstellung der landButtons
       landButtons[i].setStyle("-fx-background-color: transparent;");
