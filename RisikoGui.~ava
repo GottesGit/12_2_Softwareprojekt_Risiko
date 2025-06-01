@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;              
 import javafx.scene.image.ImageView;
 import java.util.Arrays;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import je.NumberField;
 import javafx.event.*;
@@ -73,6 +74,8 @@ public class RisikoGui extends Application {
   }
   
   public void startButton_Action(Event evt) {
+    Stage primaryStage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
+    primaryStage.close();
     spielStart();
   }
   
@@ -185,8 +188,16 @@ double[][] laenderPositionen = {
     {1055.5, 485}, {1181, 468.5}, {1192, 554}, {1131, 562.5}
     };
     
+    Stage spielPlan = new Stage();
+    
     Pane spielPane = new Pane(); // Es gibt schon eine pane fuer das erste Fenster also sollte diese anders heissen, am besten geben wir den roots, panes und scenes allen sinnvolle Namen, damit kann ich naehmlich nichts anfangen
     Scene spielSzene = new Scene(spielPane, 1366, 728);
+    
+    Image image = new Image("file:Riskgameboard.png");
+    ImageView imageView = new ImageView(image);
+    imageView.setFitWidth(1366);
+    imageView.setPreserveRatio(true);
+    spielPane.getChildren().add(0, imageView);
     
     for (byte i = 0; i < 42; i++) {
       SVGPath svgPfadLand = new SVGPath();
@@ -217,7 +228,18 @@ spielPlan.setScene(spielSzene);
 spielPlan.show();
 
     }
-
+    Stage spielPlan = new Stage();
+    
+    Image image = new Image("file:Riskgameboard.png");
+    ImageView imageView = new ImageView(image);
+    imageView.setFitWidth(1366);
+    imageView.setPreserveRatio(true);
+    spielPane.getChildren().add(0, imageView)
+    spielPlan.setTitle("Risiko");
+    spielPlan.setScene(spielSzene);
+    spielPlan.show();
+  }
+  
   public static void main(String[] args) {
     launch(args);
   }
