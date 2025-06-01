@@ -210,6 +210,7 @@ public class RisikoGui extends Application {
     spielPlan.setTitle("Risiko");
     spielPlan.setScene(spielSzene);
     spielPlan.show();
+    grafikErneuern();
   }
   
   public static void main(String[] args) {
