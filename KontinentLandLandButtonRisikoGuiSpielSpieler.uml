@@ -1,0 +1,95 @@
+﻿[Files]
+File0=..\..\..\Risiko\12_2_Softwareprojekt_Risiko\Kontinent.java
+File1=..\..\..\Risiko\12_2_Softwareprojekt_Risiko\Land.java
+File2=..\..\..\Risiko\12_2_Softwareprojekt_Risiko\LandButton.java
+File3=..\..\..\Risiko\12_2_Softwareprojekt_Risiko\RisikoGui.java
+File4=..\..\..\Risiko\12_2_Softwareprojekt_Risiko\Spiel.java
+File5=..\..\..\Risiko\12_2_Softwareprojekt_Risiko\Spieler.java
+
+[Box:  - Kontinent]
+X=627
+Y=996
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=1
+FontSize=12
+FontName=Segoe UI
+
+[Box:  - Land]
+X=686
+Y=450
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=1
+FontSize=12
+FontName=Segoe UI
+
+[Box:  - LandButton]
+X=609
+Y=175
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=1
+FontSize=12
+FontName=Segoe UI
+
+[Box:  - RisikoGui]
+X=193
+Y=80
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=1
+FontSize=12
+FontName=Segoe UI
+
+[Box:  - Spiel]
+X=123
+Y=669
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=1
+FontSize=12
+FontName=Segoe UI
+
+[Box:  - Spieler]
+X=631
+Y=1194
+MinVis=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=1
+FontSize=12
+FontName=Segoe UI
+
+[Diagram]
+comments=0
+OffsetX=720
+OffsetY=0
+Visibility=0
+ShowParameter=4
+SortOrder=0
+ShowIcons=1
+ShowConnections=0
+Fontname=Segoe UI
+Fontsize=12
+ShowObjectDiagram=0
+
+[Connections]
+V0=Kontinent#Land#Aggregation####0#0#0###0#0
+V1=Land#Land#Aggregation####1#0#0###0#0
+V2=LandButton#Land#AssociationDirected####0#0#0###0#0
+V3=LandButton#Spiel#AssociationDirected####0#0#0###0#0
+V4=RisikoGui#Spiel#AssociationBidirectional####0#0#0###0#0
+V5=RisikoGui#LandButton#Aggregation####0#0#0###0#0
+V6=Spiel#Spieler#Aggregation####0#0#0###0#0
+V7=Spiel#Land#Aggregation####0#0#0###0#0
+V8=Spiel#Kontinent#Aggregation####0#0#0###0#0
+
+[Interactive]
+I0=
+
