@@ -1,3 +1,4 @@
+import java.util.Arrays;
 public class Spiel {
   private byte phase = 100;
   private byte dran = 0;
@@ -204,7 +205,7 @@ public class Spiel {
     System.out.println("Phasenwechsel:" + phase);
     switch (phase) {
       case 100:
-        phase = 5; // eig 1   5
+        phase = 1; // eig 1   5
         break;
       case 0 : //truppenPlatzieren
         aktualisiereTruppenLaender(dran); //darf nicht schon vorher gemacht werden weil damit berechnet wird, wie viele noch Platziert werden duerfen
@@ -348,8 +349,19 @@ public class Spiel {
       verteidigerWuerfel[i] = (byte) ((Math.random() * 6) + 1);
       System.out.println("verteidigerWuerfel: " + i + " hat den Wert " + verteidigerWuerfel[i]);
     }
-    //Arrays.sort(verteidigerWuerfel); //das funktioniert nicht
-    //Arrays.sort(angreiferWuerfel);
+    
+    Arrays.sort(verteidigerWuerfel);
+    byte zwischen = 0;
+    
+    zwischen = verteidigerWuerfel[0];
+    verteidigerWuerfel[0] = verteidigerWuerfel[1];
+    verteidigerWuerfel[1] = zwischen;
+    
+    Arrays.sort(angreiferWuerfel);
+    zwischen = angreiferWuerfel[2];
+    angreiferWuerfel[2] = angreiferWuerfel[0];
+    angreiferWuerfel[2] = zwischen;
+    
     do { 
       if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] > verteidigerWuerfel[verteidigerWuerfelAnzahl - 1]) {
         nachLand.setTruppen(nachLand.getHerrscher(), nachLand.getTruppen() - 1);
@@ -361,6 +373,8 @@ public class Spiel {
     if (nachLand.getTruppen() == 0 || nachLand.getAngreiferTruppen() == 0) {
       if (nachLand.getTruppen() == 0 && nachLand.getAngreiferTruppen() > 0){
         nachLand.setTruppen(dran, nachLand.getAngreiferTruppen());
+        nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
+        System.out.println("hi");
       }
       aktualisiereTruppenLaender(nachLand.getHerrscher());
       for (byte i = 0; i < 3; i++) {
@@ -369,7 +383,6 @@ public class Spiel {
       for (byte i = 0; i < 2; i++) {
         verteidigerWuerfel[i] = (byte) 0;
       }
-      
       phasenWechsel();
     }
   }
