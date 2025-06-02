@@ -328,7 +328,7 @@ public class RisikoGui extends Application {
             } else {
               landButtons[i].setDisable(true);
             }
-            kampfButton.setDisable(true);
+            kampfButton.setDisable(false);
             fertigButton.setDisable(false);
             break;
           case 4 : //angreifen also im Kampf
