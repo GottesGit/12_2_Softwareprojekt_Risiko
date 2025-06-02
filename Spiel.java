@@ -122,6 +122,9 @@ public class Spiel {
           } else if (taste == 2) {
             einmarschieren(Math.min(5, vonLand.getTruppen() - 1));
           }
+          if (vonLand.getTruppen() < 2) {
+            phasenWechsel();
+          }
         } else {
           System.out.println("Error falsches Land 3");
         }
@@ -138,8 +141,9 @@ public class Spiel {
         }
         break;
       case 6 : //Truppen verschieben also ZielLand auswaehlen
-        if (land.getHerrscher() == dran && land != vonLand && istVerbunden(land.getIndex())) {
+        if (istVerbunden(land.getIndex())) {//land.getHerrscher() == dran && land != vonLand && 
           nachLand = land;
+          phasenWechsel();
         }
         schonDurchReset();
         break;
@@ -156,10 +160,10 @@ public class Spiel {
   
   public void buttonKlickAktion(byte knopf, byte taste) { //ok (1) und Kampfbutton (2)
     if (knopf == 1) {
-      phasenWechsel(); //vllt geht das nicht immer einfach so?
+      phasenWechsel(); //vllt geht das nicht immer einfach so? - im Kampf nicht!
       gui.grafikErneuern();
     } else if (knopf == 2) {
-      if (phase == 3) {
+      if (phase == 4) {
         kampf();
         gui.grafikErneuern(); //je nach dem, ob der Kampf bereits eine Animation macht unnoetig
       } else {
@@ -175,7 +179,7 @@ public class Spiel {
     System.out.println("Phasenwechsel:" + phase);
     switch (phase) {
       case 100:
-        phase = 1;
+        phase = 5; // eig 1
         break;
       case 0 : //truppenPlatzieren
         aktualisiereTruppenLaender(dran); //darf nicht schon vorher gemacht werden weil damit berechnet wird, wie viele noch Platziert werden duerfen
@@ -294,21 +298,17 @@ public class Spiel {
     return this.mitSpieler[meinSpieler].getGesamtTruppen();
   }
   
-  private boolean einmarschieren(int anzahl) {
+  private void einmarschieren(int anzahl) {
     System.out.println("Verschiebe " + anzahl);
     if (dran != nachLand.getHerrscher()) {
-      if (vonLand.getTruppen() > 1 + anzahl) {
+      if (vonLand.getTruppen() > anzahl) {
         vonLand.setTruppen(dran, vonLand.getTruppen() - anzahl);
         nachLand.setAngreiferTruppen(dran, nachLand.getAngreiferTruppen() + anzahl);
-        return true;
       } else {
-        System.out.println("Error es werden zu viele Truppen zum Angreifen verwendet"); //bis jetzt ist diese Fehlermeldung einfach auszuloesen
-        return false;
+        System.out.println("Error es werden zu viele Truppen zum Angreifen verwendet");
       }
-    }
-    else {
+    } else {
       System.out.println("Error eigenes Land wird angegriffen");
-      return false;
     }
   }
   
@@ -317,19 +317,21 @@ public class Spiel {
     byte verteidigerWuerfelAnzahl = (byte) ((nachLand.getTruppen() >= 2)?2:1);
     for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
       angreiferWuerfel[i] = (byte) ((Math.random() * 6) + 1);
+      System.out.println("angreiferWuerfel: " + i + " hat den Wert " + angreiferWuerfel[i]);
     }
     for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
       verteidigerWuerfel[i] = (byte) ((Math.random() * 6) + 1);
+      System.out.println("verteidigerWuerfel: " + i + " hat den Wert " + verteidigerWuerfel[i]);
     }
     //Arrays.sort(verteidigerWuerfel); //das funktioniert nicht
     //Arrays.sort(angreiferWuerfel);
     do { 
-      if (angreiferWuerfel[angreiferWuerfelAnzahl] > verteidigerWuerfel[verteidigerWuerfelAnzahl]) {
+      if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] > verteidigerWuerfel[verteidigerWuerfelAnzahl - 1]) {
         nachLand.setTruppen(nachLand.getHerrscher(), nachLand.getTruppen() - 1);
-      } else if (angreiferWuerfel[angreiferWuerfelAnzahl] <= verteidigerWuerfel[verteidigerWuerfelAnzahl]) {
+      } else { // if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] <= verteidigerWuerfel[verteidigerWuerfelAnzahl - 1])
         nachLand.setAngreiferTruppen(dran, nachLand.getAngreiferTruppen() - 1);
       }
-    } while (angreiferWuerfelAnzahl-- > 0 && verteidigerWuerfelAnzahl-- > 0);
+    } while (--angreiferWuerfelAnzahl > 0 && --verteidigerWuerfelAnzahl > 0);
     
     if (nachLand.getTruppen() == 0 || nachLand.getAngreiferTruppen() == 0) {
       aktualisiereTruppenLaender(nachLand.getHerrscher());

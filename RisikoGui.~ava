@@ -336,7 +336,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             break;
           case 6 : //Truppen verschieben also Zielland auswaehlen
-            if (spiel.istVerbunden(i) && i != spiel.getVonLand().getIndex()) { // landButtons[i].getHerrscher() == spiel.getDran() && i != spiel.getVonLand().getIndex() && //nur eigene, verbundene Laender enablen
+            if (spiel.istVerbunden(i)) { // landButtons[i].getHerrscher() == spiel.getDran() && i != spiel.getVonLand().getIndex() && //nur eigene, verbundene Laender enablen
               landButtons[i].setDisable(false);
             } else {
               landButtons[i].setDisable(true);
