@@ -8,8 +8,8 @@ public class Spiel {
   private RisikoGui gui;
   private Land vonLand;
   private Land nachLand;
-  private String[] laenderNamen;
-  private String[] kontinentNamen;//keine ahnung, wo die hin sollten, deswegen erst mal global
+  //private String[] laenderNamen;
+  //private String[] kontinentNamen;//keine ahnung, wo die hin sollten, deswegen erst mal global
   private int[] kontinentLaender;
   private byte[] angreiferWuerfel = new byte[3];
   private byte[] verteidigerWuerfel = new byte[2];
@@ -71,30 +71,30 @@ public class Spiel {
   
   public void landKlickAktion(Land land, int taste) {//int zu byte konversion ist kacke, deswegen kein byte 
     System.out.println(land.getName() + " inPhase " + phase);
-    int truppenNachPlatzieren = berechneGesamtTruppen();// truppen, die dran nach der platzierung haben darf
+    // int truppenNachPlatzieren = berechneGesamtTruppen();// truppen, die dran nach der platzierung haben darf - also das ist voellig falsch hier
     switch (phase) {
       case 100:
-        if (mitSpieler[dran].getGesamtTruppen() < 15) {
+        // if (mitSpieler[dran].getGesamtTruppen() < 15) {
           land.setTruppen(dran, (land.getTruppen() + 1));
           System.out.println("GesamtTruppen:" + mitSpieler[dran].getGesamtTruppen());
           mitSpieler[dran].setGesamtTruppen(mitSpieler[dran++].getGesamtTruppen() + 1);
-        }
+        // }
         if (dran >= (mitSpieler.length)) {
           dran = 0;
         }
-        if (mitSpieler[(mitSpieler.length -1)].getGesamtTruppen() >= 15) {
+        if (mitSpieler[(mitSpieler.length -1)].getGesamtTruppen() >= 15) { //bis der letzte 15 Truppen hat
           phasenWechsel();
         }
         break;
       case 0 : //truppenplatzieren, eigentlich je nach maustaste
         if (taste == 1) {
-          land.setTruppen(dran, land.getTruppen() +1);
+          land.setTruppen(dran, land.getTruppen() + 1);
         } else if (taste == 2) {
-          land.setTruppen(dran, land.getTruppen() +5);
-        } 
-        if (truppenNachPlatzieren == mitSpieler[dran].getGesamtTruppen()) {//+ berechneZuPlatzierendeTruppen()) {
+          land.setTruppen(dran, land.getTruppen() + Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran))));
+        } //(truppenNachPlatzieren == mitSpieler[dran].getGesamtTruppen()) {
+        if (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() == berechneGesamtTruppen(dran)) {
           phasenWechsel();
-        } else if (truppenNachPlatzieren < mitSpieler[dran].getGesamtTruppen()) {
+        } else if (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() < berechneGesamtTruppen(dran)) {
           System.out.println("Error zu viele Truppen wurden Platziert");
           phasenWechsel();
         }
@@ -117,8 +117,10 @@ public class Spiel {
         break;
       case 3 : //angreifen also Truppen nach Zielland verschieben
         if (land == nachLand) {
-          if (einmarschieren(1)) {
-            phasenWechsel();
+          if (taste == 1) {
+            einmarschieren(1);
+          } else if (taste == 2) {
+            einmarschieren(Math.min(5, vonLand.getTruppen() - 1));
           }
         } else {
           System.out.println("Error falsches Land 3");
@@ -170,9 +172,11 @@ public class Spiel {
   
   public void phasenWechsel() {
     boolean fehler = false;
+    System.out.println("Phasenwechsel:" + phase);
     switch (phase) {
       case 100:
-        phase = 1;
+        phase = 0;
+        System.out.println("zuplazierendeTruppen: " + berechneZuPlatzierendeTruppen());
         break;
       case 0 : //truppenPlatzieren
         aktualisiereTruppenLaender(dran); //darf nicht schon vorher gemacht werden weil damit berechnet wird, wie viele noch Platziert werden duerfen
@@ -292,10 +296,11 @@ public class Spiel {
   }
   
   private boolean einmarschieren(int anzahl) {
+    System.out.println("Verschiebe " + anzahl);
     if (dran != nachLand.getHerrscher()) {
       if (vonLand.getTruppen() > 1 + anzahl) {
         vonLand.setTruppen(dran, vonLand.getTruppen() - anzahl);
-        nachLand.setAngreiferTruppen(/*mitSpieler[dran]*/ dran, nachLand.getAngreiferTruppen() + anzahl);
+        nachLand.setAngreiferTruppen(dran, nachLand.getAngreiferTruppen() + anzahl);
         return true;
       } else {
         System.out.println("Error es werden zu viele Truppen zum Angreifen verwendet"); //bis jetzt ist diese Fehlermeldung einfach auszuloesen
@@ -346,20 +351,17 @@ public class Spiel {
     return this.angreiferWuerfel;
   }
   
-  private boolean verschiebeTruppen(int anzahl) {
-    if (dran == vonLand.getHerrscher() && dran == nachLand.getHerrscher()) {
+  private void verschiebeTruppen(int anzahl) {
+    if (dran == vonLand.getHerrscher() && dran != nachLand.getHerrscher()) {
       if (vonLand.getTruppen() > 1 + anzahl) {
-        vonLand.setTruppen(/*mitSpieler[dran]*/ dran, vonLand.getTruppen() - anzahl);
-        nachLand.setTruppen(/*mitSpieler[dran]*/ dran, nachLand.getTruppen() + anzahl);
-        return true;
+        vonLand.setTruppen(dran, vonLand.getTruppen() - anzahl);
+        nachLand.setTruppen(dran, nachLand.getTruppen() + anzahl);
       } else {
         System.out.println("Error es werden zu viele Truppen verschoben"); //bis jetzt ist diese Fehlermeldung einfach auszuloesen
-        return false;
       }
     }
     else {
       System.out.println("Error eigenes Land wird angegriffen");
-      return false;
     }
   }
   
@@ -409,15 +411,14 @@ public class Spiel {
   }
 
   private int berechneGesamtTruppen(byte meinSpieler) {
-    return mitSpieler[meinSpieler].getGesamtTruppen() + berechneZuPlatzierendeTruppen();
-    
-    /*int truppen = 0;
+    //return mitSpieler[meinSpieler].getGesamtTruppen() + berechneZuPlatzierendeTruppen();//NEIN DIE BRAUCHEN WIR AUCH FUER DIE AKTUALISIERUNG DER ANZAHL DER TRUPPEN EINES SPIELERS
+    int truppen = 0;
     for (byte i = 0; i < laender.length; i++) {
-    if (laender[i].getHerrscher() == meinSpieler) {
-    truppen += laender[i].getTruppen();
+      if (laender[i].getHerrscher() == meinSpieler) {
+        truppen += laender[i].getTruppen();
+      }
     }
-    }
-    return truppen;*/
+    return truppen;
   }
     
   private void aktualisiereTruppenLaender(byte meinSpieler){

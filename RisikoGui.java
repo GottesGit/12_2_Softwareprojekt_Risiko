@@ -15,7 +15,6 @@ import javafx.event.*;
 
 public class RisikoGui extends Application {
   private byte spielerAnzahl = 0;
-  // Anfang Attribute
   private Spiel spiel;
   private LandButton[] landButtons = new LandButton[42];//hiermit ist das natuerlich fest, das muesste angepasst werden, wenn das fuer verschiedene Maps funktionieren soll     dafür musst du erstmal ne neue Map machen
   private Label[] spielerLabel;
@@ -26,7 +25,6 @@ public class RisikoGui extends Application {
   private TextField[] namenFelder = new TextField[4];
   private SVGPath[] svgPfade = new SVGPath[42];
   private Text[] landTexte = new Text[42];
-  // Ende Attribute
   public void start(Stage primaryStage) { 
     Pane root = new Pane();
     Scene startSzene = new Scene(root, 500, 350);
@@ -75,12 +73,17 @@ public class RisikoGui extends Application {
   }
   
   public void startButton_Action(Event evt) {
-    Stage primaryStage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
-    primaryStage.close();
-    // Anfang Komponenten
-    // Ende Komponenten
-    spielStart();
-    // Anfang Methoden
+    byte anzahl = 0;
+    for (byte i = 0; i < 4; i++) {
+      if (!namenFelder[i].getText().isEmpty()) {
+        anzahl++;
+      }
+    }
+    if (anzahl > 1) {
+      Stage primaryStage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
+      primaryStage.close();
+      spielStart();
+    }
   }
   
   private void spielStart() {
@@ -184,9 +187,9 @@ public class RisikoGui extends Application {
       svgPfade[i].setStyle("-fx-fill: orange;");
       
       landTexte[i] = new Text("Gpi");
-      landTexte[i].setLayoutX(laenderPositionen[i][0]);
+      landTexte[i].setLayoutX(laenderPositionen[i][0] - 10);
       landTexte[i].setLayoutY(laenderPositionen[i][1]);
-      landTexte[i].setStyle("-fx-fill: white; -fx-font-size: 20px;");
+      landTexte[i].setStyle("-fx-fill: white; -fx-font-size: 10px;");
       
       landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i), landTexte[i]); //hier Erstellung der landButtons
       landButtons[i].setStyle("-fx-background-color: transparent;");
@@ -195,8 +198,8 @@ public class RisikoGui extends Application {
       landButtons[i].setLayoutX(laenderPositionen[i][0]);
       landButtons[i].setLayoutY(laenderPositionen[i][1]);
       landButtons[i].setMinSize(0, 0);
-      landButtons[i].setPrefHeight(10); //muss 0.1 sein
-      landButtons[i].setPrefWidth(10); //ebenfalls
+      landButtons[i].setPrefHeight(0.1);
+      landButtons[i].setPrefWidth(0.1);
       LandButton btn = landButtons[i];
       btn.setOnAction((event) -> btn.landButton_gedrueckt(event));
       spielPane.getChildren().add(landButtons[i]);
@@ -214,6 +217,17 @@ public class RisikoGui extends Application {
     (event) -> {fertigButton_gedrueckt(event);} 
     );
     spielPane.getChildren().add(fertigButton);
+    
+    kampfButton = new Button(); //Kampf-Button
+    kampfButton.setLayoutX(1266);
+    kampfButton.setLayoutY(500);
+    kampfButton.setPrefHeight(70);
+    kampfButton.setPrefWidth(70);
+    kampfButton.setText("Kampf");
+    kampfButton.setOnAction(
+    (event) -> {kampfButton_gedrueckt(event);} 
+    );
+    spielPane.getChildren().add(kampfButton);
     
     spielerLabel = new Label[spielerAnzahl];
      
@@ -254,7 +268,7 @@ public class RisikoGui extends Application {
           svgPfade[i].setStyle("-fx-fill: yellow;");
         }
         
-        if (spiel.getDran() == 0) {   // passen wir noch an
+        if (spiel.getDran() == 0) {   // passen wir noch an !!
           spielerLabel[0].setStyle("-fx-background-color: red;");
           spielerLabel[1].setStyle("-fx-background-color: lightgray;");
           spielerLabel[2].setStyle("-fx-background-color: lightgray;");
@@ -283,6 +297,7 @@ public class RisikoGui extends Application {
             } else {
               landButtons[i].setDisable(true);
             }
+            kampfButton.setDisable(true);
             break;
           case 1 : //angreifen also eigenes Land auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
@@ -290,6 +305,7 @@ public class RisikoGui extends Application {
             } else {
               landButtons[i].setDisable(true);
             }
+            kampfButton.setDisable(true);
             break;
           case 2 : //angreifen also Feind auswaehlen
             if (landButtons[i].getHerrscher() != spiel.getDran() && spiel.istBenachbart(i)) { //nur fremde, benachbarte Laender enablen
@@ -297,6 +313,7 @@ public class RisikoGui extends Application {
             } else {
               landButtons[i].setDisable(true);
             }
+            kampfButton.setDisable(true);
             break;
           case 3 : //angreifen also Truppen nach Zielland verschieben
             if (i == spiel.getNachLand().getIndex()) { //nur angegriffenes Land enablen
@@ -304,9 +321,11 @@ public class RisikoGui extends Application {
             } else {
               landButtons[i].setDisable(true);
             }
+            kampfButton.setDisable(true);
             break;
           case 4 : //angreifen also im Kampf
             landButtons[i].setDisable(true); //alle Laender disablen
+            kampfButton.setDisable(false);
             break;
           case 5 : //Truppen verschieben also Startland auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 0) { //nur eigene Laender mit mehr als 1 Truppe enablen
@@ -314,6 +333,7 @@ public class RisikoGui extends Application {
             } else {
               landButtons[i].setDisable(true);
             }
+            kampfButton.setDisable(true);
             break;
           case 6 : //Truppen verschieben also Zielland auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && i == spiel.getVonLand().getIndex() && spiel.istVerbunden(i)) { //nur eigene, verbundene Laender enablen
@@ -321,6 +341,7 @@ public class RisikoGui extends Application {
             } else {
               landButtons[i].setDisable(false);
             }
+            kampfButton.setDisable(true);
             break;
           case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
             if (i == spiel.getNachLand().getIndex()) {
@@ -335,6 +356,7 @@ public class RisikoGui extends Application {
             } else {
               landButtons[i].setDisable(true);
             }
+            kampfButton.setDisable(true);
             break;
         }
       }

@@ -23,7 +23,7 @@ public class LandButton extends Button{//geht anscheinend nicht
   }
   
   public void refresh() {
-    this.schriftzug.setText(land.getName() + " " + land.getTruppen());
+    this.schriftzug.setText(land.getName() + " " + land.getTruppen() + " Angreifertrupps: " + land.getAngreiferTruppen());
   }
   
   public byte getHerrscher() {

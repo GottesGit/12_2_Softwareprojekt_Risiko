@@ -31,7 +31,7 @@ public class Land{
   }
   
   public int getAngreiferTruppen() {
-    return this.anzahlTruppen;
+    return this.angreiferTruppen;
   }
   
   public byte getHerrscher() {
