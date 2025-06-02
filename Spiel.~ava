@@ -143,6 +143,7 @@ public class Spiel {
       case 6 : //Truppen verschieben also ZielLand auswaehlen
         if (istVerbunden(land.getIndex())) {//land.getHerrscher() == dran && land != vonLand && 
           nachLand = land;
+          phasenWechsel();
         }
         schonDurchReset();
         break;
@@ -178,7 +179,7 @@ public class Spiel {
     System.out.println("Phasenwechsel:" + phase);
     switch (phase) {
       case 100:
-        phase = 5; // eig 1
+        phase = 1; // eig 1   5
         break;
       case 0 : //truppenPlatzieren
         aktualisiereTruppenLaender(dran); //darf nicht schon vorher gemacht werden weil damit berechnet wird, wie viele noch Platziert werden duerfen

@@ -149,7 +149,11 @@ public class Spiel {
         break;
       case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
         if (land == nachLand) {
-          verschiebeTruppen(dran);
+          if (taste == 1) {
+            verschiebeTruppen(1);
+          } else if (taste == 2) {
+            verschiebeTruppen(Math.min(5, vonLand.getTruppen() - 1));
+          }
         } else {
           System.out.println("Error falsches Land beim Verschieben ausgewaehlt");
         }
@@ -160,7 +164,23 @@ public class Spiel {
   
   public void buttonKlickAktion(byte knopf, byte taste) { //ok (1) und Kampfbutton (2)
     if (knopf == 1) {
-      phasenWechsel(); //vllt geht das nicht immer einfach so? - im Kampf nicht!
+      if (phase == 4) { // im Kampf
+        System.out.println("Das ist noch nicht fertig");
+      } else if (phase == 5 || phase == 6) { //keine Truppen verschieben
+        vonLand = null;//kopiert von phasenwechsel mit 7
+        nachLand = null;
+        zugNummer++;
+        if (dran >= mitSpieler.length - 1) {
+          dran = 0;
+        } else {
+          dran++;
+        }
+        phase = 0;
+      } else if (phase == ) {
+         
+      } else {
+        phasenWechsel(); //vllt geht das nicht immer einfach so? - im Kampf nicht!
+      }
       gui.grafikErneuern();
     } else if (knopf == 2) {
       if (phase == 4) {
@@ -179,7 +199,7 @@ public class Spiel {
     System.out.println("Phasenwechsel:" + phase);
     switch (phase) {
       case 100:
-        phase = 1; // eig 1   5
+        phase = 5; // eig 1   5
         break;
       case 0 : //truppenPlatzieren
         aktualisiereTruppenLaender(dran); //darf nicht schon vorher gemacht werden weil damit berechnet wird, wie viele noch Platziert werden duerfen
