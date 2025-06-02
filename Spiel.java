@@ -75,9 +75,9 @@ public class Spiel {
     switch (phase) {
       case 100:
         // if (mitSpieler[dran].getGesamtTruppen() < 15) {
-          land.setTruppen(dran, (land.getTruppen() + 1));
-          System.out.println("GesamtTruppen:" + mitSpieler[dran].getGesamtTruppen());
-          mitSpieler[dran].setGesamtTruppen(mitSpieler[dran++].getGesamtTruppen() + 1);
+        land.setTruppen(dran, (land.getTruppen() + 1));
+        System.out.println("GesamtTruppen:" + mitSpieler[dran].getGesamtTruppen());
+        mitSpieler[dran].setGesamtTruppen(mitSpieler[dran++].getGesamtTruppen() + 1);
         // }
         if (dran >= (mitSpieler.length)) {
           dran = 0;
@@ -164,8 +164,11 @@ public class Spiel {
   
   public void buttonKlickAktion(byte knopf, byte taste) { //ok (1) und Kampfbutton (2)
     if (knopf == 1) {
-      if (phase == 4) { // im Kampf
-        System.out.println("Das ist noch nicht fertig");
+      if (phase == 4 || phase == 3) { // im Kampf
+        if (nachLand.getAngreiferTruppen() > 0) {
+          vonLand.setTruppen(dran, vonLand.getTruppen() + nachLand.getAngreiferTruppen());
+          nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
+        } // end of if
       } else if (phase == 5 || phase == 6) { //keine Truppen verschieben
         vonLand = null;//kopiert von phasenwechsel mit 7
         nachLand = null;
@@ -177,7 +180,7 @@ public class Spiel {
         }
         phase = 0;
       } else if (phase == ) {
-         
+        
       } else {
         phasenWechsel(); //vllt geht das nicht immer einfach so? - im Kampf nicht!
       }
@@ -354,6 +357,9 @@ public class Spiel {
     } while (--angreiferWuerfelAnzahl > 0 && --verteidigerWuerfelAnzahl > 0);
     
     if (nachLand.getTruppen() == 0 || nachLand.getAngreiferTruppen() == 0) {
+      if (nachLand.getTruppen() == 0 && nachLand.getAngreiferTruppen() > 0){
+        nachLand.setTruppen(dran, nachLand.getAngreiferTruppen());
+      }
       aktualisiereTruppenLaender(nachLand.getHerrscher());
       for (byte i = 0; i < 3; i++) {
         angreiferWuerfel[i] = (byte) 0;
@@ -361,6 +367,7 @@ public class Spiel {
       for (byte i = 0; i < 2; i++) {
         verteidigerWuerfel[i] = (byte) 0;
       }
+      
       phasenWechsel();
     }
   }
