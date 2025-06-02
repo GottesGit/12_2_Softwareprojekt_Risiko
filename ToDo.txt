@@ -1,9 +1,13 @@
 UML Pflegen
 Ordner aufräumen
 Fehler beheben
-Starttruppen verteilen (von den spielern)
+Starttruppen verteilen (von den spielern)(mit x5)
 ToDo Liste pflegen
 Aktualisieren der Gui fertig machen
-Klickaktionen fuer verschiedene Maustasten
+Klickaktionen fuer verschiedene Maustasten in Phase 100
 Tab fixen bei Startbildschirm
-phase 0 
+phase 0 nicht im ersten durchgang 
+kampf verlieren
+beim verschieben nur länder anzeigen, die das auch können 
+wuerfel 
+interface

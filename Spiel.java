@@ -88,18 +88,18 @@ public class Spiel {
         }
         break;
       case 0 : //truppenplatzieren, eigentlich je nach maustaste
-        if (taste == 1) {
-          land.setTruppen(dran, land.getTruppen() + 1);
-        } else if (taste == 2) {
-          land.setTruppen(dran, land.getTruppen() + Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran))));
-        } //(truppenNachPlatzieren == mitSpieler[dran].getGesamtTruppen()) {
-        if (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() == berechneGesamtTruppen(dran)) {
-          phasenWechsel();
-        } else if (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() < berechneGesamtTruppen(dran)) {
-          System.out.println("Error zu viele Truppen wurden Platziert");
-          phasenWechsel();
+          if (taste == 1) {
+            land.setTruppen(dran, land.getTruppen() + 1);
+          } else if (taste == 2) {
+            land.setTruppen(dran, land.getTruppen() + Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran))));
+          } //(truppenNachPlatzieren == mitSpieler[dran].getGesamtTruppen()) {
+          if (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() == berechneGesamtTruppen(dran)) {
+            phasenWechsel();
+          } else if (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() < berechneGesamtTruppen(dran)) {
+            System.out.println("Error zu viele Truppen wurden Platziert");
+            phasenWechsel();
+          break;
         }
-        break;
       case 1 : //angreifen also eigenes Land auswaehlen
         if (land.getHerrscher() == dran && land.getTruppen() > 1) {
           vonLand = land;
@@ -269,8 +269,14 @@ public class Spiel {
         } else {
           dran++;
         }
-        phase = 0;
-        break;
+        if (zugNummer < mitSpieler.length){
+          phase = 1;
+          break;
+        }
+        else {
+          phase = 0;
+          break;
+        } // end of if-else
     }
     if (fehler) {
       System.out.println("Error die Phase " + phase + " kann nicht geaendert werden");
