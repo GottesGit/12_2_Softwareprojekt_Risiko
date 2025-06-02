@@ -1,10 +1,10 @@
 ﻿[Files]
-File0=..\..\..\Risiko\12_2_Softwareprojekt_Risiko\Kontinent.java
-File1=..\..\..\Risiko\12_2_Softwareprojekt_Risiko\Land.java
-File2=..\..\..\Risiko\12_2_Softwareprojekt_Risiko\LandButton.java
-File3=..\..\..\Risiko\12_2_Softwareprojekt_Risiko\RisikoGui.java
-File4=..\..\..\Risiko\12_2_Softwareprojekt_Risiko\Spiel.java
-File5=..\..\..\Risiko\12_2_Softwareprojekt_Risiko\Spieler.java
+File0=..\..\00_Java_Lasse\git_Risiko\12_2_Softwareprojekt_Risiko\Kontinent.java
+File1=..\..\00_Java_Lasse\git_Risiko\12_2_Softwareprojekt_Risiko\Land.java
+File2=..\..\00_Java_Lasse\git_Risiko\12_2_Softwareprojekt_Risiko\LandButton.java
+File3=..\..\00_Java_Lasse\git_Risiko\12_2_Softwareprojekt_Risiko\RisikoGui.java
+File4=..\..\00_Java_Lasse\git_Risiko\12_2_Softwareprojekt_Risiko\Spiel.java
+File5=..\..\00_Java_Lasse\git_Risiko\12_2_Softwareprojekt_Risiko\Spieler.java
 
 [Box:  - Kontinent]
 X=627
@@ -68,7 +68,7 @@ FontName=Segoe UI
 
 [Diagram]
 comments=0
-OffsetX=720
+OffsetX=0
 OffsetY=0
 Visibility=0
 ShowParameter=4
