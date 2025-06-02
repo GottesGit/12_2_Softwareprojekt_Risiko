@@ -13,6 +13,10 @@ import javafx.scene.control.*;
 import je.NumberField;
 import javafx.event.*;
 
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+
 public class RisikoGui extends Application {
   private byte spielerAnzahl = 0;
   private Spiel spiel;
@@ -201,7 +205,7 @@ public class RisikoGui extends Application {
       landButtons[i].setPrefHeight(0.1);
       landButtons[i].setPrefWidth(0.1);
       LandButton btn = landButtons[i];
-      btn.setOnAction((event) -> btn.landButton_gedrueckt(event));
+      btn.setOnMouseClicked((MouseEvent event) -> btn.landButton_gedrueckt(event));
       spielPane.getChildren().add(landButtons[i]);
       
       spielPane.getChildren().add(landTexte[i]);
@@ -336,7 +340,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             break;
           case 6 : //Truppen verschieben also Zielland auswaehlen
-            if (spiel.istVerbunden(i)) { // landButtons[i].getHerrscher() == spiel.getDran() && i != spiel.getVonLand().getIndex() && //nur eigene, verbundene Laender enablen
+            if (spiel.istVerbunden(i) && i != spiel.getVonLand().getIndex()) { // landButtons[i].getHerrscher() == spiel.getDran() && i != spiel.getVonLand().getIndex() && //nur eigene, verbundene Laender enablen
               landButtons[i].setDisable(false);
             } else {
               landButtons[i].setDisable(true);

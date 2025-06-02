@@ -176,10 +176,12 @@ public class Spiel {
           dran++;
         }
         phase = 0;
-      } else if (phase == ) {
-         
+      } else if (phase == 1 || phase == 2) {
+        vonLand = null;
+        nachLand = null;
+        phase = 5;
       } else {
-        phasenWechsel(); //vllt geht das nicht immer einfach so? - im Kampf nicht!
+        phasenWechsel();
       }
       gui.grafikErneuern();
     } else if (knopf == 2) {
