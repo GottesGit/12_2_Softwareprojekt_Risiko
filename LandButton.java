@@ -3,6 +3,10 @@ import javafx.event.*;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
 
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+
 public class LandButton extends Button{//geht anscheinend nicht
   private String positionSvg;
   private Land land;
@@ -17,9 +21,13 @@ public class LandButton extends Button{//geht anscheinend nicht
     refresh();
   }
   
-  public void landButton_gedrueckt(Event evt) {
+  public void landButton_gedrueckt(MouseEvent evt) {
+    if (evt.getButton() == MouseButton.PRIMARY) {
+      spiel.landKlickAktion(land, 1);//erstmal nur linke Maustaste 
+    } else if (evt.getButton() == MouseButton.SECONDARY) {
+      spiel.landKlickAktion(land, 2);   
+    }
     System.out.println(land.getName() + "gedrueckt");
-    spiel.landKlickAktion(land, 1);//erstmal nur linke Maustaste
   }
   
   public void refresh() {
