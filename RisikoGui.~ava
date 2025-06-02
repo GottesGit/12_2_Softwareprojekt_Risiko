@@ -302,6 +302,7 @@ public class RisikoGui extends Application {
               landButtons[i].setDisable(true);
             }
             kampfButton.setDisable(true);
+            fertigButton.setDisable(false);
             break;
           case 1 : //angreifen also eigenes Land auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
@@ -310,6 +311,7 @@ public class RisikoGui extends Application {
               landButtons[i].setDisable(true);
             }
             kampfButton.setDisable(true);
+            fertigButton.setDisable(false);
             break;
           case 2 : //angreifen also Feind auswaehlen
             if (landButtons[i].getHerrscher() != spiel.getDran() && spiel.istBenachbart(i)) { //nur fremde, benachbarte Laender enablen
@@ -318,6 +320,7 @@ public class RisikoGui extends Application {
               landButtons[i].setDisable(true);
             }
             kampfButton.setDisable(true);
+            fertigButton.setDisable(false);
             break;
           case 3 : //angreifen also Truppen nach Zielland verschieben
             if (i == spiel.getNachLand().getIndex()) { //nur angegriffenes Land enablen
@@ -326,10 +329,12 @@ public class RisikoGui extends Application {
               landButtons[i].setDisable(true);
             }
             kampfButton.setDisable(true);
+            fertigButton.setDisable(false);
             break;
           case 4 : //angreifen also im Kampf
             landButtons[i].setDisable(true); //alle Laender disablen
             kampfButton.setDisable(false);
+            fertigButton.setDisable(false);
             break;
           case 5 : //Truppen verschieben also Startland auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
@@ -338,6 +343,7 @@ public class RisikoGui extends Application {
               landButtons[i].setDisable(true);
             }
             kampfButton.setDisable(true);
+            fertigButton.setDisable(false);
             break;
           case 6 : //Truppen verschieben also Zielland auswaehlen
             if (spiel.istVerbunden(i) && i != spiel.getVonLand().getIndex()) { // landButtons[i].getHerrscher() == spiel.getDran() && i != spiel.getVonLand().getIndex() && //nur eigene, verbundene Laender enablen
@@ -346,6 +352,7 @@ public class RisikoGui extends Application {
               landButtons[i].setDisable(true);
             }
             kampfButton.setDisable(true);
+            fertigButton.setDisable(false);
             break;
           case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
             if (i == spiel.getNachLand().getIndex()) {
@@ -353,6 +360,8 @@ public class RisikoGui extends Application {
             } else {
               landButtons[i].setDisable(true);
             }
+            kampfButton.setDisable(true);
+            fertigButton.setDisable(false);
             break;
           case 100 : //Anfangs Truppen plazieren
             if (landButtons[i].getHerrscher() == spiel.getDran()) {
@@ -361,6 +370,7 @@ public class RisikoGui extends Application {
               landButtons[i].setDisable(true);
             }
             kampfButton.setDisable(true);
+            fertigButton.setDisable(true);
             break;
         }
       }

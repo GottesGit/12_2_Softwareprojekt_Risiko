@@ -149,11 +149,15 @@ public class Spiel {
         schonDurchReset();
         break;
       case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
+        System.out.println("Verschieben sollte passieren");
         if (land == nachLand) {
           if (taste == 1) {
             verschiebeTruppen(1);
           } else if (taste == 2) {
             verschiebeTruppen(Math.min(5, vonLand.getTruppen() - 1));
+          }
+          if (vonLand.getTruppen() <= 1) {
+            phasenWechsel();
           }
         } else {
           System.out.println("Error falsches Land beim Verschieben ausgewaehlt");
@@ -189,7 +193,7 @@ public class Spiel {
       }
       gui.grafikErneuern();
     } else if (knopf == 2) {
-      if (phase == 4) {
+      if (phase == 4 || phase == 3) {
         kampf();
         gui.grafikErneuern(); //je nach dem, ob der Kampf bereits eine Animation macht unnoetig
       } else {
@@ -395,8 +399,9 @@ public class Spiel {
   }
   
   private void verschiebeTruppen(int anzahl) {
-    if (dran == vonLand.getHerrscher() && dran != nachLand.getHerrscher()) {
-      if (vonLand.getTruppen() > 1 + anzahl) {
+    if (dran == vonLand.getHerrscher()) {
+      if (vonLand.getTruppen() > anzahl) {
+        System.out.println("Truppen werden verschoben...");
         vonLand.setTruppen(dran, vonLand.getTruppen() - anzahl);
         nachLand.setTruppen(dran, nachLand.getTruppen() + anzahl);
       } else {
@@ -404,7 +409,7 @@ public class Spiel {
       }
     }
     else {
-      System.out.println("Error eigenes Land wird angegriffen");
+      System.out.println("Error Truppen werden aus Fremden Laendern verschoben");
     }
   }
   
