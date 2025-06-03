@@ -90,10 +90,7 @@ public class Spiel {
         break;
       case 0 : //truppenplatzieren, eigentlich je nach maustaste
         truppenVorher = berechneGesamtTruppen();
-        System.out.println(berechneZuPlatzierendeTruppen());
-        System.out.println(truppenVorher);
-        System.out.println(berechneGesamtTruppen());
-        while (berechneGesamtTruppen() < truppenVorher + berechneZuPlatzierendeTruppen()) { 
+        while (berechneGesamtTruppen(dran) < truppenVorher + berechneZuPlatzierendeTruppen()) { 
           if (taste == 1) {
             land.setTruppen(dran, land.getTruppen() + 1);
           } else if (taste == 2) {
