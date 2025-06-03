@@ -1,10 +1,9 @@
 UML Pflegen (das neue ist das lange)
 Ordner aufräumen
 Fehler beheben
-ToDo Liste pflegen
+Starttruppen verteilen (von den spielern)
 Aktualisieren der Gui fertig machen
 Tab fixen bei Startbildschirm
-phase 0 in erster runde nicht
 mit allen angreifen müssen
 Starttruppen verteilen (von den spielern)(mit x5)
 ToDo Liste pflegen
