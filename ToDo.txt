@@ -15,3 +15,4 @@ kampf verlieren
 beim verschieben nur länder anzeigen, die das auch können 
 wuerfel 
 interface
+immer mindestens 1 Truppe schon beim Auswählen eines Landes zum Angreifen verschieben

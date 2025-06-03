@@ -68,7 +68,7 @@ public class Spiel {
       }
       kontinente[i] = new Kontinent(hinzuzfuegendeLaender, kontinentNamen[i], kontinentTruppen[i]);
     }
-    dran = (byte) (Math.random() * mitSpieler.length);
+    //dran = (byte) (Math.random() * mitSpieler.length);
   }
   
   public void landKlickAktion(Land land, int taste) {//int zu byte konversion ist kacke, deswegen kein byte 
@@ -95,12 +95,13 @@ public class Spiel {
             land.setTruppen(dran, land.getTruppen() + Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran))));
           } //(truppenNachPlatzieren == mitSpieler[dran].getGesamtTruppen()) {
           if (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() == berechneGesamtTruppen(dran)) {
+            // System.out.println("gesamtTruppen:" + berechneGesamtTruppen(dran) + " zuPlazierend: " + berechneZuPlatzierendeTruppen() + " vorher: " + mitSpieler[dran].getGesamtTruppen());
             phasenWechsel();
           } else if (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() < berechneGesamtTruppen(dran)) {
             System.out.println("Error zu viele Truppen wurden Platziert");
             phasenWechsel();
+          }
           break;
-        }
       case 1 : //angreifen also eigenes Land auswaehlen
         if (land.getHerrscher() == dran && land.getTruppen() > 1) {
           vonLand = land;
@@ -180,10 +181,9 @@ public class Spiel {
         vonLand = null;//kopiert von phasenwechsel mit 7
         nachLand = null;
         zugNummer++;
-        if (dran >= mitSpieler.length - 1) {
+        dran++;
+        if (dran >= mitSpieler.length) {
           dran = 0;
-        } else {
-          dran++;
         }
         phase = 0;
       } else if (phase == 1 || phase == 2) {
@@ -212,7 +212,7 @@ public class Spiel {
     System.out.println("Phasenwechsel:" + phase);
     switch (phase) {
       case 100:
-        phase = 1;
+        phase = 0;
         break;
       case 0 : //truppenPlatzieren
         aktualisiereTruppenLaender(dran); //darf nicht schon vorher gemacht werden weil damit berechnet wird, wie viele noch Platziert werden duerfen
@@ -267,23 +267,14 @@ public class Spiel {
         vonLand = null;
         nachLand = null;
         zugNummer++;
-        if (dran >= mitSpieler.length - 1) {
+        dran++;
+        if (dran >= mitSpieler.length) {
           dran = 0;
-        } else {
-          dran++;
         }
-        if (zugNummer < mitSpieler.length){
-          phase = 1;
-          break;
-        }
-        else {
-          phase = 0;
-          break;
-        } // end of if-else
     }
-    if (zugNummer < mitSpieler.length && phase == 0) { //in der ersten Runde werden noch keine Extratruppen verteilt
-      phase = 1;
-    }
+//    if (zugNummer < mitSpieler.length && phase == 0) { //in der ersten Runde werden noch keine Extratruppen verteilt
+//      phase = 1;
+//    }
     if (fehler) {
       System.out.println("Error die Phase " + phase + " kann nicht geaendert werden");
     }
