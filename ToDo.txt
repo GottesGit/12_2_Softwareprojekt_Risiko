@@ -1,9 +1,8 @@
-UML Pflegen
+UML Pflegen (das neue ist das lange)
 Ordner aufräumen
 Fehler beheben
-Starttruppen verteilen (von den spielern)
 ToDo Liste pflegen
 Aktualisieren der Gui fertig machen
-Klickaktionen fuer verschiedene Maustasten
 Tab fixen bei Startbildschirm
-phase 0 
+phase 0 in erster runde nicht
+mit allen angreifen müssen
