@@ -68,7 +68,6 @@ public class Spiel {
       }
       kontinente[i] = new Kontinent(hinzuzfuegendeLaender, kontinentNamen[i], kontinentTruppen[i]);
     }
-    dran = (byte) (Math.random() * mitSpieler.length);
   }
   
   public void landKlickAktion(Land land, int taste) {//int zu byte konversion ist kacke, deswegen kein byte 
@@ -273,10 +272,11 @@ public class Spiel {
           dran++;
         }
         phase = 0;
+        System.out.println("Zugnummer:" + zugNummer + " anzahl Spieler: " + mitSpieler.length);
+        if (zugNummer < mitSpieler.length) {
+          phase = 1;
+        }
         break;
-    }
-    if (zugNummer < mitSpieler.length && phase == 0) { //in der ersten Runde werden noch keine Extratruppen verteilt
-      phase = 1;
     }
     if (fehler) {
       System.out.println("Error die Phase " + phase + " kann nicht geaendert werden");
