@@ -13,12 +13,15 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import je.NumberField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.shape.*;
 import javafx.event.*;
 
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+
+import java.util.function.UnaryOperator;
 
 public class RisikoGui extends Application {
   private byte spielerAnzahl = 0;
@@ -67,6 +70,17 @@ public class RisikoGui extends Application {
     );
     root.getChildren().add(startButton);
     
+    int maxLaenge = 10;
+    
+    UnaryOperator<TextFormatter.Change> filter = change -> {
+      String neuerText = change.getControlNewText();
+      if (neuerText.length() <= maxLaenge) {
+        return change;
+      } else {
+        return null;
+      }
+    };
+    
     for (byte i = 0; i < 4; i++) {
       namenFelder[i] = new TextField();
       namenFelder[i].setLayoutX(24);
@@ -83,15 +97,17 @@ public class RisikoGui extends Application {
         }
       });
       
-      root.getChildren().add(namenFelder[i]);
-      }
+      namenFelder[i].setTextFormatter(new TextFormatter<>(filter));
       
-      primaryStage.setOnCloseRequest(e -> System.exit(0));
-      primaryStage.setTitle("RisikoGui");
-      primaryStage.setScene(startSzene);
-      primaryStage.show();
+      root.getChildren().add(namenFelder[i]);
     }
-    
+
+    primaryStage.setOnCloseRequest(e -> System.exit(0));
+    primaryStage.setTitle("RisikoGui");
+    primaryStage.setScene(startSzene);
+    primaryStage.show();
+  }
+  
   public void startButton_Action(Event evt) {
     byte anzahl = 0;
     for (byte i = 0; i < 4; i++) {
@@ -278,9 +294,9 @@ public class RisikoGui extends Application {
     laenderSVG = new SVGPath[spielerAnzahl]; 
     for (byte k = 0; k < (spielerAnzahl); k++) { //Spieler-Label
       spielerRectangle[k] = new Rectangle();
-      spielerRectangle[k].setX(47);
+      spielerRectangle[k].setX(27);
       spielerRectangle[k].setY(400 + k * 50 - 121);
-      spielerRectangle[k].setWidth(150);
+      spielerRectangle[k].setWidth(170);
       spielerRectangle[k].setHeight(20);
       spielPane.getChildren().add(spielerRectangle[k]);
       
@@ -303,10 +319,10 @@ public class RisikoGui extends Application {
       spielPane.getChildren().add(laenderSVG[k]);
       
       spielerLabel[k] = new Label();
-      spielerLabel[k].setLayoutX(50);
+      spielerLabel[k].setLayoutX(30);
       spielerLabel[k].setLayoutY(398 + k * 50 - 121);
       spielerLabel[k].setPrefHeight(20);
-      spielerLabel[k].setPrefWidth(100);
+      spielerLabel[k].setPrefWidth(140);
       spielerLabel[k].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;");
       spielerLabel[k].setText(namenFelder[k].getText());
       spielPane.getChildren().add(spielerLabel[k]);
