@@ -12,7 +12,6 @@ import javafx.scene.Node;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import je.NumberField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.shape.*;
 import javafx.event.*;
 
@@ -76,22 +75,18 @@ public class RisikoGui extends Application {
       namenFelder[i].setPromptText("Spielername eingeben...");
       
       final int finaleohoho = i;
-      namenFelder[i].setFocusTraversable(true);
-      namenFelder[i].focusedProperty().addListener((obs, oldVal, newVal) -> {
-        if (newVal) {
-          startImageView.setImage(startBilder[finaleohoho]);
-        }
+      namenFelder[i].setOnMouseClicked(event -> {
+        startImageView.setImage(startBilder[finaleohoho]);
       });
       
       root.getChildren().add(namenFelder[i]);
-      }
-      
-      primaryStage.setOnCloseRequest(e -> System.exit(0));
-      primaryStage.setTitle("RisikoGui");
-      primaryStage.setScene(startSzene);
-      primaryStage.show();
     }
-    
+    primaryStage.setOnCloseRequest(e -> System.exit(0));
+    primaryStage.setTitle("RisikoGui");
+    primaryStage.setScene(startSzene);
+    primaryStage.show();
+  }
+  
   public void startButton_Action(Event evt) {
     byte anzahl = 0;
     for (byte i = 0; i < 4; i++) {
@@ -279,7 +274,7 @@ public class RisikoGui extends Application {
     for (byte k = 0; k < (spielerAnzahl); k++) { //Spieler-Label
       spielerRectangle[k] = new Rectangle();
       spielerRectangle[k].setX(47);
-      spielerRectangle[k].setY(400 + k * 50 - 121);
+      spielerRectangle[k].setY(400 + k * 50);
       spielerRectangle[k].setWidth(150);
       spielerRectangle[k].setHeight(20);
       spielPane.getChildren().add(spielerRectangle[k]);
@@ -290,7 +285,7 @@ public class RisikoGui extends Application {
       truppenSVG[k].setScaleY(0.04);
       truppenSVG[k].setStyle("-fx-fill: red;");
       truppenSVG[k].setLayoutX(-33);
-      truppenSVG[k].setLayoutY(-127 + k * 50 - 121);
+      truppenSVG[k].setLayoutY(-127 + k * 50);
       spielPane.getChildren().add(truppenSVG[k]);
       
       laenderSVG[k] = new SVGPath();
@@ -299,21 +294,21 @@ public class RisikoGui extends Application {
       laenderSVG[k].setScaleY(1);
       laenderSVG[k].setStyle("-fx-fill: red;");
       laenderSVG[k].setLayoutX(-310);
-      laenderSVG[k].setLayoutY(115 + k * 50 - 121);
+      laenderSVG[k].setLayoutY(115 + k * 50);
       spielPane.getChildren().add(laenderSVG[k]);
       
       spielerLabel[k] = new Label();
       spielerLabel[k].setLayoutX(50);
-      spielerLabel[k].setLayoutY(398 + k * 50 - 121);
+      spielerLabel[k].setLayoutY(398 + k * 50);
       spielerLabel[k].setPrefHeight(20);
       spielerLabel[k].setPrefWidth(100);
-      spielerLabel[k].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;");
+      spielerLabel[k].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: red;");
       spielerLabel[k].setText(namenFelder[k].getText());
       spielPane.getChildren().add(spielerLabel[k]);
       
       truppenLabel[k] = new Label();
       truppenLabel[k].setLayoutX(140);
-      truppenLabel[k].setLayoutY(398 + k * 50 - 121);
+      truppenLabel[k].setLayoutY(398 + k * 50);
       truppenLabel[k].setPrefHeight(20);
       truppenLabel[k].setPrefWidth(40);
       truppenLabel[k].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;");
@@ -323,7 +318,7 @@ public class RisikoGui extends Application {
       
       laenderLabel[k] = new Label();
       laenderLabel[k].setLayoutX(173);
-      laenderLabel[k].setLayoutY(398 + k * 50 - 121);
+      laenderLabel[k].setLayoutY(398 + k * 50);
       laenderLabel[k].setPrefHeight(20);
       laenderLabel[k].setPrefWidth(40);
       laenderLabel[k].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;");
@@ -358,19 +353,24 @@ public class RisikoGui extends Application {
           svgPfade[i].setStyle("-fx-fill: yellow;");
         }
         
-        String[] spielerFarben = {"red", "blue", "green", "yellow"}; //Ich brauchte hierfür jetzt mal endlich einen String, sollten wir davor mal machen
-        for (int j = 0; j < spielerAnzahl; j++) {
-          if (spiel.getDran() == j) {
-            spielerLabel[j].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: black;");
-            spielerRectangle[j].setStyle("-fx-fill:" + spielerFarben[j] + ";");
-            truppenSVG[j].setStyle("-fx-fill: black;");
-            laenderSVG[j].setStyle("-fx-fill: black;");
-          } else {
-            spielerLabel[j].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill:" + spielerFarben[j] + ";");
-            spielerRectangle[j].setStyle("-fx-fill: black ;");
-            truppenSVG[j].setStyle("-fx-fill:" + spielerFarben[j] + ";");
-            laenderSVG[j].setStyle("-fx-fill:" + spielerFarben[j] + ";");
-          } // end of if-else
+        if (spiel.getDran() == 0) {   // passen wir noch an !!
+          spielerLabel[0].setStyle("-fx-text-fill: black;");
+          spielerRectangle[0].setStyle("-fx-fill: red;");
+        } else if (spiel.getDran() == 1) {
+          //          spielerLabel[0].setStyle("-fx-background-color: lightgray;");
+          //          spielerLabel[1].setStyle("-fx-background-color: blue;");
+          //          spielerLabel[2].setStyle("-fx-background-color: lightgray;");
+          //          spielerLabel[3].setStyle("-fx-background-color: lightgray;");
+        } else if (spiel.getDran() == 2) {
+          //          spielerLabel[0].setStyle("-fx-background-color: lightgray;");
+          //          spielerLabel[1].setStyle("-fx-background-color: lightgray;");
+          //          spielerLabel[2].setStyle("-fx-background-color: green;");
+          //          spielerLabel[3].setStyle("-fx-background-color: lightgray;");
+        } else {
+          //        spielerLabel[0].setStyle("-fx-background-color: lightgray;");
+          //        spielerLabel[1].setStyle("-fx-background-color: lightgray;");
+          //          spielerLabel[2].setStyle("-fx-background-color: lightgray;");
+          //          spielerLabel[3].setStyle("-fx-background-color: yellow;");
         }
         
         switch (spiel.getPhase()) {
@@ -480,5 +480,4 @@ public class RisikoGui extends Application {
     spiel.buttonKlickAktion((byte) 1, (byte) 1);
   }
 }
-      // Ende Methoden
-    
+  // Ende Methoden
