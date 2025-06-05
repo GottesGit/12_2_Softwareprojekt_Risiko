@@ -363,7 +363,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             break;
-          case 100 : //Anfangs Truppen plazieren
+          case 100 : //Anfangs Truppen platzieren
             if (landButtons[i].getHerrscher() == spiel.getDran()) {
               landButtons[i].setDisable(false);
             } else {
