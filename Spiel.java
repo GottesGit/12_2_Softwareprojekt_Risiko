@@ -347,11 +347,11 @@ public class Spiel {
     }
   }
   
-  private int getAnzahlLaender(byte meinSpieler) {
+  public int getAnzahlLaender(byte meinSpieler) { //hab das mal public gemacht
     return this.mitSpieler[meinSpieler].getGesamtLaender();
   }
   
-  private int getAnzahlTruppen(byte meinSpieler) {
+  public int getAnzahlTruppen(byte meinSpieler) {          //hab das mal public gemacht
     return this.mitSpieler[meinSpieler].getGesamtTruppen();
   }
   
@@ -507,5 +507,6 @@ public class Spiel {
       laender[i].resetSchonDurch();
     }
   }
+
 }
   

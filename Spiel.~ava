@@ -111,75 +111,76 @@ public class Spiel {
             System.out.println("Error zu viele Truppen wurden Platziert");
             phasenWechsel();
           }
-          break;
-          case 1 : //angreifen also eigenes Land auswaehlen
-          System.out.println(zugNummer);
-          if (land.getHerrscher() == dran && land.getTruppen() > 1) {
-            vonLand = land;
-            phasenWechsel();
-          } else {
-            System.out.println("Error falsches Land 1");
-          }
-          break;
-          case 2 : //angreifen also Feind auswaehlen
-          if (land.getHerrscher() != dran && istBenachbart(land.getIndex())) {
-          nachLand = land;
-          phasenWechsel();
-          } else {
-          System.out.println("Error falsches Land 2");
-          }
-          break;
-          case 3 : //angreifen also Truppen nach Zielland verschieben
-          if (land == nachLand) {
-          if (taste == 1) {
-          einmarschieren(1);
-          } else if (taste == 2) {
-          einmarschieren(Math.min(5, vonLand.getTruppen() - 1));
-          }
-          if (vonLand.getTruppen() < 2) {
-          phasenWechsel();
-          }
-          } else {
-          System.out.println("Error falsches Land 3");
-          }
-          break;
-          case 4 : //angreifen also im Kampf
-          System.out.println("Error ein Land wurde im Kampf ausgewaehlt");
-          break;
-          case 5 : //Truppen verschieben also StartLand auswaehlen
-          if (land.getHerrscher() == dran && land.getTruppen() > 1) {
+        }
+        break;
+      case 1 : //angreifen also eigenes Land auswaehlen
+        System.out.println(zugNummer);
+        if (land.getHerrscher() == dran && land.getTruppen() > 1) {
           vonLand = land;
           phasenWechsel();
-          } else {
-          System.out.println("Error falsches Land 4");
-          }
-          break;
-          case 6 : //Truppen verschieben also ZielLand auswaehlen
-          if (istVerbunden(land.getIndex())) {//land.getHerrscher() == dran && land != vonLand && 
+        } else {
+          System.out.println("Error falsches Land 1");
+        }
+        break;
+      case 2 : //angreifen also Feind auswaehlen
+        if (land.getHerrscher() != dran && istBenachbart(land.getIndex())) {
           nachLand = land;
           phasenWechsel();
-          }
-          schonDurchReset();
-          break;
-          case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
-          System.out.println("Verschieben sollte passieren");
-          if (land == nachLand) {
-            if (taste == 1) {
-              verschiebeTruppen(1);
-            } else if (taste == 2) {
-              verschiebeTruppen(Math.min(5, vonLand.getTruppen() - 1));
-            }
-            if (vonLand.getTruppen() <= 1) {
-              phasenWechsel();
-            }
-          } else {
-            System.out.println("Error falsches Land beim Verschieben ausgewaehlt");
-          }
-          break;
+        } else {
+          System.out.println("Error falsches Land 2");
         }
-        gui.grafikErneuern();
+        break;
+      case 3 : //angreifen also Truppen nach Zielland verschieben
+        if (land == nachLand) {
+          if (taste == 1) {
+            einmarschieren(1);
+          } else if (taste == 2) {
+            einmarschieren(Math.min(5, vonLand.getTruppen() - 1));
+          }
+          if (vonLand.getTruppen() < 2) {
+            phasenWechsel();
+          }
+        } else {
+          System.out.println("Error falsches Land 3");
+        }
+        break;
+      case 4 : //angreifen also im Kampf
+        System.out.println("Error ein Land wurde im Kampf ausgewaehlt");
+        break;
+      case 5 : //Truppen verschieben also StartLand auswaehlen
+        if (land.getHerrscher() == dran && land.getTruppen() > 1) {
+          vonLand = land;
+          phasenWechsel();
+        } else {
+          System.out.println("Error falsches Land 4");
+        }
+        break;
+      case 6 : //Truppen verschieben also ZielLand auswaehlen
+        if (istVerbunden(land.getIndex())) {//land.getHerrscher() == dran && land != vonLand && 
+          nachLand = land;
+          phasenWechsel();
+        }
+        schonDurchReset();
+        break;
+      case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
+        System.out.println("Verschieben sollte passieren");
+        if (land == nachLand) {
+          if (taste == 1) {
+            verschiebeTruppen(1);
+          } else if (taste == 2) {
+            verschiebeTruppen(Math.min(5, vonLand.getTruppen() - 1));
+          }
+          if (vonLand.getTruppen() <= 1) {
+            phasenWechsel();
+          }
+        } else {
+          System.out.println("Error falsches Land beim Verschieben ausgewaehlt");
+        }
+        break;
     }
-    
+    gui.grafikErneuern();
+  }
+  
   public void buttonKlickAktion(byte knopf, byte taste) { //ok (1) und Kampfbutton (2)
     if (knopf == 1) {
       if (phase == 4 || phase == 3) { // im Kampf
@@ -297,7 +298,7 @@ public class Spiel {
           break;
         }
     }
-
+    
     if (fehler) {
       System.out.println("Error die Phase " + phase + " kann nicht geaendert werden");
     }    
@@ -506,5 +507,6 @@ public class Spiel {
       laender[i].resetSchonDurch();
     }
   }
+
 }
   

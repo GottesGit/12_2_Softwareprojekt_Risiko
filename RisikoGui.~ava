@@ -12,12 +12,18 @@ import javafx.scene.Node;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import je.NumberField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.control.TextFormatter;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 import javafx.scene.shape.*;
 import javafx.event.*;
 
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+
+import java.util.function.UnaryOperator;
 
 public class RisikoGui extends Application {
   private byte spielerAnzahl = 0;
@@ -36,6 +42,7 @@ public class RisikoGui extends Application {
   private Label phasenLabel;
   private Label aufforderungsLabel;
   private Label wuerfelLabel;
+  private Label neuerSpielerLabel;
   private Button startButton = new Button();
   private TextField[] namenFelder = new TextField[4];
   private SVGPath[] svgPfade = new SVGPath[42];
@@ -66,6 +73,17 @@ public class RisikoGui extends Application {
     );
     root.getChildren().add(startButton);
     
+    int maxLaenge = 10;
+    
+    UnaryOperator<TextFormatter.Change> filter = change -> {
+      String neuerText = change.getControlNewText();
+      if (neuerText.length() <= maxLaenge) {
+        return change;
+      } else {
+        return null;
+      }
+    };
+    
     for (byte i = 0; i < 4; i++) {
       namenFelder[i] = new TextField();
       namenFelder[i].setLayoutX(24);
@@ -75,12 +93,18 @@ public class RisikoGui extends Application {
       namenFelder[i].setPromptText("Spielername eingeben...");
       
       final int finaleohoho = i;
-      namenFelder[i].setOnMouseClicked(event -> {
-        startImageView.setImage(startBilder[finaleohoho]);
+      namenFelder[i].setFocusTraversable(true);
+      namenFelder[i].focusedProperty().addListener((obs, oldVal, newVal) -> {
+        if (newVal) {
+          startImageView.setImage(startBilder[finaleohoho]);
+        }
       });
+      
+      namenFelder[i].setTextFormatter(new TextFormatter<>(filter));
       
       root.getChildren().add(namenFelder[i]);
     }
+    
     primaryStage.setOnCloseRequest(e -> System.exit(0));
     primaryStage.setTitle("RisikoGui");
     primaryStage.setScene(startSzene);
@@ -273,9 +297,9 @@ public class RisikoGui extends Application {
     laenderSVG = new SVGPath[spielerAnzahl]; 
     for (byte k = 0; k < (spielerAnzahl); k++) { //Spieler-Label
       spielerRectangle[k] = new Rectangle();
-      spielerRectangle[k].setX(47);
-      spielerRectangle[k].setY(400 + k * 50);
-      spielerRectangle[k].setWidth(150);
+      spielerRectangle[k].setX(27);
+      spielerRectangle[k].setY(400 + k * 50 - 121);
+      spielerRectangle[k].setWidth(170);
       spielerRectangle[k].setHeight(20);
       spielPane.getChildren().add(spielerRectangle[k]);
       
@@ -283,32 +307,32 @@ public class RisikoGui extends Application {
       truppenSVG[k].setContent("M 158.12,163.00 C 158.12,163.00 158.12,141.00 158.12,141.00 157.83,139.36 151.43,127.99 150.21,126.37 150.21,126.37 146.27,121.79 146.27,121.79 144.79,119.37 143.87,115.07 141.36,112.41 137.60,108.42 127.93,107.80 124.72,100.00 119.01,86.11 127.72,65.23 132.11,52.00 134.79,43.92 136.44,35.62 140.49,28.00 145.16,19.19 151.21,11.34 160.00,6.34 166.93,2.39 172.34,1.72 180.00,0.72 199.04,-1.76 226.11,-0.35 240.70,13.62 249.67,22.21 252.23,35.54 255.89,47.00 255.89,47.00 263.25,64.00 263.25,64.00 265.21,69.98 266.92,87.45 267.00,94.00 267.02,96.13 267.14,100.05 266.40,101.96 264.01,108.08 253.81,109.27 250.49,112.51 248.85,114.11 247.36,117.79 245.89,119.99 243.98,122.84 240.88,125.41 239.72,128.09 239.72,128.09 237.57,135.82 237.57,135.82 234.71,141.25 231.18,138.71 231.00,148.00 230.93,151.97 229.83,160.58 234.15,162.40 238.84,164.38 244.97,159.28 248.91,165.15 252.84,170.98 250.23,183.47 254.31,187.37 256.44,189.39 262.03,191.99 265.00,191.79 267.79,191.61 269.34,189.96 273.00,190.43 275.65,190.77 286.96,195.76 289.98,197.15 297.63,200.68 293.09,202.44 298.15,205.45 300.29,206.72 310.39,209.63 316.00,213.63 326.76,221.32 334.53,231.71 342.51,242.00 345.02,245.23 347.35,247.33 349.47,251.00 351.07,253.76 354.56,262.74 355.65,266.00 356.71,269.20 359.57,279.94 359.95,283.00 360.29,288.99 357.64,289.92 359.95,297.00 362.34,303.49 365.73,306.15 367.91,312.00 367.91,312.00 373.41,333.00 373.41,333.00 379.39,346.48 385.81,352.73 386.00,369.00 386.06,374.32 386.58,383.25 384.72,388.00 381.11,397.19 372.44,403.84 365.00,409.80 365.00,409.80 345.00,425.30 345.00,425.30 345.00,425.30 333.00,436.96 333.00,436.96 326.47,443.09 323.84,441.63 321.98,444.43 320.63,446.62 321.74,450.46 321.98,453.00 321.98,453.00 321.98,472.00 321.98,472.00 321.96,473.86 322.02,475.98 320.98,477.61 318.52,481.46 303.70,487.26 299.00,488.00 298.35,498.95 292.10,493.35 293.06,502.00 293.06,502.00 299.82,542.00 299.82,542.00 300.33,550.03 295.48,549.68 296.68,557.00 296.68,557.00 301.21,574.00 301.21,574.00 301.21,574.00 306.88,584.00 306.88,584.00 310.10,590.10 314.34,604.17 313.90,611.00 313.90,611.00 312.94,619.00 312.94,619.00 312.94,619.00 317.91,653.00 317.91,653.00 317.91,653.00 316.83,670.00 316.83,670.00 316.47,673.72 315.21,680.57 313.88,684.00 312.71,687.03 310.59,689.80 309.97,692.84 309.97,692.84 308.83,716.00 308.83,716.00 308.83,716.00 304.00,750.00 304.00,750.00 304.00,750.00 305.30,785.00 305.30,785.00 305.30,785.00 309.24,794.00 309.24,794.00 309.24,794.00 313.71,814.00 313.71,814.00 314.81,823.34 309.43,825.61 310.09,836.00 310.09,836.00 313.00,878.00 313.00,878.00 313.00,878.00 313.00,887.00 313.00,887.00 313.00,887.00 315.94,905.00 315.94,905.00 315.54,917.95 304.23,915.56 304.00,928.00 304.00,928.00 304.00,944.00 304.00,944.00 304.00,944.00 303.21,955.00 303.21,955.00 302.88,961.26 304.71,971.26 307.31,977.00 312.84,989.18 320.40,996.78 326.12,1007.00 330.73,1015.22 335.54,1032.50 336.69,1042.00 337.35,1047.40 339.84,1053.93 338.15,1059.00 332.33,1076.45 302.74,1083.52 285.18,1063.99 273.95,1051.48 274.45,1036.51 269.81,1022.00 269.08,1019.73 267.96,1016.27 266.31,1014.56 263.98,1012.15 259.87,1012.28 256.56,1005.00 252.51,996.10 255.89,981.76 256.00,972.00 256.00,972.00 256.82,962.00 256.82,962.00 256.82,962.00 256.09,955.00 256.09,955.00 256.09,955.00 255.00,928.00 255.00,928.00 255.00,925.97 255.12,922.90 254.40,921.04 253.29,918.13 250.48,916.32 248.53,913.91 245.37,909.99 243.83,905.02 244.18,900.00 244.18,900.00 245.88,884.00 245.88,884.00 245.88,884.00 242.29,869.00 242.29,869.00 242.29,869.00 238.87,836.00 238.87,836.00 237.00,822.67 234.02,809.52 234.00,796.00 234.00,796.00 234.00,779.00 234.00,779.00 233.97,776.77 233.95,775.22 233.48,773.00 233.48,773.00 230.15,762.00 230.15,762.00 230.15,762.00 226.00,743.00 226.00,743.00 226.00,743.00 216.61,690.00 216.61,690.00 216.61,690.00 207.13,635.00 207.13,635.00 207.13,635.00 204.42,617.00 204.42,617.00 204.06,614.29 204.09,610.41 202.83,608.09 200.87,604.50 194.53,601.13 191.00,599.00 191.00,599.00 178.02,631.00 178.02,631.00 178.02,631.00 165.75,688.00 165.75,688.00 164.11,697.40 161.11,714.90 161.00,724.00 160.88,734.53 160.48,743.74 157.57,754.00 157.57,754.00 150.36,775.00 150.36,775.00 150.36,775.00 151.99,796.00 151.99,796.00 152.54,820.32 136.73,849.20 137.00,873.00 137.00,873.00 138.96,892.00 138.96,892.00 139.52,906.52 129.69,912.87 127.58,919.00 126.72,921.52 127.11,926.06 126.83,929.00 126.83,929.00 126.00,945.00 126.00,945.00 126.00,945.00 125.00,958.00 125.00,958.00 125.00,958.00 126.21,977.00 126.21,977.00 127.53,986.52 129.09,985.96 127.25,997.00 126.26,1002.89 125.07,1009.59 118.00,1010.00 118.00,1010.00 119.00,1013.00 119.00,1013.00 116.49,1014.03 116.10,1016.53 115.22,1019.00 113.12,1024.84 112.01,1030.93 110.80,1037.00 107.28,1054.60 104.23,1069.60 84.00,1073.99 80.50,1074.74 77.60,1075.12 74.00,1074.96 69.42,1074.76 64.91,1073.27 61.00,1070.88 54.52,1066.93 47.50,1061.11 47.04,1053.00 46.68,1046.39 48.22,1044.44 48.83,1039.00 51.09,1018.74 54.64,1013.96 65.66,997.00 69.20,991.55 72.51,985.92 75.21,980.00 78.50,972.77 79.99,964.90 80.00,957.00 80.02,942.68 77.39,933.68 81.00,919.00 77.75,917.46 76.73,916.69 74.29,913.98 71.97,911.42 68.67,907.30 67.65,904.00 66.65,900.77 67.73,890.33 68.63,887.00 68.63,887.00 70.89,880.00 70.89,880.00 70.89,880.00 70.89,871.00 70.89,871.00 70.88,860.99 67.85,859.35 68.00,846.00 68.12,835.81 72.01,830.03 72.15,826.00 72.26,822.97 70.09,817.42 71.32,810.00 73.20,798.76 80.64,787.18 81.44,784.83 82.12,782.88 82.00,780.09 82.00,778.00 82.00,778.00 82.00,763.00 82.00,763.00 82.00,763.00 83.00,741.00 83.00,741.00 82.86,729.53 78.51,723.33 77.04,716.00 77.04,716.00 77.04,693.00 77.04,693.00 76.98,679.60 73.67,682.98 71.53,674.00 71.53,674.00 69.00,643.00 69.00,643.00 69.14,630.73 72.46,625.47 73.06,621.00 73.55,617.36 72.16,615.63 72.39,612.00 72.39,612.00 79.38,585.00 79.38,585.00 81.49,579.32 82.87,579.51 85.20,575.83 86.59,573.65 92.44,558.42 92.74,556.00 93.46,550.16 88.45,548.65 89.31,541.00 89.31,541.00 95.74,512.00 95.74,512.00 96.18,509.62 97.65,502.08 97.12,500.10 96.09,496.31 91.53,495.74 88.00,490.00 84.48,484.27 85.00,477.43 85.00,471.00 79.93,470.46 68.72,465.38 66.57,460.63 66.57,460.63 65.00,447.00 65.00,447.00 54.89,444.88 44.95,431.24 37.00,424.43 28.53,417.18 12.73,408.73 7.39,402.00 0.94,393.85 -0.05,382.96 0.00,373.00 0.06,360.20 4.69,354.29 8.94,343.00 8.94,343.00 14.14,325.00 14.14,325.00 14.14,325.00 17.68,316.00 17.68,316.00 17.68,316.00 20.46,307.00 20.46,307.00 20.46,307.00 28.55,292.00 28.55,292.00 34.11,278.43 28.95,280.10 33.04,266.00 34.71,260.22 39.01,248.65 42.63,244.13 42.63,244.13 49.24,237.87 49.24,237.87 53.45,232.85 53.28,230.94 60.04,224.00 65.76,218.12 72.39,213.18 80.00,210.02 80.00,210.02 91.87,206.30 91.87,206.30 95.25,204.66 95.20,202.18 98.22,199.63 100.88,197.39 109.42,194.14 113.00,192.82 120.90,189.89 119.81,193.03 127.00,189.73 131.31,187.76 137.12,185.45 139.15,180.96 141.97,174.71 139.78,168.14 143.48,165.01 146.63,162.35 153.97,163.00 158.12,163.00 Z            M 304.90,343.00            C 298.38,351.37 303.43,352.48 304.90,361.00 304.90,361.00 304.90,381.00 304.90,381.00 312.94,381.00 314.79,381.99 322.00,378.00 322.00,378.00 313.65,367.00 313.65,367.00 313.65,367.00 304.90,343.00 304.90,343.00 Z            M 85.00,346.00            C 85.00,346.00 83.00,346.00 83.00,346.00 83.00,346.00 66.00,375.00 66.00,375.00 74.61,384.06 75.37,389.67 87.00,398.00 84.76,385.49 83.98,372.68 84.00,360.00 84.00,360.00 85.00,346.00 85.00,346.00 Z            M 256.00,1008.00            C 256.00,1008.00 257.00,1008.00 257.00,1008.00 257.00,1008.00 256.00,1009.00 256.00,1009.00 256.00,1009.00 256.00,1008.00 256.00,1008.00 Z            M 262.00,1014.00            C 262.00,1014.00 263.00,1014.00 263.00,1014.00 263.00,1014.00 262.00,1015.00 262.00,1015.00 262.00,1015.00 262.00,1014.00 262.00,1014.00 Z            M 265.00,1018.00            C 265.00,1018.00 266.00,1018.00 266.00,1018.00 266.00,1018.00 265.00,1019.00 265.00,1019.00 265.00,1019.00 265.00,1018.00 265.00,1018.00 Z");
       truppenSVG[k].setScaleX(0.04);
       truppenSVG[k].setScaleY(0.04);
-      truppenSVG[k].setStyle("-fx-fill: red;");
+      truppenSVG[k].setStyle("-fx-fill: black;");
       truppenSVG[k].setLayoutX(-33);
-      truppenSVG[k].setLayoutY(-127 + k * 50);
+      truppenSVG[k].setLayoutY(-127 + k * 50 - 121);
       spielPane.getChildren().add(truppenSVG[k]);
       
       laenderSVG[k] = new SVGPath();
       laenderSVG[k].setContent("M503.07,278.92L503.12,280.8L505.96,281.92L505.93,283.62L508.78,282.72L510.35,281.41L513.52,283.3L514.84,284.81L515.5,287.2L514.72,288.45L515.73,290.1L516.43,292.55L516.21,294.11L517.36,296.97L516.11,297.44L515.37,296.93L514.66,297.77L512.65,298.63L511.61,299.73L509.57,300.68L510.06,301.98L510.36,303.8L511.79,304.84L513.37,306.67L512.39,308.62L511.38,309.16L511.78,311.88L511.51,312.58L510.64,311.73L509.3,311.61L507.29,312.35L504.82,312.17L504.42,313.26L503,312.12L502.15,312.34L499.15,311.08L498.57,311.98L496.19,311.95L496.54,308.97L497.96,306.07L493.92,305.29L492.6,304.16L492.76,302.27L492.2,301.29L492.52,298.32L492.04,293.63L493.73,293.63L494.44,291.92L495.14,287.69L494.61,286.11L495.16,285.11L497.5,284.85L498.02,285.89L499.93,283.56L499.29,281.77L499.16,279.02L501.28,279.66z");
       laenderSVG[k].setScaleX(1);
       laenderSVG[k].setScaleY(1);
-      laenderSVG[k].setStyle("-fx-fill: red;");
+      laenderSVG[k].setStyle("-fx-fill: black;");
       laenderSVG[k].setLayoutX(-310);
-      laenderSVG[k].setLayoutY(115 + k * 50);
+      laenderSVG[k].setLayoutY(115 + k * 50 - 121);
       spielPane.getChildren().add(laenderSVG[k]);
       
       spielerLabel[k] = new Label();
-      spielerLabel[k].setLayoutX(50);
-      spielerLabel[k].setLayoutY(398 + k * 50);
+      spielerLabel[k].setLayoutX(30);
+      spielerLabel[k].setLayoutY(398 + k * 50 - 121);
       spielerLabel[k].setPrefHeight(20);
-      spielerLabel[k].setPrefWidth(100);
-      spielerLabel[k].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: red;");
+      spielerLabel[k].setPrefWidth(140);
+      spielerLabel[k].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;");
       spielerLabel[k].setText(namenFelder[k].getText());
       spielPane.getChildren().add(spielerLabel[k]);
       
       truppenLabel[k] = new Label();
       truppenLabel[k].setLayoutX(140);
-      truppenLabel[k].setLayoutY(398 + k * 50);
+      truppenLabel[k].setLayoutY(398 + k * 50 - 121);
       truppenLabel[k].setPrefHeight(20);
       truppenLabel[k].setPrefWidth(40);
       truppenLabel[k].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;");
@@ -318,7 +342,7 @@ public class RisikoGui extends Application {
       
       laenderLabel[k] = new Label();
       laenderLabel[k].setLayoutX(173);
-      laenderLabel[k].setLayoutY(398 + k * 50);
+      laenderLabel[k].setLayoutY(398 + k * 50 - 121);
       laenderLabel[k].setPrefHeight(20);
       laenderLabel[k].setPrefWidth(40);
       laenderLabel[k].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;");
@@ -326,6 +350,17 @@ public class RisikoGui extends Application {
       laenderLabel[k].setAlignment(Pos.CENTER);
       spielPane.getChildren().add(laenderLabel[k]);
     }
+    
+    neuerSpielerLabel = new Label(); //Aufforderungs-Label
+    neuerSpielerLabel.setLayoutX(553);
+    neuerSpielerLabel.setLayoutY(341.5);
+    neuerSpielerLabel.setPrefHeight(32);
+    neuerSpielerLabel.setPrefWidth(260);
+    neuerSpielerLabel.setStyle("-fx-font-size: 30px; -fx-background-color: lightgray;");
+    neuerSpielerLabel.setText("");
+    neuerSpielerLabel.setAlignment(Pos.CENTER);
+    neuerSpielerLabel.setVisible(false);
+    spielPane.getChildren().add(neuerSpielerLabel);
     
     spielPlan.setTitle("Risiko");
     spielPlan.setScene(spielSzene);
@@ -353,24 +388,21 @@ public class RisikoGui extends Application {
           svgPfade[i].setStyle("-fx-fill: yellow;");
         }
         
-        if (spiel.getDran() == 0) {   // passen wir noch an !!
-          spielerLabel[0].setStyle("-fx-text-fill: black;");
-          spielerRectangle[0].setStyle("-fx-fill: red;");
-        } else if (spiel.getDran() == 1) {
-          //          spielerLabel[0].setStyle("-fx-background-color: lightgray;");
-          //          spielerLabel[1].setStyle("-fx-background-color: blue;");
-          //          spielerLabel[2].setStyle("-fx-background-color: lightgray;");
-          //          spielerLabel[3].setStyle("-fx-background-color: lightgray;");
-        } else if (spiel.getDran() == 2) {
-          //          spielerLabel[0].setStyle("-fx-background-color: lightgray;");
-          //          spielerLabel[1].setStyle("-fx-background-color: lightgray;");
-          //          spielerLabel[2].setStyle("-fx-background-color: green;");
-          //          spielerLabel[3].setStyle("-fx-background-color: lightgray;");
-        } else {
-          //        spielerLabel[0].setStyle("-fx-background-color: lightgray;");
-          //        spielerLabel[1].setStyle("-fx-background-color: lightgray;");
-          //          spielerLabel[2].setStyle("-fx-background-color: lightgray;");
-          //          spielerLabel[3].setStyle("-fx-background-color: yellow;");
+        String[] spielerFarben = {"red", "blue", "green", "yellow"}; //Ich brauchte hierfür jetzt mal endlich einen String, sollten wir davor mal machen
+        for (int j = 0; j < spielerAnzahl; j++) {
+          if (spiel.getDran() == j) {
+            spielerLabel[j].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: black;");
+            spielerRectangle[j].setStyle("-fx-fill:" + spielerFarben[j] + ";");
+            truppenSVG[j].setStyle("-fx-fill: black;");
+            laenderSVG[j].setStyle("-fx-fill: black;");
+          } else {
+            spielerLabel[j].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill:" + spielerFarben[j] + ";");
+            spielerRectangle[j].setStyle("-fx-fill: black ;");
+            truppenSVG[j].setStyle("-fx-fill:" + spielerFarben[j] + ";");
+            laenderSVG[j].setStyle("-fx-fill:" + spielerFarben[j] + ";");
+          }
+          truppenLabel[j].setText(spiel.getAnzahlTruppen((byte)j) + "");
+          laenderLabel[j].setText(spiel.getAnzahlLaender((byte)j) + ""); //hier wird wohl 0 zurückgegeben
         }
         
         switch (spiel.getPhase()) {
@@ -384,6 +416,7 @@ public class RisikoGui extends Application {
             fertigButton.setDisable(false);
             phasenLabel.setText("Verstärkungsphase");
             aufforderungsLabel.setText("Setze deine Truppen!");
+            neuerSpieler(spiel.getDran(), spielerFarben);
             break;
           case 1 : //angreifen also eigenes Land auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
@@ -394,7 +427,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             phasenLabel.setText("Angriffsphase");
-            aufforderungsLabel.setText("Wähle dein angreifendes Land aus!");
+            aufforderungsLabel.setText("Wähle dein Land, aus welchem du angreifen möchtest!");
             break;
           case 2 : //angreifen also Feind auswaehlen
             if (landButtons[i].getHerrscher() != spiel.getDran() && spiel.istBenachbart(i)) { //nur fremde, benachbarte Laender enablen
@@ -416,7 +449,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(false);
             fertigButton.setDisable(false);
             phasenLabel.setText("Angriffsphase");
-            aufforderungsLabel.setText("Verschiebe deine Angreifertruppen in das Land!");
+            aufforderungsLabel.setText("Verschiebe deine Angreifertruppen in das ausgewählte Land!");
             break;
           case 4 : //angreifen also im Kampf
             landButtons[i].setDisable(true); //alle Laender disablen
@@ -466,10 +499,21 @@ public class RisikoGui extends Application {
             fertigButton.setDisable(true);
             phasenLabel.setText("Befestigungsphase");
             aufforderungsLabel.setText("Setze deine Truppen!");
+            neuerSpieler(spiel.getDran(), spielerFarben);
             break;
         }
       }
     }
+  }
+  
+  public void neuerSpieler(byte spielerDran, String[] spielerFarben) {
+    neuerSpielerLabel.setText(namenFelder[spielerDran].getText() + " ist dran");
+    neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spielerDran] + ";-fx-font-size: 30px; -fx-background-color: lightgray;");
+    neuerSpielerLabel.setVisible(true);
+    
+    PauseTransition pause = new PauseTransition(Duration.seconds(3));
+    pause.setOnFinished(e -> neuerSpielerLabel.setVisible(false));
+    pause.play();
   }
   
   public void kampfButton_gedrueckt(Event evt) {
@@ -480,4 +524,5 @@ public class RisikoGui extends Application {
     spiel.buttonKlickAktion((byte) 1, (byte) 1);
   }
 }
-  // Ende Methoden
+      // Ende Methoden
+    

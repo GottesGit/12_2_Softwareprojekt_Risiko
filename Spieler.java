@@ -46,7 +46,7 @@ public class Spieler{
   }
   
   public void setGesamtLaender(int anzahl){
-    this.gesamtTruppen = anzahl;
+    this.gesamtLaender = anzahl;
   }
   
   public int getGesamtLaender(){
