@@ -15,6 +15,7 @@ import je.NumberField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.control.TextFormatter;
 import javafx.animation.PauseTransition;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import javafx.scene.shape.*;
 import javafx.event.*;
@@ -40,6 +41,7 @@ public class RisikoGui extends Application {
   private Button kampfButton;
   private Button fertigButton;
   private Button switchButton;
+  int switchWert = 0;
   private Label phasenLabel;
   private Label aufforderungsLabel;
   private Label wuerfelLabel;
@@ -219,6 +221,13 @@ public class RisikoGui extends Application {
     imageView.setPreserveRatio(true);
     spielPane.getChildren().add(0, imageView);
     
+    Image imageKontinente = new Image("file:Riskgameboard_Kontinente.png");
+    ImageView imageViewKontinente = new ImageView(imageKontinente);
+    imageViewKontinente.setFitWidth(1366);
+    imageViewKontinente.setPreserveRatio(true);
+    spielPane.getChildren().add(0, imageViewKontinente);
+    imageViewKontinente.setVisible(true);
+    
     for (byte i = 0; i < 42; i++) {
       svgPfade[i] = new SVGPath();
       svgPfade[i].setContent(laenderSvg[i]);
@@ -229,10 +238,11 @@ public class RisikoGui extends Application {
       landTexte[i] = new Text("Gpi");
       landTexte[i].setLayoutX(laenderPositionen[i][0] - 10);
       landTexte[i].setLayoutY(laenderPositionen[i][1]);
-      landTexte[i].setStyle("-fx-fill: white; -fx-font-size: 10px;");
+      landTexte[i].setStyle("-fx-fill: white; -fx-font-size: 15px; -fx-font-weight: bold;");
+      landTexte[i].setTextAlignment(TextAlignment.CENTER);   //hab das Gefühl das macht nichts
       landTexte[i].setMouseTransparent(true);                //dann können wir nicht mehr auf die Texte klicken
       
-      landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i), landTexte[i]); //hier Erstellung der landButtons
+      landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i), landTexte[i], imageViewKontinente); //hier Erstellung der landButtons
       landButtons[i].setStyle("-fx-background-color: transparent;");
       landButtons[i].setGraphic(svgPfade[i]);
       landButtons[i].setPickOnBounds(false);
@@ -272,10 +282,10 @@ public class RisikoGui extends Application {
     
     switchButton = new Button(); //Kampf-Button
     switchButton.setLayoutX(1266);
-    switchButton.setLayoutY(500);
+    switchButton.setLayoutY(50);
     switchButton.setPrefHeight(70);
     switchButton.setPrefWidth(70);
-    switchButton.setText("Kampf");
+    switchButton.setText("Switch");
     switchButton.setOnAction(
     (event) -> {switchButton_gedrueckt(event);} 
     );
@@ -389,7 +399,7 @@ public class RisikoGui extends Application {
       System.out.println("Spieler " + spiel.getGewonnen() + " hat gewonnen!"); //muesste dann natuerlich auch in die Gui
     } else {
       for (byte i = 0; i < landButtons.length; i++) {
-        landButtons[i].refresh();
+        landButtons[i].refresh(switchWert);
         if (landButtons[i].getHerrscher() == 0) {
           svgPfade[i].setStyle("-fx-fill: red;"); //erst einmal Farben deklariert, sollte dann noch mit Zahl und AngreiferTruppen usw. vervollstaendigt werden
         } else if (landButtons[i].getHerrscher() == 1) {
@@ -537,8 +547,16 @@ public class RisikoGui extends Application {
   }
   
   public void switchButton_gedrueckt(Event evt) {
-    spiel.buttonKlickAktion((byte) 1, (byte) 1);
+    if (switchWert == 2) {
+      switchWert = 0;
+    } else {
+      switchWert++;  
+    }
+    for (int i = 0; i < 42; i++) {
+      landButtons[i].refresh(switchWert);
+    }
   }
+  
 }
       // Ende Methoden
     

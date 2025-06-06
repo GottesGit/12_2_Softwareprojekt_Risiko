@@ -1,7 +1,8 @@
 import javafx.scene.control.*;
 import javafx.event.*;
 import javafx.scene.shape.SVGPath;
-import javafx.scene.text.Text;
+import javafx.scene.text.Text;             
+import javafx.scene.image.ImageView;
 
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
@@ -12,13 +13,16 @@ public class LandButton extends Button{//geht anscheinend nicht
   private Land land;
   private Spiel spiel;
   private Text schriftzug;
+  private ImageView kontinente;
+  int globalerSwitchWert;
   
-  public LandButton(Spiel meinSpiel, String position, Land meinLand, Text meinText) {
+  public LandButton(Spiel meinSpiel, String position, Land meinLand, Text meinText, ImageView imageViewKontinente) {
     this.spiel = meinSpiel;
     this.positionSvg = position;
     this.land = meinLand;
     this.schriftzug = meinText;
-    refresh();
+    this.kontinente = imageViewKontinente;
+    refresh(globalerSwitchWert);
   }
   
   public void landButton_gedrueckt(MouseEvent evt) {
@@ -30,8 +34,26 @@ public class LandButton extends Button{//geht anscheinend nicht
     System.out.println(land.getName() + "gedrueckt");
   }
   
-  public void refresh() {
-    this.schriftzug.setText(land.getName() + " " + land.getTruppen() + " Angreifertrupps: " + land.getAngreiferTruppen());
+  //  public void refresh() {
+  //    this.schriftzug.setText(land.getName() + " " + land.getTruppen() + " Angreifertrupps: " + land.getAngreiferTruppen());
+  //  }
+  
+  public void refresh(int switchWert) {
+    switch (switchWert) {
+      case  0: 
+        this.schriftzug.setText(land.getTruppen() + "");
+        this.kontinente.setVisible(false);
+        break;
+      case  1: 
+        this.schriftzug.setText(land.getName() + "");
+        break;
+      case  2:
+        this.schriftzug.setText("");
+        this.kontinente.toFront();
+        this.kontinente.setVisible(true);
+        break;
+    } // end of switch
+    globalerSwitchWert = switchWert;
   }
   
   public byte getHerrscher() {
