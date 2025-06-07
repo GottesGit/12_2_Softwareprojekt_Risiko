@@ -488,7 +488,7 @@ public class RisikoGui extends Application {
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
-            phasenLabel.setText("Angriffsphase");
+            phasenLabel.setText("Verschiebephase");
             aufforderungsLabel.setText("Wähle das Land, aus welchem du Truppen ziehen möchtest!");
             for (int k = 0; k < 42; k++) {
               landButtons[k].refresh(switchWert);

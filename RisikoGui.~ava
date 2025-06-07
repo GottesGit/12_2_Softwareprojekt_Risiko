@@ -1,4 +1,4 @@
-)import javafx.application.Application;
+import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.SVGPath;
@@ -472,11 +472,13 @@ public class RisikoGui extends Application {
             fertigButton.setDisable(false);
             phasenLabel.setText("Angriffsphase");
             aufforderungsLabel.setText("Verschiebe deine Angreifertruppen in das ausgewählte Land!");
+            landButtons[spiel.getNachLand().getIndex()].refresh(10);
             break;
           case 4 : //angreifen also im Kampf
             landButtons[i].setDisable(true); //alle Laender disablen
             kampfButton.setDisable(false);
             fertigButton.setDisable(false);
+            landButtons[spiel.getNachLand().getIndex()].refresh(10);
             break;
           case 5 : //Truppen verschieben also Startland auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
@@ -486,8 +488,11 @@ public class RisikoGui extends Application {
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
-            phasenLabel.setText("Angriffsphase");
+            phasenLabel.setText("Verschiebephase");
             aufforderungsLabel.setText("Wähle das Land, aus welchem du Truppen ziehen möchtest!");
+            for (int k = 0; k < 42; k++) {
+              landButtons[k].refresh(switchWert);
+            }
             break;
           case 6 : //Truppen verschieben also Zielland auswaehlen
             if (spiel.istVerbunden(i) && i != spiel.getVonLand().getIndex()) { // landButtons[i].getHerrscher() == spiel.getDran() && i != spiel.getVonLand().getIndex() && //nur eigene, verbundene Laender enablen

@@ -15,6 +15,7 @@ public class Spiel {
   private byte[] angreiferWuerfel = new byte[3];
   private byte[] verteidigerWuerfel = new byte[2];
   private int truppenVorher;
+  int platzierteTruppen = 0;
   
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
     gui = meineGui;
@@ -90,11 +91,11 @@ public class Spiel {
           phasenWechsel();
         }
         break;
-      case 0 : //truppenplatzieren, eigentlich je nach maustaste
+      case 0 : //truppenplatzieren je nach maustaste
         truppenVorher = berechneGesamtTruppen(dran);
         System.out.println(berechneZuPlatzierendeTruppen());
-        int platzierteTruppen = 0;
-        if (platzierteTruppen < berechneZuPlatzierendeTruppen()) { 
+        System.out.println(platzierteTruppen);
+        while (platzierteTruppen < berechneZuPlatzierendeTruppen()) { 
           if (taste == 1) {
             land.setTruppen(dran, land.getTruppen() + 1);
             platzierteTruppen++;
@@ -102,17 +103,12 @@ public class Spiel {
             int extra = Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran)));
             land.setTruppen(dran, land.getTruppen() + extra);
             platzierteTruppen = platzierteTruppen + extra;
-          } //(truppenNachPlatzieren == mitSpieler[dran].getGesamtTruppen()) {
-          if (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() == berechneGesamtTruppen(dran)) {
-            // System.out.println("gesamtTruppen:" + berechneGesamtTruppen(dran) + " zuPlazierend: " + berechneZuPlatzierendeTruppen() + " vorher: " + mitSpieler[dran].getGesamtTruppen());
-            phasenWechsel();
-            break;
-          } else if (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() < berechneGesamtTruppen(dran)) {
-            System.out.println("Error zu viele Truppen wurden Platziert");
-            phasenWechsel();
           }
-        }
-        break;
+        } 
+        if (platzierteTruppen = berechneZuPlatzierendeTruppen()) {
+          phasenWechsel();
+          break;
+        } 
       case 1 : //angreifen also eigenes Land auswaehlen
         System.out.println(zugNummer);
         if (land.getHerrscher() == dran && land.getTruppen() > 1) {
@@ -231,6 +227,7 @@ public class Spiel {
         break;
       case 0 : //truppenPlatzieren
         aktualisiereTruppenLaender(dran); //darf nicht schon vorher gemacht werden weil damit berechnet wird, wie viele noch Platziert werden duerfen
+        platzierteTruppen = 0;
         phase++;
         break;
       case 1 : //angreifen also eigenes Land auswaehlen
@@ -347,11 +344,11 @@ public class Spiel {
     }
   }
   
-  private int getAnzahlLaender(byte meinSpieler) {
+  public int getAnzahlLaender(byte meinSpieler) { //hab das mal public gemacht
     return this.mitSpieler[meinSpieler].getGesamtLaender();
   }
   
-  private int getAnzahlTruppen(byte meinSpieler) {
+  public int getAnzahlTruppen(byte meinSpieler) {          //hab das mal public gemacht
     return this.mitSpieler[meinSpieler].getGesamtTruppen();
   }
   
@@ -374,31 +371,39 @@ public class Spiel {
     byte verteidigerWuerfelAnzahl = (byte) ((nachLand.getTruppen() >= 2)?2:1);
     for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
       angreiferWuerfel[i] = (byte) ((Math.random() * 6) + 1);
-      System.out.println("angreiferWuerfel: " + i + " hat den Wert " + angreiferWuerfel[i]);
     }
     for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
       verteidigerWuerfel[i] = (byte) ((Math.random() * 6) + 1);
+    }
+    byte zwischen = 0;
+    
+    Arrays.sort(verteidigerWuerfel, 0, (int) verteidigerWuerfelAnzahl);
+    /*zwischen = verteidigerWuerfel[0];
+    verteidigerWuerfel[0] = verteidigerWuerfel[1];
+    verteidigerWuerfel[1] = zwischen;*/
+    for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
       System.out.println("verteidigerWuerfel: " + i + " hat den Wert " + verteidigerWuerfel[i]);
     }
     
-    Arrays.sort(verteidigerWuerfel);
-    byte zwischen = 0;
-    
-    zwischen = verteidigerWuerfel[0];
-    verteidigerWuerfel[0] = verteidigerWuerfel[1];
-    verteidigerWuerfel[1] = zwischen;
-    
-    Arrays.sort(angreiferWuerfel);
-    zwischen = angreiferWuerfel[2];
+    Arrays.sort(angreiferWuerfel, 0, (int) angreiferWuerfelAnzahl);
+    /*zwischen = angreiferWuerfel[2];
     angreiferWuerfel[2] = angreiferWuerfel[0];
-    angreiferWuerfel[0] = zwischen;
+    angreiferWuerfel[0] = zwischen;*/
+    for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
+      System.out.println("angreiferWuerfel: " + i + " hat den Wert " + angreiferWuerfel[i]);
+    }
+    
     
     do { 
       if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] > verteidigerWuerfel[verteidigerWuerfelAnzahl - 1]) {
+        System.out.println(angreiferWuerfel[angreiferWuerfelAnzahl - 1] + " vs. " + verteidigerWuerfel[verteidigerWuerfelAnzahl - 1]);
         nachLand.setTruppen(nachLand.getHerrscher(), nachLand.getTruppen() - 1);
-      } else { // if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] <= verteidigerWuerfel[verteidigerWuerfelAnzahl - 1])
+      } else if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] <= verteidigerWuerfel[verteidigerWuerfelAnzahl - 1]){
         nachLand.setAngreiferTruppen(dran, nachLand.getAngreiferTruppen() - 1);
       }
+      else {
+        System.out.println("FEHLER IM KAMPF");
+      } // end of if-else
     } while (--angreiferWuerfelAnzahl > 0 && --verteidigerWuerfelAnzahl > 0);
     
     if (nachLand.getTruppen() == 0 || nachLand.getAngreiferTruppen() == 0) {
@@ -485,7 +490,7 @@ public class Spiel {
       return (int)(mitSpieler[dran].getGesamtLaender() / 3) + extraTruppen;
     } // end of if-else 
   }
-
+  
   private int berechneGesamtTruppen(byte meinSpieler) {
     //return mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen();//NEIN DIE BRAUCHEN WIR AUCH FUER DIE AKTUALISIERUNG DER ANZAHL DER TRUPPEN EINES SPIELERS
     int truppen = 0;
@@ -497,16 +502,16 @@ public class Spiel {
     mitSpieler[dran].setGesamtTruppen(truppen);
     return truppen;
   }
-    
+  
   private void aktualisiereTruppenLaender(byte meinSpieler){
     mitSpieler[meinSpieler].setGesamtTruppen(berechneGesamtTruppen(meinSpieler));
   }
-    
+  
   public void schonDurchReset() {//extramethode??
     for (byte i = 0; i < laender.length; i++) {
       laender[i].resetSchonDurch();
     }
   }
-
+  
 }
   
