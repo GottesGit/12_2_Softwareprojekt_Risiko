@@ -17,3 +17,5 @@ wuerfel
 interface
 immer mindestens 1 Truppe schon beim Auswählen eines Landes zum Angreifen verschieben
 Truppen/Namen/Kontinente
+Anzeigen wie viele Truppen man noch vergeben kann
+Anzeigen von welchem Land man angreift

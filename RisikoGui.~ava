@@ -39,8 +39,8 @@ public class RisikoGui extends Application {
   private SVGPath[] laenderSVG;
   
   private ImageView[] imageViewWuerfel = new ImageView[5];
-  private Image[] imageAngreifer = new Image[7];
-  private Image[] imageVerteidiger = new Image[7];
+  private Image[] imageAngreifer = new Image[6];
+  private Image[] imageVerteidiger = new Image[6];
   
   private Button kampfButton;
   private Button fertigButton;
@@ -389,16 +389,16 @@ public class RisikoGui extends Application {
     neuerSpielerLabel.setVisible(false);
     spielPane.getChildren().add(neuerSpielerLabel);
     
-    for (byte l = 1; l < 7; l++) {
-      imageAngreifer[l] = new Image(getClass().getResourceAsStream("/Wuerfel/A" + l + ".png"));
-      imageVerteidiger[l] = new Image(getClass().getResourceAsStream("/Wuerfel/V" + l + ".png"));
+    for (byte l = 0; l < 6; l++) {
+      imageAngreifer[l] = new Image("file:/Wuerfel/A" + (l + 1));
+      imageVerteidiger[l] = new Image("file:/Wuerfel/V" + (l + 1));
     }
     for (byte m = 0; m < 5; m++) {
       imageViewWuerfel[m] = new ImageView();
       imageViewWuerfel[m].setFitWidth(100);
       imageViewWuerfel[m].setPreserveRatio(true);
       imageViewWuerfel[m].setX(100);
-      imageViewWuerfel[m].setY(100 + m * 100);
+      imageViewWuerfel[m].setX(100 + m);
       spielPane.getChildren().add(0, imageViewWuerfel[m]);
     }
     
@@ -497,17 +497,10 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(false);
             fertigButton.setDisable(false);
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
-            
-            byte ang[] = spiel.getAngreiferWuerfel();
-            byte ver[] = spiel.getVerteidigerWuerfel();
-            byte m = 0;
-            for (; m < ang.length; m++) {
+            for (byte m = 0; m < 5; m++) {
               imageViewWuerfel[m].toFront();
-              imageViewWuerfel[m].setImage(imageAngreifer[ang[m]]);
-            }
-            for (int n = 0; n < ver.length; n++, m++) {
-              imageViewWuerfel[m].toFront();
-              imageViewWuerfel[m].setImage(imageVerteidiger[ver[n]]);
+              System.out.println("Horst:" + spiel.getAngreiferWuerfel().length);
+              System.out.println("Hans:" + spiel.getVerteidigerWuerfel().length);
             }
             break;
           case 5 : //Truppen verschieben also Startland auswaehlen
