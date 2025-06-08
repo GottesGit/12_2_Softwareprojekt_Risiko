@@ -38,6 +38,10 @@ public class RisikoGui extends Application {
   private SVGPath[] truppenSVG;
   private SVGPath[] laenderSVG;
   
+  private ImageView[] imageViewWuerfel = new ImageView[5];
+  private Image[] imageAngreifer = new Image[6];
+  private Image[] imageVerteidiger = new Image[6];
+  
   private Button kampfButton;
   private Button fertigButton;
   private Button switchButton;
@@ -50,6 +54,7 @@ public class RisikoGui extends Application {
   private TextField[] namenFelder = new TextField[4];
   private SVGPath[] svgPfade = new SVGPath[42];
   private Text[] landTexte = new Text[42];
+  
   public void start(Stage primaryStage) { 
     Pane root = new Pane();
     Scene startSzene = new Scene(root, 500, 350);
@@ -384,6 +389,18 @@ public class RisikoGui extends Application {
     neuerSpielerLabel.setVisible(false);
     spielPane.getChildren().add(neuerSpielerLabel);
     
+    for (byte l = 0; l < 6; l++) {
+      imageAngreifer[l] = new Image("file:/Wuerfel/A" + (l + 1));
+      imageVerteidiger[l] = new Image("file:/Wuerfel/V" + (l + 1));
+    }
+//    for (byte m = 0; m < 5; m++) {
+//      imageViewWuerfel[m].setFitWidth(100);
+//      imageViewWuerfel[m].setPreserveRatio(true);
+//      imageViewWuerfel[m].setX(100);
+//      imageViewWuerfel[m].setX(100 + m);
+//      spielPane.getChildren().add(0, imageViewWuerfel[m]);
+//    }
+
     spielPlan.setTitle("Risiko");
     spielPlan.setScene(spielSzene);
     spielPlan.show();
@@ -479,6 +496,9 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(false);
             fertigButton.setDisable(false);
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
+            for (byte m = 0; m < 5; m++) {
+              imageViewWuerfel[m].toFront();
+            }
             break;
           case 5 : //Truppen verschieben also Startland auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
