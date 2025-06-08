@@ -46,6 +46,7 @@ public class Spiel {
         //System.out.println(herrscher);
       } while (mitSpieler[herrscher].getGesamtTruppen() >= (byte) ((42.0 / mitSpieler.length) + 0.999));
       laender[i].setTruppen(herrscher, 1);
+      mitSpieler[herrscher].setGesamtLaender(mitSpieler[herrscher].getGesamtLaender() + 1);
       mitSpieler[herrscher].setGesamtTruppen(mitSpieler[herrscher].getGesamtTruppen() + 1);
     }
     
@@ -441,6 +442,8 @@ public class Spiel {
         nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
         System.out.println("hi");
         mitSpieler[dran].karteZiehen();
+        mitSpieler[vonLand.getHerrscher()].setGesamtLaender(mitSpieler[vonLand.getHerrscher()].getGesamtLaender() + 1);
+        mitSpieler[nachLand.getHerrscher()].setGesamtLaender(mitSpieler[nachLand.getHerrscher()].getGesamtLaender() - 1);
       }
       aktualisiereTruppenLaender(nachLand.getHerrscher());
       nachLand.setAngreiferTruppen(dran, 0);
