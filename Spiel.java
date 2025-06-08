@@ -16,6 +16,7 @@ public class Spiel {
   private byte[] verteidigerWuerfel = new byte[2];
   private int truppenVorher;
   int platzierteTruppen = 0;
+  int startTruppen = 20;//die man am Anfang kriegt, also in phase 0
   
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
     gui = meineGui;
@@ -78,18 +79,46 @@ public class Spiel {
     // int truppenNachPlatzieren = berechneGesamtTruppen();// truppen, die dran nach der platzierung haben darf - also das ist voellig falsch hier
     switch (phase) {
       case 100:
-        // if (mitSpieler[dran].getGesamtTruppen() < 15) {
-        land.setTruppen(dran, (land.getTruppen() + 1));
+        if (mitSpieler[dran].getGesamtTruppen() < startTruppen) {
+          if (taste == 1){
+            land.setTruppen(dran, (land.getTruppen() + 1));
+            mitSpieler[dran].setGesamtTruppen(mitSpieler[dran].getGesamtTruppen() + 1);
+          }
+          else if (taste == 2) {
+            int verbleibend = startTruppen - mitSpieler[dran].getGesamtTruppen();
+            int truppenZumSetzen = Math.min(verbleibend, 5);
+            land.setTruppen(dran, land.getTruppen() + truppenZumSetzen);
+            mitSpieler[dran].setGesamtTruppen(mitSpieler[dran].getGesamtTruppen() + truppenZumSetzen);
+            System.out.println("Du hast " + truppenZumSetzen + " Truppen platziert!");
+          }
+        } // end of if
+        else {
+          System.out.println("Spieler " + (dran + 1) + " hat bereits genug Truppen!");
+        } // end of if-else
+        
         System.out.println("GesamtTruppen:" + mitSpieler[dran].getGesamtTruppen());
-        mitSpieler[dran].setGesamtTruppen(mitSpieler[dran].getGesamtTruppen() + 1);
-        dran++;
-        // }
-        if (dran >= (mitSpieler.length)) {
-          dran = 0;
+        System.out.println("taste: " + taste);
+        
+        int versuche = 0;
+        do {
+          dran = (byte)((dran + 1) % mitSpieler.length);
+          versuche++;
+        } while (mitSpieler[dran].getGesamtTruppen() >= startTruppen && versuche <= mitSpieler.length);
+        
+        boolean alleFertig = true;
+        for (Spieler spieler : mitSpieler) {//hat chat gemacth
+          if (spieler.getGesamtTruppen() < startTruppen) {
+            alleFertig = false;
+            break;
+          }
         }
-        if (mitSpieler[(mitSpieler.length -1)].getGesamtTruppen() >= 15) { //bis der letzte 15 Truppen hat
+        
+        if (alleFertig) {
+          System.out.println("Alle Spieler haben ihre Starttruppen gesetzt.");
+          dran = 0;
           phasenWechsel();
         }
+        
         break;
       case 0 : //truppenplatzieren je nach maustaste
         truppenVorher = berechneGesamtTruppen(dran);
@@ -105,7 +134,7 @@ public class Spiel {
             platzierteTruppen = platzierteTruppen + extra;
           }
         } 
-        if (platzierteTruppen = berechneZuPlatzierendeTruppen()) {
+        if (platzierteTruppen == berechneZuPlatzierendeTruppen()) {
           phasenWechsel();
           break;
         } 
@@ -411,6 +440,7 @@ public class Spiel {
         nachLand.setTruppen(dran, nachLand.getAngreiferTruppen());
         nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
         System.out.println("hi");
+        mitSpieler[dran].karteZiehen();
       }
       aktualisiereTruppenLaender(nachLand.getHerrscher());
       nachLand.setAngreiferTruppen(dran, 0);
@@ -477,7 +507,7 @@ public class Spiel {
   }
   
   private int berechneZuPlatzierendeTruppen() { //glaube ist gut so
-    int extraTruppen = 0;
+    int extraTruppen = 0 + mitSpieler[dran].kartenNutzen();
     for (int i = 0; i < kontinente.length; i++) {
       if (kontinente[i].beherrschtVon(dran) == true) {
         extraTruppen = extraTruppen + kontinente[i].getExtraTruppen();
