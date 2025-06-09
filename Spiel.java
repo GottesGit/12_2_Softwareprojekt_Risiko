@@ -43,7 +43,6 @@ public class Spiel {
       byte herrscher;
       do {
         herrscher = (byte) (Math.random() * mitSpieler.length);
-        //System.out.println(herrscher);
       } while (mitSpieler[herrscher].getGesamtTruppen() >= (byte) ((42.0 / mitSpieler.length) + 0.999));
       laender[i].setTruppen(herrscher, 1);
       mitSpieler[herrscher].setGesamtLaender(mitSpieler[herrscher].getGesamtLaender() + 1);
@@ -121,23 +120,44 @@ public class Spiel {
         
         break;
       case 0 : //truppenplatzieren je nach maustaste
-        truppenVorher = berechneGesamtTruppen(dran);
         System.out.println(berechneZuPlatzierendeTruppen());
-        System.out.println(platzierteTruppen);
-        while (platzierteTruppen < berechneZuPlatzierendeTruppen()) { 
-          if (taste == 1) {
-            land.setTruppen(dran, land.getTruppen() + 1);
-            platzierteTruppen++;
-          } else if (taste == 2) {
-            int extra = Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran)));
-            land.setTruppen(dran, land.getTruppen() + extra);
-            platzierteTruppen = platzierteTruppen + extra;
-          }
-        } 
-        if (platzierteTruppen == berechneZuPlatzierendeTruppen()) {
+        System.out.println(mitSpieler[dran].getGesamtTruppen());
+        System.out.println(berechneGesamtTruppen(dran));
+        if (taste == 1) {
+          land.setTruppen(dran, land.getTruppen() + 1);
+          System.out.println("Eine Truppe wird plaziert");
+        } else if (taste == 2) {
+          land.setTruppen(dran, land.getTruppen() + Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran))));
+        }
+        System.out.println("hoe");
+        if (berechneGesamtTruppen(dran) == mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen()) {//KAPUTT
+          System.out.println("Phasenwechsel alle Truppen plaziert");
           phasenWechsel();
-          break;
-        } 
+        } else if (berechneGesamtTruppen(dran) > mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen()) {
+          System.out.println("Error zu viele Truppen wurden Platziert");
+          phasenWechsel();
+        }
+        break;
+//        truppenVorher = berechneGesamtTruppen(dran);
+//        System.out.println(berechneZuPlatzierendeTruppen());
+//        System.out.println(platzierteTruppen);
+//        if (platzierteTruppen < berechneZuPlatzierendeTruppen()) { 
+//          if (taste == 1) {
+//            land.setTruppen(dran, land.getTruppen() + 1);
+//            System.out.println("Eine Truppe wird plaziert");
+//            platzierteTruppen++;
+//          } else if (taste == 2) {
+//            int extra = Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran)));
+//            land.setTruppen(dran, land.getTruppen() + extra);
+//            platzierteTruppen += extra;
+//          }
+//        } else {
+//          System.out.println("Error zu viele Truppen wurden plaziert");
+//        }
+//        if (platzierteTruppen == berechneZuPlatzierendeTruppen()) {
+//          phasenWechsel();
+//          break;
+//        } 
       case 1 : //angreifen also eigenes Land auswaehlen
         System.out.println(zugNummer);
         if (land.getHerrscher() == dran && land.getTruppen() > 1) {
@@ -197,7 +217,7 @@ public class Spiel {
             verschiebeTruppen(Math.min(5, vonLand.getTruppen() - 1));
           }
           if (vonLand.getTruppen() <= 1) {
-            System.out.println("Alle Trupppen verschoben");
+            System.out.println("Alle Trupppen aus " + vonLand.getName() + " verschoben");
             phasenWechsel();
           }
         } else {
@@ -211,14 +231,14 @@ public class Spiel {
   public void buttonKlickAktion(byte knopf, byte taste) { //ok (1) und Kampfbutton (2)
     if (knopf == 1) {
       if (phase == 4 || phase == 3) { // im Kampf
-        phase = 4; // gibt vllt nen Error wenn noch keine Truppen zum Angreifen im Land sind
-        if (nachLand.getAngreiferTruppen() > 0) {
-          vonLand.setTruppen(dran, vonLand.getTruppen() + nachLand.getAngreiferTruppen());
-          nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
-        } // end of if
-        else if (phase == 4 && nachLand.getAngreiferTruppen() == 0) {
-          phasenWechsel();
-        }
+        phase = 4;
+        //if (nachLand.getAngreiferTruppen() > 0) {
+        vonLand.setTruppen(dran, vonLand.getTruppen() + nachLand.getAngreiferTruppen());
+        nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
+        //}
+        //else if (phase == 4 && nachLand.getAngreiferTruppen() == 0) {
+        phasenWechsel();
+        //}
       } else if (phase == 5 || phase == 6) { //keine Truppen verschieben
         vonLand = null;//kopiert von phasenwechsel mit 7
         zugNummer++;
@@ -313,15 +333,15 @@ public class Spiel {
         nachLand = null;
         zugNummer++;
         dran++;
-        
+        phase = 0;
 //        if (zugNummer < mitSpieler.length && phase == 0) { //in der ersten Runde werden noch keine Extratruppen verteilt - doch
 //          phase = 1;
 //          break;
 //        }
         if (dran >= mitSpieler.length) {
           dran = 0;
-          break;
         }
+        break;
     }
     
     if (fehler) {
@@ -405,7 +425,7 @@ public class Spiel {
     }
     byte zwischen = 0; //bubblesort
     for (byte i = 0; i < angreiferWuerfelAnzahl - 1; i++) {
-      for (byte j = i; j < angreiferWuerfelAnzahl - 1; j++) {
+      for (byte j = 0; j <= i; j++) {
         if (angreiferWuerfel[j] < angreiferWuerfel[j + 1]) {
           zwischen = angreiferWuerfel[j];
           angreiferWuerfel[j] = angreiferWuerfel[j + 1];
@@ -530,7 +550,7 @@ public class Spiel {
         truppen += laender[i].getTruppen();
       }
     } 
-    mitSpieler[dran].setGesamtTruppen(truppen);
+    //mitSpieler[dran].setGesamtTruppen(truppen);//nein, dafuer ist aktualisiereTruppenLaender
     return truppen;
   }
   

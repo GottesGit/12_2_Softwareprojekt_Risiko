@@ -521,6 +521,8 @@ public class RisikoGui extends Application {
               imageViewWuerfel[m].toFront();
               imageViewWuerfel[m].setImage(imageVerteidiger[ver[n]]);
             }
+            phasenLabel.setText("Angriffsphase");
+            aufforderungsLabel.setText("Kämpfe oder gib auf!");
             break;
           case 5 : //Truppen verschieben also Startland auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
@@ -580,7 +582,7 @@ public class RisikoGui extends Application {
     neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + ";-fx-font-size: 30px; -fx-background-color: lightgray;");
     neuerSpielerLabel.setVisible(true);
     
-    PauseTransition pause = new PauseTransition(Duration.seconds(2.5));
+    PauseTransition pause = new PauseTransition(Duration.seconds(2));
     pause.setOnFinished(e -> neuerSpielerLabel.setVisible(false));
     pause.play();
   }

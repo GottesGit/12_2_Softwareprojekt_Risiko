@@ -56,7 +56,7 @@ public class LandButton extends Button{//geht anscheinend nicht
         this.schriftzug.setText(land.getTruppen() + " vs. " + land.getAngreiferTruppen());
         this.kontinente.setVisible(false);
         break;
-    } // end of switch
+    }
     globalerSwitchWert = switchWert;
   }
   
