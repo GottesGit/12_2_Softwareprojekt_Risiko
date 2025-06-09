@@ -21,4 +21,5 @@ Anzeigen wie viele Truppen man noch vergeben kann
 Anzeigen von welchem Land man angreift
 Anzahl der Truppen, die am Anfang plaziert werden können, stimmt die?
 Das WerDranIstFeld sollte in Phase 100 am besten nur dann angezeigt werden, wenn sich der Spieler gewechselt hat
-
+Zufällige Reihenfolge der Spieler
+Beim angegriffenen muss sich die Truppen- und Länzeranzahl ändern
