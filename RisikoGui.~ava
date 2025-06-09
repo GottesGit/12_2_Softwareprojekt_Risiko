@@ -463,7 +463,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             phasenLabel.setText("Verstärkungsphase");
-            aufforderungsLabel.setText("Zu setzende Truppen: " + spiel.berechneZuPlatzierendeTruppen() + "!");
+            aufforderungsLabel.setText("Zu setzende Truppen: " + spiel.truppenPhase0());
             neuerSpieler();
             break;
           case 1 : //angreifen also eigenes Land auswaehlen
@@ -530,6 +530,8 @@ public class RisikoGui extends Application {
               imageViewWuerfel[m].toFront();
               imageViewWuerfel[m].setImage(imageVerteidiger[ver[n]]);
             }
+            phasenLabel.setText("Angriffsphase");
+            aufforderungsLabel.setText("Kämpfe oder gib auf!");
             break;
           case 5 : //Truppen verschieben also Startland auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
@@ -580,7 +582,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(true);
             phasenLabel.setText("Befestigungsphase");
-            aufforderungsLabel.setText("Setze deine Truppen!");
+            aufforderungsLabel.setText("Zu setzende Truppen: " + (spiel.truppenPhase100() - spiel.getAnzahlTruppen(spiel.getDran())));
             neuerSpieler();
             break;
         }
@@ -593,7 +595,7 @@ public class RisikoGui extends Application {
     neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + ";-fx-font-size: 30px; -fx-background-color: lightgray;");
     neuerSpielerLabel.setVisible(true);
     
-    PauseTransition pause = new PauseTransition(Duration.seconds(2.5));
+    PauseTransition pause = new PauseTransition(Duration.seconds(2));
     pause.setOnFinished(e -> neuerSpielerLabel.setVisible(false));
     pause.play();
   }

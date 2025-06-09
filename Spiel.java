@@ -560,8 +560,8 @@ public class Spiel {
     } // end of if-else 
   }
   
-  public int truppenPhase0() {
-    return this.berechneZuPlatzierendeTruppen();
+  public int getZuPlazierendeTruppen() {
+    return mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran);
   }
 
   private int berechneGesamtTruppen(byte meinSpieler) {

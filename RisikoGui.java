@@ -463,7 +463,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             phasenLabel.setText("Verstärkungsphase");
-            aufforderungsLabel.setText("Zu setzende Truppen: " + spiel.truppenPhase0());
+            aufforderungsLabel.setText("Zu setzende Truppen: " + spiel.getZuPlazierendeTruppen());
             neuerSpieler();
             break;
           case 1 : //angreifen also eigenes Land auswaehlen
