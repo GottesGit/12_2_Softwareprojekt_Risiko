@@ -212,7 +212,7 @@ public class Spiel {
   }
   
   public int truppenPhase100() {
-    return this.startTruppen;
+    return this.truppenZumSetzen;
   }
   
   
