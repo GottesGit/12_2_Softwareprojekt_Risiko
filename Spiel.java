@@ -16,7 +16,7 @@ public class Spiel {
   private byte[] verteidigerWuerfel = new byte[2];
   private int truppenVorher;
   int platzierteTruppen = 0;
-  int startTruppen = 20;//die man am Anfang kriegt, also in phase 100
+  int startTruppen = 25;//die man am Anfang kriegt, also in phase 100
   
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
     gui = meineGui;
@@ -72,12 +72,10 @@ public class Spiel {
       }
       kontinente[i] = new Kontinent(hinzuzfuegendeLaender, kontinentNamen[i], kontinentTruppen[i]);
     }
-    //dran = (byte) (Math.random() * mitSpieler.length);
   }
   
   public void landKlickAktion(Land land, int taste) {//int zu byte konversion ist kacke, deswegen kein byte 
     System.out.println(land.getName() + " inPhase " + phase);
-    // int truppenNachPlatzieren = berechneGesamtTruppen();// truppen, die dran nach der platzierung haben darf - also das ist voellig falsch hier
     switch (phase) {
       case 100:
         if (mitSpieler[dran].getGesamtTruppen() < startTruppen) {
@@ -86,17 +84,19 @@ public class Spiel {
             mitSpieler[dran].setGesamtTruppen(mitSpieler[dran].getGesamtTruppen() + 1);
           }
           else if (taste == 2) {
-            int verbleibend = startTruppen - mitSpieler[dran].getGesamtTruppen();
-            int truppenZumSetzen = Math.min(verbleibend, 5);
+            //            int verbleibend = startTruppen - mitSpieler[dran].getGesamtTruppen();
+            //            int truppenZumSetzen = Math.min(verbleibend, 5);
+            //            land.setTruppen(dran, land.getTruppen() + truppenZumSetzen);
+            //            mitSpieler[dran].setGesamtTruppen(mitSpieler[dran].getGesamtTruppen() + truppenZumSetzen);
+            int truppenZumSetzen = Math.min(startTruppen - mitSpieler[dran].getGesamtTruppen(), 5);
             land.setTruppen(dran, land.getTruppen() + truppenZumSetzen);
             mitSpieler[dran].setGesamtTruppen(mitSpieler[dran].getGesamtTruppen() + truppenZumSetzen);
             System.out.println("Du hast " + truppenZumSetzen + " Truppen platziert!");
           }
-        } // end of if
+        }
         else {
           System.out.println("Spieler " + (dran + 1) + " hat bereits genug Truppen!");
-        } // end of if-else
-        
+        }
         System.out.println("GesamtTruppen:" + mitSpieler[dran].getGesamtTruppen());
         System.out.println("taste: " + taste);
         
@@ -107,13 +107,12 @@ public class Spiel {
         } while (mitSpieler[dran].getGesamtTruppen() >= startTruppen && versuche <= mitSpieler.length);
         
         boolean alleFertig = true;
-        for (Spieler spieler : mitSpieler) {//hat chat gemacth
+        for (Spieler spieler : mitSpieler) {//hat chat gemacht
           if (spieler.getGesamtTruppen() < startTruppen) {
             alleFertig = false;
             break;
           }
         }
-        
         if (alleFertig) {
           System.out.println("Alle Spieler haben ihre Starttruppen gesetzt.");
           dran = 0;
@@ -184,6 +183,7 @@ public class Spiel {
       case 6 : //Truppen verschieben also ZielLand auswaehlen
         if (istVerbunden(land.getIndex())) {//land.getHerrscher() == dran && land != vonLand && 
           nachLand = land;
+          System.out.println("NachLand fuer Verschieben ausgewaehlt");
           phasenWechsel();
         }
         schonDurchReset();
@@ -197,6 +197,7 @@ public class Spiel {
             verschiebeTruppen(Math.min(5, vonLand.getTruppen() - 1));
           }
           if (vonLand.getTruppen() <= 1) {
+            System.out.println("Alle Trupppen verschoben");
             phasenWechsel();
           }
         } else {
@@ -234,7 +235,6 @@ public class Spiel {
         phasenWechsel();
       }
       gui.grafikErneuern();
-      nachLand = null;
     } else if (knopf == 2) {
       if (phase == 4 || phase == 3) {
         phase = 4; // gibt vllt nen Error wenn noch keine Truppen zum Angreifen im Land sind
@@ -253,7 +253,7 @@ public class Spiel {
     System.out.println("Phasenwechsel:" + phase);
     switch (phase) {
       case 100:
-        phase = 1;
+        phase = 0;
         break;
       case 0 : //truppenPlatzieren
         aktualisiereTruppenLaender(dran); //darf nicht schon vorher gemacht werden weil damit berechnet wird, wie viele noch Platziert werden duerfen
@@ -314,13 +314,11 @@ public class Spiel {
         zugNummer++;
         dran++;
         
-        if
-        (zugNummer < mitSpieler.length && phase == 0) { //in der ersten Runde werden noch keine Extratruppen verteilt
-          phase = 1;
-          break;
-        }
-        
-        else if (dran >= mitSpieler.length) {
+//        if (zugNummer < mitSpieler.length && phase == 0) { //in der ersten Runde werden noch keine Extratruppen verteilt - doch
+//          phase = 1;
+//          break;
+//        }
+        if (dran >= mitSpieler.length) {
           dran = 0;
           break;
         }
@@ -405,38 +403,38 @@ public class Spiel {
     for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
       verteidigerWuerfel[i] = (byte) ((Math.random() * 6) + 1);
     }
-    byte zwischen = 0;
-    
-    Arrays.sort(verteidigerWuerfel, 0, (int) verteidigerWuerfelAnzahl);
-    /*zwischen = verteidigerWuerfel[0];
-    verteidigerWuerfel[0] = verteidigerWuerfel[1];
-    verteidigerWuerfel[1] = zwischen;*/
-    for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
-      System.out.println("verteidigerWuerfel: " + i + " hat den Wert " + verteidigerWuerfel[i]);
+    byte zwischen = 0; //bubblesort
+    for (byte i = 0; i < angreiferWuerfelAnzahl - 1; i++) {
+      for (byte j = i; j < angreiferWuerfelAnzahl - 1; j++) {
+        if (angreiferWuerfel[j] < angreiferWuerfel[j + 1]) {
+          zwischen = angreiferWuerfel[j];
+          angreiferWuerfel[j] = angreiferWuerfel[j + 1];
+          angreiferWuerfel[j + 1] = zwischen;
+        }
+      }
     }
-    
-    Arrays.sort(angreiferWuerfel, 0, (int) angreiferWuerfelAnzahl);
-    /*zwischen = angreiferWuerfel[2];
-    angreiferWuerfel[2] = angreiferWuerfel[0];
-    angreiferWuerfel[0] = zwischen;*/
+    if (verteidigerWuerfel[0] < verteidigerWuerfel[1]) {
+      zwischen = verteidigerWuerfel[0];
+      verteidigerWuerfel[0] = verteidigerWuerfel[1];
+      verteidigerWuerfel[1] = zwischen;
+    }
     for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
       System.out.println("angreiferWuerfel: " + i + " hat den Wert " + angreiferWuerfel[i]);
     }
-    
-    
+    for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
+      System.out.println("verteidigerWuerfel: " + i + " hat den Wert " + verteidigerWuerfel[i]);
+    }
+    byte wuerfelNr = 0;
     do { 
-      if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] > verteidigerWuerfel[verteidigerWuerfelAnzahl - 1]) {
-        System.out.println(angreiferWuerfel[angreiferWuerfelAnzahl - 1] + " vs. " + verteidigerWuerfel[verteidigerWuerfelAnzahl - 1]);
+      System.out.println(angreiferWuerfel[wuerfelNr] + " vs. " + verteidigerWuerfel[wuerfelNr]);
+      if (angreiferWuerfel[wuerfelNr] > verteidigerWuerfel[wuerfelNr]) {
         nachLand.setTruppen(nachLand.getHerrscher(), nachLand.getTruppen() - 1);
-      } else if (angreiferWuerfel[angreiferWuerfelAnzahl - 1] <= verteidigerWuerfel[verteidigerWuerfelAnzahl - 1]){
+      } else{
         nachLand.setAngreiferTruppen(dran, nachLand.getAngreiferTruppen() - 1);
       }
-      else {
-        System.out.println("FEHLER IM KAMPF");
-      } // end of if-else
-    } while (--angreiferWuerfelAnzahl > 0 && --verteidigerWuerfelAnzahl > 0);
+    } while (wuerfelNr++ < angreiferWuerfelAnzahl && wuerfelNr < verteidigerWuerfelAnzahl);
     
-    if (nachLand.getTruppen() == 0 || nachLand.getAngreiferTruppen() == 0) {
+    if (nachLand.getTruppen() < 1 || nachLand.getAngreiferTruppen() < 1) {
       if (nachLand.getTruppen() == 0 && nachLand.getAngreiferTruppen() > 0){
         nachLand.setTruppen(dran, nachLand.getAngreiferTruppen());
         nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);

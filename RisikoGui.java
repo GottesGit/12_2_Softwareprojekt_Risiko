@@ -19,11 +19,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import javafx.scene.shape.*;
 import javafx.event.*;
-
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-
 import java.util.function.UnaryOperator;
 
 public class RisikoGui extends Application {
@@ -37,6 +35,7 @@ public class RisikoGui extends Application {
   private Rectangle[] spielerRectangle;
   private SVGPath[] truppenSVG;
   private SVGPath[] laenderSVG;
+  private String[] spielerFarben = {"red", "blue", "green", "yellow"};
   
   private ImageView[] imageViewWuerfel = new ImageView[5];
   private Image[] imageAngreifer = new Image[7];
@@ -134,18 +133,37 @@ public class RisikoGui extends Application {
   }
   
   private void spielStart() {
+    String[] farben = new String[4];
+    for (byte i = 0; i < 4; i++) { // die Spieler bekommen ihre Farben
+      if (!namenFelder[i].getText().isEmpty()) {
+        farben[spielerAnzahl++] = spielerFarben[i];
+      }
+    }
     for (byte i = 0; i < 4; i++) { // die Spielernamen werden alle nach vorne durchgeschoben
       if (namenFelder[i].getText().isEmpty()) {
         for (byte j = i; j < 3; j++) {
           namenFelder[j].setText(namenFelder[j + 1].getText());
         }
-      } else {
-        spielerAnzahl++;
+        namenFelder[3].setText("");
+      }
+      if (namenFelder[i].getText().isEmpty()) {//zwei mal schieben, falls nur erste und letzte ausgefuellt
+        for (byte j = i; j < 3; j++) {
+          namenFelder[j].setText(namenFelder[j + 1].getText());
+        }
       }
     }
+    byte startSpieler = (byte) (Math.random() * spielerAnzahl);//zufaelliger Startspieler
+    System.out.println("startSpieler: " + startSpieler);
     String[] namen = new String[spielerAnzahl];
-    for (byte i = 0; i < spielerAnzahl; i++) {
-      namen[i] = namenFelder[i].getText();
+    for (byte i = startSpieler; i < spielerAnzahl; i++) {
+      namen[i - startSpieler] = namenFelder[i].getText();
+      spielerFarben[i - startSpieler] = farben[i];
+      System.out.println(i + " Spieler " + (i - startSpieler) + " : " + namenFelder[i].getText());
+    }
+    for (byte i = 0; i < startSpieler; i++) {
+      namen[i + spielerAnzahl - startSpieler] = namenFelder[i].getText();
+      spielerFarben[i + spielerAnzahl - startSpieler] = farben[i];
+      System.out.println(i + " Spieler " + (i + spielerAnzahl - startSpieler) + " : " + namenFelder[i].getText());
     }
     spiel = new Spiel(namen, this);
     
@@ -244,8 +262,8 @@ public class RisikoGui extends Application {
       landTexte[i].setLayoutX(laenderPositionen[i][0] - 10);
       landTexte[i].setLayoutY(laenderPositionen[i][1]);
       landTexte[i].setStyle("-fx-fill: white; -fx-font-size: 15px; -fx-font-weight: bold;");
-      landTexte[i].setTextAlignment(TextAlignment.CENTER);   //hab das Gefühl das macht nichts
-      landTexte[i].setMouseTransparent(true);                //dann können wir nicht mehr auf die Texte klicken
+      landTexte[i].setTextAlignment(TextAlignment.CENTER); //hab das Gefühl das macht nichts
+      landTexte[i].setMouseTransparent(true); //dann können wir nicht mehr auf die Texte klicken
       
       landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i), landTexte[i], imageViewKontinente); //hier Erstellung der landButtons
       landButtons[i].setStyle("-fx-background-color: transparent;");
@@ -354,7 +372,7 @@ public class RisikoGui extends Application {
       spielerLabel[k].setPrefHeight(20);
       spielerLabel[k].setPrefWidth(140);
       spielerLabel[k].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;");
-      spielerLabel[k].setText(namenFelder[k].getText());
+      spielerLabel[k].setText(spiel.getSpielerName(k));//namenFelder[k].getText()
       spielPane.getChildren().add(spielerLabel[k]);
       
       truppenLabel[k] = new Label();
@@ -418,17 +436,7 @@ public class RisikoGui extends Application {
     } else {
       for (byte i = 0; i < landButtons.length; i++) {
         landButtons[i].refresh(switchWert);
-        if (landButtons[i].getHerrscher() == 0) {
-          svgPfade[i].setStyle("-fx-fill: red;"); //erst einmal Farben deklariert, sollte dann noch mit Zahl und AngreiferTruppen usw. vervollstaendigt werden
-        } else if (landButtons[i].getHerrscher() == 1) {
-          svgPfade[i].setStyle("-fx-fill: blue;");
-        } else if (landButtons[i].getHerrscher() == 2) {
-          svgPfade[i].setStyle("-fx-fill: green;");
-        } else {
-          svgPfade[i].setStyle("-fx-fill: yellow;");
-        }
-        
-        String[] spielerFarben = {"red", "blue", "green", "yellow"}; //Ich brauchte hierfür jetzt mal endlich einen String, sollten wir davor mal machen
+        svgPfade[i].setStyle("-fx-fill: " + spielerFarben[landButtons[i].getHerrscher()] + ";"); //erst einmal Farben deklariert, sollte dann noch mit Zahl und AngreiferTruppen usw. vervollstaendigt werden
         for (int j = 0; j < spielerAnzahl; j++) {
           if (spiel.getDran() == j) {
             spielerLabel[j].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: black;");
@@ -456,7 +464,7 @@ public class RisikoGui extends Application {
             fertigButton.setDisable(false);
             phasenLabel.setText("Verstärkungsphase");
             aufforderungsLabel.setText("Setze deine Truppen!");
-            neuerSpieler(spiel.getDran(), spielerFarben);
+            neuerSpieler();
             break;
           case 1 : //angreifen also eigenes Land auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
@@ -486,7 +494,11 @@ public class RisikoGui extends Application {
             } else {
               landButtons[i].setDisable(true);
             }
-            kampfButton.setDisable(false);
+            if(spiel.getNachLand().getAngreiferTruppen() > 0){
+              kampfButton.setDisable(false);
+            } else {
+              kampfButton.setDisable(true);
+            }
             fertigButton.setDisable(false);
             phasenLabel.setText("Angriffsphase");
             aufforderungsLabel.setText("Verschiebe deine Angreifertruppen in das ausgewählte Land!");
@@ -505,7 +517,7 @@ public class RisikoGui extends Application {
               imageViewWuerfel[m].toFront();
               imageViewWuerfel[m].setImage(imageAngreifer[ang[m]]);
             }
-            for (int n = 0; n < ver.length; n++, m++) {
+            for (int n = 0; n < ver.length; n++, m++) {//WAS IST DAS FUER EIN CRAZY M?
               imageViewWuerfel[m].toFront();
               imageViewWuerfel[m].setImage(imageVerteidiger[ver[n]]);
             }
@@ -556,19 +568,19 @@ public class RisikoGui extends Application {
             fertigButton.setDisable(true);
             phasenLabel.setText("Befestigungsphase");
             aufforderungsLabel.setText("Setze deine Truppen!");
-            neuerSpieler(spiel.getDran(), spielerFarben);
+            neuerSpieler();
             break;
         }
       }
     }
   }
   
-  public void neuerSpieler(byte spielerDran, String[] spielerFarben) {
-    neuerSpielerLabel.setText(namenFelder[spielerDran].getText() + " ist dran");
-    neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spielerDran] + ";-fx-font-size: 30px; -fx-background-color: lightgray;");
+  public void neuerSpieler() {
+    neuerSpielerLabel.setText(spiel.getSpielerName(spiel.getDran()) + " ist dran");
+    neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + ";-fx-font-size: 30px; -fx-background-color: lightgray;");
     neuerSpielerLabel.setVisible(true);
     
-    PauseTransition pause = new PauseTransition(Duration.seconds(3));
+    PauseTransition pause = new PauseTransition(Duration.seconds(2.5));
     pause.setOnFinished(e -> neuerSpielerLabel.setVisible(false));
     pause.play();
   }
@@ -593,5 +605,4 @@ public class RisikoGui extends Application {
   }
   
 }
-      // Ende Methoden
     

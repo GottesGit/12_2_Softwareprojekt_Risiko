@@ -1,4 +1,4 @@
-UML Pflegen (das neue ist das lange)
+UML Pflegen (das neue ist das lange) -> Hummes fragen, ob das drawio-uml mit in die Wertung zaehlt
 Ordner aufräumen
 Fehler beheben
 Starttruppen verteilen (von den spielern)
@@ -19,3 +19,6 @@ immer mindestens 1 Truppe schon beim Auswählen eines Landes zum Angreifen versc
 Truppen/Namen/Kontinente
 Anzeigen wie viele Truppen man noch vergeben kann
 Anzeigen von welchem Land man angreift
+Anzahl der Truppen, die am Anfang plaziert werden können, stimmt die?
+Das WerDranIstFeld sollte in Phase 100 am besten nur dann angezeigt werden, wenn sich der Spieler gewechselt hat
+

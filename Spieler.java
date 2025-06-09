@@ -37,8 +37,8 @@ public class Spieler{
   }
  
   public void karteZiehen(){
-    int zahl = (int)(Math.random() * 3);// sollte glaube 0, 1 oder 2 geben - ja
-    this.kartenAnzahl[zahl]++;
+    byte karte = (byte)(Math.random() * 3);
+    this.kartenAnzahl[karte]++;
   }
   
   public void setGesamtTruppen(int anzahl){
