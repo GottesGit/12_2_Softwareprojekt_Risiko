@@ -235,7 +235,6 @@ public class Spiel {
     return this.startTruppen;
   }
   
-  
   public void buttonKlickAktion(byte knopf, byte taste) { //ok (1) und Kampfbutton (2)
     if (knopf == 1) {
       if (phase == 4 || phase == 3) { // im Kampf

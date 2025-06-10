@@ -433,7 +433,7 @@ public class Spiel {
     }
     byte zwischen = 0; //bubblesort
     for (byte i = 0; i < angreiferWuerfelAnzahl - 1; i++) {
-      for (byte j = 0; j <= i; j++) {
+      for (byte j = 0; j < angreiferWuerfelAnzahl - 1; j++) {
         if (angreiferWuerfel[j] < angreiferWuerfel[j + 1]) {
           zwischen = angreiferWuerfel[j];
           angreiferWuerfel[j] = angreiferWuerfel[j + 1];
