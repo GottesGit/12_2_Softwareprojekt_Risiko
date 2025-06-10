@@ -250,17 +250,17 @@ public class RisikoGui extends Application {
     Scene spielSzene = new Scene(skalierGruppe, 1366, 728);
     
     ChangeListener<Number> resizeListener = (obs, oldVal, newVal) -> {//vonChat, funktioniert nicht
-        double scaleX = spielSzene.getWidth() / 1366;
-        double scaleY = spielSzene.getHeight() / 728;
-        double scale = Math.min(scaleX, scaleY);
-    
-        spielPane.setScaleX(scale);
-        spielPane.setScaleY(scale);
+      double scaleX = spielSzene.getWidth() / 1366;
+      double scaleY = spielSzene.getHeight() / 728;
+      double scale = Math.min(scaleX, scaleY);
+      
+      spielPane.setScaleX(scale);
+      spielPane.setScaleY(scale);
     };
     
-//    spielPlan.widthProperty().addListener((obs, oldVal, newVal) -> {//auch von chat
-//        spielPlan.setHeight(newVal.doubleValue() * (728 / 1366));
-//    });
+    //    spielPlan.widthProperty().addListener((obs, oldVal, newVal) -> {//auch von chat
+    //        spielPlan.setHeight(newVal.doubleValue() * (728 / 1366));
+    //    });
     
     spielSzene.widthProperty().addListener(resizeListener);
     spielSzene.heightProperty().addListener(resizeListener);
@@ -583,8 +583,11 @@ public class RisikoGui extends Application {
             aufforderungsLabel.setText("Wähle das Land, welches du angreifen möchtest!");
             break;
           case 3 : //angreifen also Truppen nach Zielland verschieben
-            for (int o = 0; o < 5; o++) {
-              imageViewWuerfel[o].toBack();
+            for (int o = 0; o < 3; o++) {
+              imageViewAngreiferWuerfel[o].toBack();
+            }
+            for (int o = 0; o < 2; o++) {
+              imageViewVerteidigerWuerfel[o].toBack();
             }
             
             if (i == spiel.getNachLand().getIndex()) { //nur angegriffenes Land enablen
@@ -607,32 +610,33 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(false);
             fertigButton.setDisable(false);
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
-//            
-//            for (int o = 0; o < 5; o++) {
-//              imageViewWuerfel[o].toBack();
-//            }
-//            byte ang[] = spiel.getAngreiferWuerfel();
-//            byte ver[] = spiel.getVerteidigerWuerfel();
-//            byte angAnzahl = spiel.getAngreiferWuerfelAnzahl();
-//            byte verAnzahl = spiel.getVerteidigerWuerfelAnzahl();
-//            byte m = 0;
-//            /*System.out.println("AngreiferWuerfelAnzahl = " + angAnzahl);
-//            System.out.println("VerteidigerWuerfelAnzahl = " + verAnzahl);
-//            System.out.println("AngreiferWuerfel[0] = " + ang[0]);
-//            System.out.println("VerteidigerrWuerfel[0] = " + ver[0]);*/
-//            for (; m < angAnzahl; m++) {
-//              imageViewWuerfel[m].toFront();
-//              imageViewWuerfel[m].setImage(imageAngreifer[ang[m]]);
-//            }
-//            for (int n = 0; n < verAnzahl; n++, m++) {//WAS IST DAS FUER EIN CRAZY M?
-//              imageViewWuerfel[m].toFront();
-//              imageViewWuerfel[m].setImage(imageVerteidiger[ver[n]]);
-//            }
-//            phasenLabel.setText("Angriffsphase");
-//            aufforderungsLabel.setText("Kämpfe oder gib auf!");
+            //            
+            //            for (int o = 0; o < 5; o++) {
+            //              imageViewWuerfel[o].toBack();
+            //            }
+            //            byte ang[] = spiel.getAngreiferWuerfel();
+            //            byte ver[] = spiel.getVerteidigerWuerfel();
+            //            byte angAnzahl = spiel.getAngreiferWuerfelAnzahl();
+            //            byte verAnzahl = spiel.getVerteidigerWuerfelAnzahl();
+            //            byte m = 0;
+            //            /*System.out.println("AngreiferWuerfelAnzahl = " + angAnzahl);
+            //            System.out.println("VerteidigerWuerfelAnzahl = " + verAnzahl);
+            //            System.out.println("AngreiferWuerfel[0] = " + ang[0]);
+            //            System.out.println("VerteidigerrWuerfel[0] = " + ver[0]);*/
+            //            for (; m < angAnzahl; m++) {
+            //              imageViewWuerfel[m].toFront();
+            //              imageViewWuerfel[m].setImage(imageAngreifer[ang[m]]);
+            //            }
+            //            for (int n = 0; n < verAnzahl; n++, m++) {//WAS IST DAS FUER EIN CRAZY M?
+            //              imageViewWuerfel[m].toFront();
+            //              imageViewWuerfel[m].setImage(imageVerteidiger[ver[n]]);
+            //            }
+            //            phasenLabel.setText("Angriffsphase");
+            //            aufforderungsLabel.setText("Kämpfe oder gib auf!");
             break;
           case 5 : //Truppen verschieben also Startland auswaehlen
-           for (int o = 0; o < 3; o++) {
+            kartenAnzeigen();
+            for (int o = 0; o < 3; o++) {
               imageViewAngreiferWuerfel[o].toBack();
             }
             for (int o = 0; o < 2; o++) {
@@ -715,25 +719,27 @@ public class RisikoGui extends Application {
   public void kampfButton_gedrueckt(Event evt) {
     spiel.buttonKlickAktion((byte) 2, (byte) 1);//weiss nicht, ob das geht 
     
-    for (int o = 0; o < 5; o++) { // Anzeige der Wuerfel
-      imageViewWuerfel[o].toBack();
+    for (int o = 0; o < 3; o++) {
+      imageViewAngreiferWuerfel[o].toBack();
+    }
+    for (int o = 0; o < 2; o++) {
+      imageViewVerteidigerWuerfel[o].toBack();
     }
     byte ang[] = spiel.getAngreiferWuerfel();
     byte ver[] = spiel.getVerteidigerWuerfel();
     byte angAnzahl = spiel.getAngreiferWuerfelAnzahl();
     byte verAnzahl = spiel.getVerteidigerWuerfelAnzahl();
-    byte m = 0;
     /*System.out.println("AngreiferWuerfelAnzahl = " + angAnzahl);
     System.out.println("VerteidigerWuerfelAnzahl = " + verAnzahl);
     System.out.println("AngreiferWuerfel[0] = " + ang[0]);
     System.out.println("VerteidigerrWuerfel[0] = " + ver[0]);*/
-    for (; m < angAnzahl; m++) {
-      imageViewWuerfel[m].toFront();
-      imageViewWuerfel[m].setImage(imageAngreifer[ang[m]]);
+    for (int m = 0; m < angAnzahl; m++) {
+      imageViewAngreiferWuerfel[m].toFront();
+      imageViewAngreiferWuerfel[m].setImage(imageAngreifer[ang[m]]);
     }
-    for (int n = 0; n < verAnzahl; n++, m++) {//WAS IST DAS FUER EIN CRAZY M?
-      imageViewWuerfel[m].toFront();
-      imageViewWuerfel[m].setImage(imageVerteidiger[ver[n]]);
+    for (int n = 0; n < verAnzahl; n++) {
+      imageViewVerteidigerWuerfel[n].toFront();
+      imageViewVerteidigerWuerfel[n].setImage(imageVerteidiger[ver[n]]);
     }
     phasenLabel.setText("Angriffsphase");
     aufforderungsLabel.setText("Kämpfe oder gib auf!");

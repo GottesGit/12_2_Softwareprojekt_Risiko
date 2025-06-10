@@ -612,7 +612,7 @@ public class Spiel {
     return this.kartenGenutzt;
   }
   
-}
+
   
   public boolean kannAngreifen(byte i){
 //    System.out.println("hiha");
