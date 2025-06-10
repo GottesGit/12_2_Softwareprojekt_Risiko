@@ -451,6 +451,8 @@ public class Spiel {
     for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
       System.out.println("verteidigerWuerfel: " + i + " hat den Wert " + verteidigerWuerfel[i]);
     }
+    
+    
     byte zwischen = 0; //bubblesort
     for (byte i = 0; i < angreiferWuerfelAnzahl - 1; i++) {
       for (byte j = 0; j < angreiferWuerfelAnzahl - 1; j++) {
@@ -481,7 +483,6 @@ public class Spiel {
     if (nachLand.getTruppen() < 1 || nachLand.getAngreiferTruppen() < 1) {
       if (nachLand.getTruppen() < 1 && nachLand.getAngreiferTruppen() > 0){
         mitSpieler[nachLand.getHerrscher()].setGesamtLaender(mitSpieler[nachLand.getHerrscher()].getGesamtLaender() - 1);
-        aktualisiereTruppenLaender(nachLand.getHerrscher());
         nachLand.setTruppen(dran, nachLand.getAngreiferTruppen());
         nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
         System.out.println("hi");

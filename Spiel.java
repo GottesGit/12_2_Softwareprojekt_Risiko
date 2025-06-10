@@ -487,6 +487,7 @@ public class Spiel {
         System.out.println("hi");
         mitSpieler[dran].karteZiehen();
         mitSpieler[vonLand.getHerrscher()].setGesamtLaender(mitSpieler[vonLand.getHerrscher()].getGesamtLaender() + 1);
+        getGewonnen();
       }
       aktualisiereTruppenLaender(nachLand.getHerrscher());
       nachLand.setAngreiferTruppen(dran, 0);
