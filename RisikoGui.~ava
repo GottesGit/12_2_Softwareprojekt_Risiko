@@ -447,7 +447,7 @@ public class RisikoGui extends Application {
     spielPlan.setTitle("Risiko");
     spielPlan.setScene(spielSzene);
     spielPlan.setResizable(true);
-    spielPane.getStylesheets().add("darkContrast.css");
+    spielPane.getStylesheets().add("CSS.css");
     spielPlan.show();
     grafikErneuern();
   }
