@@ -18,6 +18,7 @@ public class Spiel {
   private byte verteidigerWuerfelAnzahl;
   private int truppenVorher;
   private int truppenZumSetzen;
+  boolean kampfGewonnen = false;
   int platzierteTruppen = 0;
   int startTruppen = 25;//die man am Anfang kriegt, also in phase 100
   
@@ -141,26 +142,26 @@ public class Spiel {
           phasenWechsel();
         }
         break;
-//        truppenVorher = berechneGesamtTruppen(dran);
-//        System.out.println(berechneZuPlatzierendeTruppen());
-//        System.out.println(platzierteTruppen);
-//        if (platzierteTruppen < berechneZuPlatzierendeTruppen()) { 
-//          if (taste == 1) {
-//            land.setTruppen(dran, land.getTruppen() + 1);
-//            System.out.println("Eine Truppe wird plaziert");
-//            platzierteTruppen++;
-//          } else if (taste == 2) {
-//            int extra = Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran)));
-//            land.setTruppen(dran, land.getTruppen() + extra);
-//            platzierteTruppen += extra;
-//          }
-//        } else {
-//          System.out.println("Error zu viele Truppen wurden plaziert");
-//        }
-//        if (platzierteTruppen == berechneZuPlatzierendeTruppen()) {
-//          phasenWechsel();
-//          break;
-//        } 
+      //        truppenVorher = berechneGesamtTruppen(dran);
+      //        System.out.println(berechneZuPlatzierendeTruppen());
+      //        System.out.println(platzierteTruppen);
+      //        if (platzierteTruppen < berechneZuPlatzierendeTruppen()) { 
+      //          if (taste == 1) {
+      //            land.setTruppen(dran, land.getTruppen() + 1);
+      //            System.out.println("Eine Truppe wird plaziert");
+      //            platzierteTruppen++;
+      //          } else if (taste == 2) {
+      //            int extra = Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran)));
+      //            land.setTruppen(dran, land.getTruppen() + extra);
+      //            platzierteTruppen += extra;
+      //          }
+      //        } else {
+      //          System.out.println("Error zu viele Truppen wurden plaziert");
+      //        }
+      //        if (platzierteTruppen == berechneZuPlatzierendeTruppen()) {
+      //          phasenWechsel();
+      //          break;
+      //        } 
       case 1 : //angreifen also eigenes Land auswaehlen
         System.out.println(zugNummer);
         if (land.getHerrscher() == dran && land.getTruppen() > 1) {
@@ -323,6 +324,10 @@ public class Spiel {
         }
         break;
       case 5 : //Truppen verschieben also StartLand auswaehlen
+        if (kampfGewonnen == true) {
+          mitSpieler[dran].karteZiehen();
+        }
+        kampfGewonnen = false;
         if (vonLand != null) {
           phase++;
         } else {
@@ -342,10 +347,10 @@ public class Spiel {
         zugNummer++;
         dran++;
         phase = 0;
-//        if (zugNummer < mitSpieler.length && phase == 0) { //in der ersten Runde werden noch keine Extratruppen verteilt - doch
-//          phase = 1;
-//          break;
-//        }
+        //        if (zugNummer < mitSpieler.length && phase == 0) { //in der ersten Runde werden noch keine Extratruppen verteilt - doch
+        //          phase = 1;
+        //          break;
+        //        }
         if (dran >= mitSpieler.length) {
           dran = 0;
         }
@@ -468,7 +473,8 @@ public class Spiel {
         nachLand.setTruppen(dran, nachLand.getAngreiferTruppen());
         nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
         System.out.println("hi");
-        mitSpieler[dran].karteZiehen();
+        kampfGewonnen = true;
+        //mitSpieler[dran].karteZiehen();
         mitSpieler[vonLand.getHerrscher()].setGesamtLaender(mitSpieler[vonLand.getHerrscher()].getGesamtLaender() + 1);
         mitSpieler[nachLand.getHerrscher()].setGesamtLaender(mitSpieler[nachLand.getHerrscher()].getGesamtLaender() - 1);
       }
@@ -562,7 +568,7 @@ public class Spiel {
   public int getZuPlazierendeTruppen() {
     return mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran);
   }
-
+  
   private int berechneGesamtTruppen(byte meinSpieler) {
     //return mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen();//NEIN DIE BRAUCHEN WIR AUCH FUER DIE AKTUALISIERUNG DER ANZAHL DER TRUPPEN EINES SPIELERS
     int truppen = 0;
@@ -584,6 +590,15 @@ public class Spiel {
       laender[i].resetSchonDurch();
     }
   }
+  
+  public byte getKarte() {
+    return this.mitSpieler[dran].getKarte();
+  }
+  
+  public boolean getKampfGewonnen() {
+    return this.kampfGewonnen;
+  }
+
   
 }
   
