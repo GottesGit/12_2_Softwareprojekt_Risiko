@@ -517,6 +517,10 @@ public class RisikoGui extends Application {
             aufforderungsLabel.setText("Wähle das Land, welches du angreifen möchtest!");
             break;
           case 3 : //angreifen also Truppen nach Zielland verschieben
+            for (int o = 0; o < 5; o++) {
+              imageViewWuerfel[o].toBack();
+            }
+            
             if (i == spiel.getNachLand().getIndex()) { //nur angegriffenes Land enablen
               landButtons[i].setDisable(false);
             } else {
@@ -537,31 +541,34 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(false);
             fertigButton.setDisable(false);
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
-            
+//            
+//            for (int o = 0; o < 5; o++) {
+//              imageViewWuerfel[o].toBack();
+//            }
+//            byte ang[] = spiel.getAngreiferWuerfel();
+//            byte ver[] = spiel.getVerteidigerWuerfel();
+//            byte angAnzahl = spiel.getAngreiferWuerfelAnzahl();
+//            byte verAnzahl = spiel.getVerteidigerWuerfelAnzahl();
+//            byte m = 0;
+//            /*System.out.println("AngreiferWuerfelAnzahl = " + angAnzahl);
+//            System.out.println("VerteidigerWuerfelAnzahl = " + verAnzahl);
+//            System.out.println("AngreiferWuerfel[0] = " + ang[0]);
+//            System.out.println("VerteidigerrWuerfel[0] = " + ver[0]);*/
+//            for (; m < angAnzahl; m++) {
+//              imageViewWuerfel[m].toFront();
+//              imageViewWuerfel[m].setImage(imageAngreifer[ang[m]]);
+//            }
+//            for (int n = 0; n < verAnzahl; n++, m++) {//WAS IST DAS FUER EIN CRAZY M?
+//              imageViewWuerfel[m].toFront();
+//              imageViewWuerfel[m].setImage(imageVerteidiger[ver[n]]);
+//            }
+//            phasenLabel.setText("Angriffsphase");
+//            aufforderungsLabel.setText("Kämpfe oder gib auf!");
+            break;
+          case 5 : //Truppen verschieben also Startland auswaehlen
             for (int o = 0; o < 5; o++) {
               imageViewWuerfel[o].toBack();
             }
-            byte ang[] = spiel.getAngreiferWuerfel();
-            byte ver[] = spiel.getVerteidigerWuerfel();
-            byte angAnzahl = spiel.getAngreiferWuerfelAnzahl();
-            byte verAnzahl = spiel.getVerteidigerWuerfelAnzahl();
-            byte m = 0;
-            /*System.out.println("AngreiferWuerfelAnzahl = " + angAnzahl);
-            System.out.println("VerteidigerWuerfelAnzahl = " + verAnzahl);
-            System.out.println("AngreiferWuerfel[0] = " + ang[0]);
-            System.out.println("VerteidigerrWuerfel[0] = " + ver[0]);*/
-            for (; m < angAnzahl; m++) {
-              imageViewWuerfel[m].toFront();
-              imageViewWuerfel[m].setImage(imageAngreifer[ang[m]]);
-            }
-            for (int n = 0; n < verAnzahl; n++, m++) {//WAS IST DAS FUER EIN CRAZY M?
-              imageViewWuerfel[m].toFront();
-              imageViewWuerfel[m].setImage(imageVerteidiger[ver[n]]);
-            }
-            phasenLabel.setText("Angriffsphase");
-            aufforderungsLabel.setText("Kämpfe oder gib auf!");
-            break;
-          case 5 : //Truppen verschieben also Startland auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
               landButtons[i].setDisable(false);
             } else {
@@ -576,10 +583,6 @@ public class RisikoGui extends Application {
             }
             break;
           case 6 : //Truppen verschieben also Zielland auswaehlen
-            for (int o = 0; o < 5; o++) {
-              imageViewWuerfel[o].toBack();
-            }
-            
             if (spiel.istVerbunden(i) && i != spiel.getVonLand().getIndex()) { // landButtons[i].getHerrscher() == spiel.getDran() && i != spiel.getVonLand().getIndex() && //nur eigene, verbundene Laender enablen
               landButtons[i].setDisable(false);
             } else {
@@ -630,6 +633,29 @@ public class RisikoGui extends Application {
   
   public void kampfButton_gedrueckt(Event evt) {
     spiel.buttonKlickAktion((byte) 2, (byte) 1);//weiss nicht, ob das geht 
+    
+    for (int o = 0; o < 5; o++) { // Anzeige der Wuerfel
+      imageViewWuerfel[o].toBack();
+    }
+    byte ang[] = spiel.getAngreiferWuerfel();
+    byte ver[] = spiel.getVerteidigerWuerfel();
+    byte angAnzahl = spiel.getAngreiferWuerfelAnzahl();
+    byte verAnzahl = spiel.getVerteidigerWuerfelAnzahl();
+    byte m = 0;
+    /*System.out.println("AngreiferWuerfelAnzahl = " + angAnzahl);
+    System.out.println("VerteidigerWuerfelAnzahl = " + verAnzahl);
+    System.out.println("AngreiferWuerfel[0] = " + ang[0]);
+    System.out.println("VerteidigerrWuerfel[0] = " + ver[0]);*/
+    for (; m < angAnzahl; m++) {
+      imageViewWuerfel[m].toFront();
+      imageViewWuerfel[m].setImage(imageAngreifer[ang[m]]);
+    }
+    for (int n = 0; n < verAnzahl; n++, m++) {//WAS IST DAS FUER EIN CRAZY M?
+      imageViewWuerfel[m].toFront();
+      imageViewWuerfel[m].setImage(imageVerteidiger[ver[n]]);
+    }
+    phasenLabel.setText("Angriffsphase");
+    aufforderungsLabel.setText("Kämpfe oder gib auf!");
   }
   
   public void fertigButton_gedrueckt(Event evt) {
