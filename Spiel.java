@@ -19,7 +19,7 @@ public class Spiel {
   private int truppenVorher;
   private int truppenZumSetzen;
   int platzierteTruppen = 0;
-  int startTruppen = 25;//die man am Anfang kriegt, also in phase 100
+  int startTruppen;//die man am Anfang kriegt, also in phase 100
   
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
     gui = meineGui;
@@ -33,13 +33,25 @@ public class Spiel {
     {1, 2, 100, 100, 100, 100}, {0, 2, 3, 100, 100, 100}, {0, 1, 3, 20, 100, 100}, {1, 2, 4, 100, 100, 100}, //Suedamerika
     {3, 5, 6, 100, 100, 100}, {4, 6, 7, 11, 100, 100}, {4, 5, 7, 8, 100, 100}, {5, 6, 8, 10, 11, 12}, {6, 7, 9, 10, 100, 100}, {8, 10, 36, 100, 100, 100}, {7, 8, 9, 12, 100, 100}, {5, 7, 12, 100, 100, 100}, {7, 10, 11, 13, 100, 100}, //Nordamerika
     {12, 14, 15, 100, 100, 100}, {13, 14, 18, 19, 100, 100}, {13, 14, 16, 18, 100, 100}, {15, 17, 18, 20, 100, 100}, {16, 18, 20, 21, 26, 100}, {14, 15, 16, 17, 19, 100}, {14, 17, 18, 26, 27, 29}, //Europa
-    {2, 16, 17, 21, 22, 23}, {17, 20, 22, 23, 26, 100}, {20, 21, 23, 24, 25, 26}, {20, 22, 24, 100, 100, 100}, {22, 23, 25, 100, 100, 100}, {22, 24, 100, 100, 100, 100}, //Afrika
+    {2, 16, 17, 21, 22, 23}, {17, 20, 22, 26, 100, 100}, {20, 21, 23, 24, 25, 26}, {20, 22, 24, 100, 100, 100}, {22, 23, 25, 100, 100, 100}, {22, 24, 100, 100, 100, 100}, //Afrika
     {17, 19, 21, 22, 27, 28}, {19, 26, 29, 28, 30, 100}, {26, 27, 30, 31, 100, 100}, {19, 27, 30, 32, 100, 100}, {27, 28, 29, 31, 32, 33}, {28, 30, 38, 100, 100, 100}, {29, 30, 33, 34, 35, 100}, {30, 34, 36, 37, 100, 100}, {32, 33, 35, 36, 100, 100}, {32, 34, 36, 100, 100, 100}, {9, 33, 34, 35, 37, 100}, {33, 36, 100, 100, 100, 100}, //Asien
     {31, 39, 41, 100, 100, 100}, {38, 40, 100, 100, 100, 100}, {39, 41, 100, 100, 100, 100}, {38, 40, 100, 100, 100, 100}, //Australien
     };
     byte[] kontinentLaender = {4, 9, 6, 6, 12, 4}; //Anzahl der Laender der jeweiligen Kontinente
     byte[] kontinentTruppen = {2, 5, 5, 3, 7, 2}; //Anzahl der Extratruppen der jeweiligen Kontinente
     String[] kontinentNamen = {"Suedamerika", "Nordmerika", "Europa", "Afrika", "Asien", "Australien"};
+    
+    switch (mitSpieler.length) {
+      case 2 : 
+        startTruppen = 40;
+        break;
+      case 3 : 
+        startTruppen = 35;
+        break;
+      case 4 : 
+        startTruppen = 30;
+        break;
+    } // end of switch
     
     for (byte i = 0; i < 42; i++) { // die laender muessen erst alle erstellt werden...
       laender[i] = new Land(laenderNamen[i], i);
@@ -141,26 +153,26 @@ public class Spiel {
           phasenWechsel();
         }
         break;
-//        truppenVorher = berechneGesamtTruppen(dran);
-//        System.out.println(berechneZuPlatzierendeTruppen());
-//        System.out.println(platzierteTruppen);
-//        if (platzierteTruppen < berechneZuPlatzierendeTruppen()) { 
-//          if (taste == 1) {
-//            land.setTruppen(dran, land.getTruppen() + 1);
-//            System.out.println("Eine Truppe wird plaziert");
-//            platzierteTruppen++;
-//          } else if (taste == 2) {
-//            int extra = Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran)));
-//            land.setTruppen(dran, land.getTruppen() + extra);
-//            platzierteTruppen += extra;
-//          }
-//        } else {
-//          System.out.println("Error zu viele Truppen wurden plaziert");
-//        }
-//        if (platzierteTruppen == berechneZuPlatzierendeTruppen()) {
-//          phasenWechsel();
-//          break;
-//        } 
+      //        truppenVorher = berechneGesamtTruppen(dran);
+      //        System.out.println(berechneZuPlatzierendeTruppen());
+      //        System.out.println(platzierteTruppen);
+      //        if (platzierteTruppen < berechneZuPlatzierendeTruppen()) { 
+      //          if (taste == 1) {
+      //            land.setTruppen(dran, land.getTruppen() + 1);
+      //            System.out.println("Eine Truppe wird plaziert");
+      //            platzierteTruppen++;
+      //          } else if (taste == 2) {
+      //            int extra = Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran)));
+      //            land.setTruppen(dran, land.getTruppen() + extra);
+      //            platzierteTruppen += extra;
+      //          }
+      //        } else {
+      //          System.out.println("Error zu viele Truppen wurden plaziert");
+      //        }
+      //        if (platzierteTruppen == berechneZuPlatzierendeTruppen()) {
+      //          phasenWechsel();
+      //          break;
+      //        } 
       case 1 : //angreifen also eigenes Land auswaehlen
         System.out.println(zugNummer);
         if (land.getHerrscher() == dran && land.getTruppen() > 1) {
@@ -305,9 +317,9 @@ public class Spiel {
       case 3 : //angreifen also Truppen nach Zielland verschieben
         if (nachLand.getAngreiferTruppen() > 0) {
           phase++;
-        }else if (nachLand.getAngreiferTruppen() == 0) {
-          phase = 5;
-        } 
+        }/*else if (nachLand.getAngreiferTruppen() == 0) {
+        phase = 1;
+        }*/ 
         else {
           fehler = true;
         }
@@ -317,7 +329,7 @@ public class Spiel {
           aktualisiereTruppenLaender(dran);
           vonLand = null;
           nachLand = null;
-          phase++;
+          phase = 1;
         } else {
           //          fehler = true;
         }
@@ -342,10 +354,10 @@ public class Spiel {
         zugNummer++;
         dran++;
         phase = 0;
-//        if (zugNummer < mitSpieler.length && phase == 0) { //in der ersten Runde werden noch keine Extratruppen verteilt - doch
-//          phase = 1;
-//          break;
-//        }
+        //        if (zugNummer < mitSpieler.length && phase == 0) { //in der ersten Runde werden noch keine Extratruppen verteilt - doch
+        //          phase = 1;
+        //          break;
+        //        }
         if (dran >= mitSpieler.length) {
           dran = 0;
         }
@@ -464,13 +476,13 @@ public class Spiel {
     } while (wuerfelNr++ < angreiferWuerfelAnzahl && wuerfelNr < verteidigerWuerfelAnzahl);
     
     if (nachLand.getTruppen() < 1 || nachLand.getAngreiferTruppen() < 1) {
-      if (nachLand.getTruppen() == 0 && nachLand.getAngreiferTruppen() > 0){
+      if (nachLand.getTruppen() < 1 && nachLand.getAngreiferTruppen() > 0){
+        mitSpieler[nachLand.getHerrscher()].setGesamtLaender(mitSpieler[nachLand.getHerrscher()].getGesamtLaender() - 1);
         nachLand.setTruppen(dran, nachLand.getAngreiferTruppen());
         nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
         System.out.println("hi");
         mitSpieler[dran].karteZiehen();
         mitSpieler[vonLand.getHerrscher()].setGesamtLaender(mitSpieler[vonLand.getHerrscher()].getGesamtLaender() + 1);
-        mitSpieler[nachLand.getHerrscher()].setGesamtLaender(mitSpieler[nachLand.getHerrscher()].getGesamtLaender() - 1);
       }
       aktualisiereTruppenLaender(nachLand.getHerrscher());
       nachLand.setAngreiferTruppen(dran, 0);
@@ -562,7 +574,7 @@ public class Spiel {
   public int getZuPlazierendeTruppen() {
     return mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran);
   }
-
+  
   private int berechneGesamtTruppen(byte meinSpieler) {
     //return mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen();//NEIN DIE BRAUCHEN WIR AUCH FUER DIE AKTUALISIERUNG DER ANZAHL DER TRUPPEN EINES SPIELERS
     int truppen = 0;
