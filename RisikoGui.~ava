@@ -508,6 +508,7 @@ public class RisikoGui extends Application {
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
+            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift();
             phasenLabel.setText("Angriffsphase");
             aufforderungsLabel.setText("Wähle das Land, welches du angreifen möchtest!");
             break;
@@ -530,12 +531,15 @@ public class RisikoGui extends Application {
             phasenLabel.setText("Angriffsphase");
             aufforderungsLabel.setText("Verschiebe deine Angreifertruppen in das ausgewählte Land!");
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
+            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift();
             break;
           case 4 : //angreifen also im Kampf
             landButtons[i].setDisable(true); //alle Laender disablen
+            
             kampfButton.setDisable(false);
             fertigButton.setDisable(false);
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
+            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift();
 //            
 //            for (int o = 0; o < 5; o++) {
 //              imageViewWuerfel[o].toBack();
@@ -621,7 +625,7 @@ public class RisikoGui extends Application {
     neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + ";-fx-font-size: 30px; -fx-background-color: lightgray;");
     neuerSpielerLabel.setVisible(true);
     
-    PauseTransition pause = new PauseTransition(Duration.seconds(2));
+    PauseTransition pause = new PauseTransition(Duration.seconds(0.75));
     pause.setOnFinished(e -> neuerSpielerLabel.setVisible(false));
     pause.play();
   }
