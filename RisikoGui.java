@@ -490,7 +490,7 @@ public class RisikoGui extends Application {
             neuerSpieler();
             break;
           case 1 : //angreifen also eigenes Land auswaehlen
-            if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
+            if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1 && spiel.kannAngreifen(i)) { //nur eigene Laender mit mehr als 1 Truppe enablen
               landButtons[i].setDisable(false);
             } else {
               landButtons[i].setDisable(true);
@@ -564,7 +564,7 @@ public class RisikoGui extends Application {
             for (int o = 0; o < 5; o++) {
               imageViewWuerfel[o].toBack();
             }
-            if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
+            if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1 && spiel.kannVerschieben(i)) { //nur eigene Laender mit mehr als 1 Truppe enablen
               landButtons[i].setDisable(false);
             } else {
               landButtons[i].setDisable(true);
