@@ -412,6 +412,7 @@ public class Spiel {
     }
   }
   
+  
   public int getAnzahlLaender(byte meinSpieler) { //hab das mal public gemacht
     return this.mitSpieler[meinSpieler].getGesamtLaender();
   }
@@ -443,9 +444,18 @@ public class Spiel {
     for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
       verteidigerWuerfel[i] = (byte) ((Math.random() * 6) + 1);
     }
+    
+    for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
+      System.out.println("angreiferWuerfel: " + i + " hat den Wert " + angreiferWuerfel[i]);
+    }
+    for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
+      System.out.println("verteidigerWuerfel: " + i + " hat den Wert " + verteidigerWuerfel[i]);
+    }
+    
+    
     byte zwischen = 0; //bubblesort
     for (byte i = 0; i < angreiferWuerfelAnzahl - 1; i++) {
-      for (byte j = 0; j <= i; j++) {
+      for (byte j = 0; j < angreiferWuerfelAnzahl - 1; j++) {
         if (angreiferWuerfel[j] < angreiferWuerfel[j + 1]) {
           zwischen = angreiferWuerfel[j];
           angreiferWuerfel[j] = angreiferWuerfel[j + 1];
@@ -458,12 +468,7 @@ public class Spiel {
       verteidigerWuerfel[0] = verteidigerWuerfel[1];
       verteidigerWuerfel[1] = zwischen;
     }
-    for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
-      System.out.println("angreiferWuerfel: " + i + " hat den Wert " + angreiferWuerfel[i]);
-    }
-    for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
-      System.out.println("verteidigerWuerfel: " + i + " hat den Wert " + verteidigerWuerfel[i]);
-    }
+    
     byte wuerfelNr = 0;
     
     do { 

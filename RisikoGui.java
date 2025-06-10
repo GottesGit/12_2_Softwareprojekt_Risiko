@@ -518,10 +518,10 @@ public class RisikoGui extends Application {
             byte angAnzahl = spiel.getAngreiferWuerfelAnzahl();
             byte verAnzahl = spiel.getVerteidigerWuerfelAnzahl();
             byte m = 0;
-            System.out.println("AngreiferWuerfelAnzahl = " + angAnzahl);
+            /*System.out.println("AngreiferWuerfelAnzahl = " + angAnzahl);
             System.out.println("VerteidigerWuerfelAnzahl = " + verAnzahl);
             System.out.println("AngreiferWuerfel[0] = " + ang[0]);
-            System.out.println("AngreiferWuerfel[0] = " + ver[0]);
+            System.out.println("VerteidigerrWuerfel[0] = " + ver[0]);*/
             for (; m < angAnzahl; m++) {
               imageViewWuerfel[m].toFront();
               imageViewWuerfel[m].setImage(imageAngreifer[ang[m]]);
