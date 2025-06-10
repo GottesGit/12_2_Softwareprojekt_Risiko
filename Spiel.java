@@ -18,6 +18,7 @@ public class Spiel {
   private byte verteidigerWuerfelAnzahl;
   private int truppenVorher;
   private int truppenZumSetzen;
+  boolean kampfGewonnen = false;
   int platzierteTruppen = 0;
   int startTruppen;//die man am Anfang kriegt, also in phase 100
   
@@ -335,6 +336,10 @@ public class Spiel {
         }
         break;
       case 5 : //Truppen verschieben also StartLand auswaehlen
+        if (kampfGewonnen == true) {
+          mitSpieler[dran].karteZiehen();
+        }
+        kampfGewonnen = false;
         if (vonLand != null) {
           phase++;
         } else {
@@ -485,7 +490,8 @@ public class Spiel {
         nachLand.setTruppen(dran, nachLand.getAngreiferTruppen());
         nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
         System.out.println("hi");
-        mitSpieler[dran].karteZiehen();
+        kampfGewonnen = true;
+        //mitSpieler[dran].karteZiehen();
         mitSpieler[vonLand.getHerrscher()].setGesamtLaender(mitSpieler[vonLand.getHerrscher()].getGesamtLaender() + 1);
       }
       aktualisiereTruppenLaender(nachLand.getHerrscher());
@@ -600,6 +606,15 @@ public class Spiel {
       laender[i].resetSchonDurch();
     }
   }
+  
+  public byte getKarte() {
+    return this.mitSpieler[dran].getKarte();
+  }
+  
+  public boolean getKampfGewonnen() {
+    return this.kampfGewonnen;
+  }
+
   
 }
   

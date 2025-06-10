@@ -45,6 +45,9 @@ public class RisikoGui extends Application {
   private Image[] imageAngreifer = new Image[7];
   private Image[] imageVerteidiger = new Image[7];
   
+  private ImageView imageViewKarte;
+  private Image[] imageKarte = new Image[3];
+  
   private Button kampfButton;
   private Button fertigButton;
   private Button switchButton;
@@ -447,6 +450,17 @@ public class RisikoGui extends Application {
       spielPane.getChildren().add(0, imageViewWuerfel[m]);
     }
     
+    for (byte n = 0; n < 3; n++) {
+      imageKarte[n] = new Image(getClass().getResourceAsStream("/Karten/Karte" + n + ".png"));
+    }
+    imageViewKarte = new ImageView();
+    imageViewKarte.setFitWidth(300);
+    imageViewKarte.setPreserveRatio(true);
+    imageViewKarte.setX(533);
+    imageViewKarte.setY(124);
+    spielPane.getChildren().add(0, imageViewKarte);
+    imageViewKarte.toFront();
+    
     spielPlan.setTitle("Risiko");
     spielPlan.setScene(spielSzene);
     spielPlan.setResizable(true);
@@ -621,7 +635,7 @@ public class RisikoGui extends Application {
     }
   }
   
-  public void neuerSpieler() {
+  private void neuerSpieler() {
     neuerSpielerLabel.setText(spiel.getSpielerName(spiel.getDran()) + " ist dran");
     neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + ";-fx-font-size: 30px; -fx-background-color: lightgray;");
     neuerSpielerLabel.setVisible(true);
@@ -629,6 +643,18 @@ public class RisikoGui extends Application {
     PauseTransition pause = new PauseTransition(Duration.seconds(2));
     pause.setOnFinished(e -> neuerSpielerLabel.setVisible(false));
     pause.play();
+  }
+  
+  private void kartenAnzeigen() {
+    byte karte = spiel.getKarte();
+    if (spiel.getKampfGewonnen() == true) {
+      imageViewKarte.setImage(imageKarte[karte]);
+    imageViewKarte.setVisible(true);
+    
+    PauseTransition pause = new PauseTransition(Duration.seconds(4));
+    pause.setOnFinished(e -> imageViewKarte.setVisible(false));
+    pause.play();
+    } // end of if
   }
   
   public void kampfButton_gedrueckt(Event evt) {
