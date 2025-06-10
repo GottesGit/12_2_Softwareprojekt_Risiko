@@ -1,6 +1,6 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -13,7 +13,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import je.NumberField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.control.TextFormatter;
 import javafx.animation.PauseTransition;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
@@ -23,9 +22,9 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import java.util.function.UnaryOperator;
-import javafx.scene.Group;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.layout.StackPane;
 
 
 public class RisikoGui extends Application {
@@ -239,22 +238,17 @@ public class RisikoGui extends Application {
     
     Stage spielPlan = new Stage();
     Pane spielPane = new Pane();
-    Group skalierGruppe = new Group(spielPane);
+    StackPane skalierGruppe = new StackPane();
+    skalierGruppe.getChildren().add(spielPane);
     Scene spielSzene = new Scene(skalierGruppe, 1366, 728);
     
-    ChangeListener<Number> resizeListener = (obs, oldVal, newVal) -> {//von chat
+    ChangeListener<Number> resizeListener = (obs, oldVal, newVal) -> {//vonChat, funktioniert nicht
         double scaleX = spielSzene.getWidth() / 1366;
         double scaleY = spielSzene.getHeight() / 728;
-        double scale = Math.min(scaleX, scaleY); // Verhältnis wahren
+        double scale = Math.min(scaleX, scaleY);
     
         spielPane.setScaleX(scale);
         spielPane.setScaleY(scale);
-    
-        // Zentrieren
-        double offsetX = (spielSzene.getWidth() - 1366 * scale) / 2;
-        double offsetY = (spielSzene.getHeight() - 728 * scale) / 2;
-        spielPane.setLayoutX(offsetX);
-        //spielPane.setLayoutY(offsetY);
     };
     
 //    spielPlan.widthProperty().addListener((obs, oldVal, newVal) -> {//auch von chat
@@ -450,6 +444,7 @@ public class RisikoGui extends Application {
     spielPlan.setTitle("Risiko");
     spielPlan.setScene(spielSzene);
     spielPlan.setResizable(true);
+    spielPane.getStylesheets().add("CSS.css");
     spielPlan.show();
     grafikErneuern();
   }
@@ -495,7 +490,7 @@ public class RisikoGui extends Application {
             neuerSpieler();
             break;
           case 1 : //angreifen also eigenes Land auswaehlen
-            if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
+            if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1 && spiel.kannAngreifen(i)) { //nur eigene Laender mit mehr als 1 Truppe enablen
               landButtons[i].setDisable(false);
             } else {
               landButtons[i].setDisable(true);
@@ -517,6 +512,10 @@ public class RisikoGui extends Application {
             aufforderungsLabel.setText("Wähle das Land, welches du angreifen möchtest!");
             break;
           case 3 : //angreifen also Truppen nach Zielland verschieben
+            for (int o = 0; o < 5; o++) {
+              imageViewWuerfel[o].toBack();
+            }
+            
             if (i == spiel.getNachLand().getIndex()) { //nur angegriffenes Land enablen
               landButtons[i].setDisable(false);
             } else {
@@ -565,7 +564,7 @@ public class RisikoGui extends Application {
             for (int o = 0; o < 5; o++) {
               imageViewWuerfel[o].toBack();
             }
-            if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
+            if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1 && spiel.kannVerschieben(i)) { //nur eigene Laender mit mehr als 1 Truppe enablen
               landButtons[i].setDisable(false);
             } else {
               landButtons[i].setDisable(true);

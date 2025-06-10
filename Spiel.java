@@ -22,6 +22,7 @@ public class Spiel {
   boolean kartenGenutzt = false;
   int platzierteTruppen = 0;
   int startTruppen;//die man am Anfang kriegt, also in phase 100
+  boolean kannAngreifen;
   
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
     gui = meineGui;
@@ -155,26 +156,6 @@ public class Spiel {
           phasenWechsel();
         }
         break;
-      //        truppenVorher = berechneGesamtTruppen(dran);
-      //        System.out.println(berechneZuPlatzierendeTruppen());
-      //        System.out.println(platzierteTruppen);
-      //        if (platzierteTruppen < berechneZuPlatzierendeTruppen()) { 
-      //          if (taste == 1) {
-      //            land.setTruppen(dran, land.getTruppen() + 1);
-      //            System.out.println("Eine Truppe wird plaziert");
-      //            platzierteTruppen++;
-      //          } else if (taste == 2) {
-      //            int extra = Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran)));
-      //            land.setTruppen(dran, land.getTruppen() + extra);
-      //            platzierteTruppen += extra;
-      //          }
-      //        } else {
-      //          System.out.println("Error zu viele Truppen wurden plaziert");
-      //        }
-      //        if (platzierteTruppen == berechneZuPlatzierendeTruppen()) {
-      //          phasenWechsel();
-      //          break;
-      //        } 
       case 1 : //angreifen also eigenes Land auswaehlen
         System.out.println(zugNummer);
         if (land.getHerrscher() == dran && land.getTruppen() > 1) {
@@ -495,6 +476,7 @@ public class Spiel {
         kampfGewonnen = true;
         //mitSpieler[dran].karteZiehen();
         mitSpieler[vonLand.getHerrscher()].setGesamtLaender(mitSpieler[vonLand.getHerrscher()].getGesamtLaender() + 1);
+        getGewonnen();
       }
       aktualisiereTruppenLaender(nachLand.getHerrscher());
       nachLand.setAngreiferTruppen(dran, 0);
@@ -632,3 +614,24 @@ public class Spiel {
   
 }
   
+  public boolean kannAngreifen(byte i){
+//    System.out.println("hiha");
+//    return true;    
+    for (Land nachbarLand : laender[i].getNachbarn()){
+      if (nachbarLand.getHerrscher() != dran) {
+        return true;
+      } // end of if
+    }
+    return false;
+  }
+  
+  public boolean kannVerschieben(byte i){
+    for (Land nachbarLand : laender[i].getNachbarn()){
+      if (nachbarLand.getHerrscher() == dran) {
+        return true;
+      } // end of if
+    }
+    return false;
+  }
+
+}
