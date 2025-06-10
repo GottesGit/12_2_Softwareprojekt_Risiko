@@ -37,12 +37,16 @@ public class RisikoGui extends Application {
   private SVGPath[] laenderSVG;
   private String[] spielerFarben = {"red", "blue", "green", "yellow"};
   
-  private ImageView[] imageViewWuerfel = new ImageView[5];
+  private ImageView[] imageViewAngreiferWuerfel = new ImageView[3];
+  private ImageView[] imageViewVerteidigerWuerfel = new ImageView[2];
   private Image[] imageAngreifer = new Image[7];
   private Image[] imageVerteidiger = new Image[7];
   
   private ImageView imageViewKarte;
   private Image[] imageKarte = new Image[3];
+  
+  private ImageView[][] imageViewAlleKarten;
+  private int[] kartenPosition;
   
   private Button kampfButton;
   private Button fertigButton;
@@ -342,8 +346,18 @@ public class RisikoGui extends Application {
     laenderLabel = new Label[spielerAnzahl];
     spielerRectangle = new Rectangle[spielerAnzahl];
     truppenSVG = new SVGPath[spielerAnzahl];
-    laenderSVG = new SVGPath[spielerAnzahl]; 
+    laenderSVG = new SVGPath[spielerAnzahl];
+    imageViewAlleKarten = new ImageView[spielerAnzahl][5];
     for (byte k = 0; k < (spielerAnzahl); k++) { //Spieler-Label
+      for (int x = 0; x < 5; x++) {
+        imageViewAlleKarten[k][x] = new ImageView();
+        imageViewAlleKarten[k][x].setFitWidth(25);
+        imageViewAlleKarten[k][x].setPreserveRatio(true);
+        imageViewAlleKarten[k][x].setX(27 + x * 40);
+        imageViewAlleKarten[k][x].setY(376 + k * 50 - 121);
+        spielPane.getChildren().add(imageViewAlleKarten[k][x]);
+      }
+      
       spielerRectangle[k] = new Rectangle();
       spielerRectangle[k].setX(27);
       spielerRectangle[k].setY(400 + k * 50 - 121);
@@ -414,13 +428,21 @@ public class RisikoGui extends Application {
       imageAngreifer[l] = new Image(getClass().getResourceAsStream("/Wuerfel/A" + l + ".png"));
       imageVerteidiger[l] = new Image(getClass().getResourceAsStream("/Wuerfel/V" + l + ".png"));
     }
-    for (byte m = 0; m < 5; m++) {
-      imageViewWuerfel[m] = new ImageView();
-      imageViewWuerfel[m].setFitWidth(80);
-      imageViewWuerfel[m].setPreserveRatio(true);
-      imageViewWuerfel[m].setX(20 + m * 80);
-      imageViewWuerfel[m].setY(600);
-      spielPane.getChildren().add(0, imageViewWuerfel[m]);
+    for (byte m = 0; m < 3; m++) {
+      imageViewAngreiferWuerfel[m] = new ImageView();
+      imageViewAngreiferWuerfel[m].setFitWidth(80);
+      imageViewAngreiferWuerfel[m].setPreserveRatio(true);
+      imageViewAngreiferWuerfel[m].setX(50 + m * 80);
+      imageViewAngreiferWuerfel[m].setY(625);
+      spielPane.getChildren().add(0, imageViewAngreiferWuerfel[m]);
+    }
+    for (byte m = 0; m < 2; m++) {
+      imageViewVerteidigerWuerfel[m] = new ImageView();
+      imageViewVerteidigerWuerfel[m].setFitWidth(80);
+      imageViewVerteidigerWuerfel[m].setPreserveRatio(true);
+      imageViewVerteidigerWuerfel[m].setX(50 + m * 80);
+      imageViewVerteidigerWuerfel[m].setY(535);
+      spielPane.getChildren().add(0, imageViewVerteidigerWuerfel[m]);
     }
     
     for (byte n = 0; n < 3; n++) {
@@ -433,6 +455,7 @@ public class RisikoGui extends Application {
     imageViewKarte.setY(124);
     spielPane.getChildren().add(0, imageViewKarte);
     imageViewKarte.toFront();
+    kartenPosition = new int[spielerAnzahl];
     
     spielPlan.setTitle("Risiko");
     spielPlan.setScene(spielSzene);
@@ -464,7 +487,41 @@ public class RisikoGui extends Application {
             laenderSVG[j].setStyle("-fx-fill:" + spielerFarben[j] + ";");
           }
           truppenLabel[j].setText(spiel.getAnzahlTruppen((byte)j) + "");
-          laenderLabel[j].setText(spiel.getAnzahlLaender((byte)j) + ""); //hier wird wohl 0 zurückgegeben
+          laenderLabel[j].setText(spiel.getAnzahlLaender((byte)j) + "");
+          
+          if (spiel.getKartenGenutzt() == true) {
+            kartenPosition[spiel.getDran()] = 0;
+            for (int y = 0; y < 5; y++) {
+              imageViewAlleKarten[spiel.getDran()][y].setVisible(false);
+            }
+          }
+          
+          System.out.println("kartenPosition[" + j + "] = " + kartenPosition[j]);
+          int karten[] = spiel.getKartenAnzahl(j);
+          int anzahl = karten[0] + karten[1] + karten[2];
+          for (int x = 0; x < karten[0]; x++) {
+            imageViewAlleKarten[j][kartenPosition[j]].setImage(imageKarte[0]);
+            if (kartenPosition[j] < anzahl) {
+              kartenPosition[j]++;
+            }
+            System.out.println("Karten von 0: " + karten[0]); 
+          }
+          for (int x = 0; x < karten[1]; x++) {
+            imageViewAlleKarten[j][kartenPosition[j]].setImage(imageKarte[1]);
+            if (kartenPosition[j] < anzahl) {
+              kartenPosition[j]++;
+            }
+            System.out.println("Karten von 1: " + karten[1]); 
+          }
+          for (int x = 0; x < karten[2]; x++) {
+            imageViewAlleKarten[j][kartenPosition[j]].setImage(imageKarte[2]);
+            if (kartenPosition[j] < anzahl) {
+              kartenPosition[j]++;
+            }
+            System.out.println("Karten von 2: " + karten[2]); 
+          }
+          imageViewAlleKarten[j][kartenPosition[j]].setVisible(true);
+          
         }
         
         switch (spiel.getPhase()) {
@@ -524,31 +581,33 @@ public class RisikoGui extends Application {
             fertigButton.setDisable(false);
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
             
-            for (int o = 0; o < 5; o++) {
-              imageViewWuerfel[o].toBack();
+            for (int o = 0; o < 3; o++) {
+              imageViewAngreiferWuerfel[o].toBack();
+            }
+            for (int o = 0; o < 2; o++) {
+              imageViewVerteidigerWuerfel[o].toBack();
             }
             byte ang[] = spiel.getAngreiferWuerfel();
             byte ver[] = spiel.getVerteidigerWuerfel();
             byte angAnzahl = spiel.getAngreiferWuerfelAnzahl();
             byte verAnzahl = spiel.getVerteidigerWuerfelAnzahl();
-            byte m = 0;
             System.out.println("AngreiferWuerfelAnzahl = " + angAnzahl);
             System.out.println("VerteidigerWuerfelAnzahl = " + verAnzahl);
             System.out.println("AngreiferWuerfel[0] = " + ang[0]);
             System.out.println("AngreiferWuerfel[0] = " + ver[0]);
-            for (; m < angAnzahl; m++) {
-              imageViewWuerfel[m].toFront();
-              imageViewWuerfel[m].setImage(imageAngreifer[ang[m]]);
+            for (int m = 0; m < angAnzahl; m++) {
+              imageViewAngreiferWuerfel[m].toFront();
+              imageViewAngreiferWuerfel[m].setImage(imageAngreifer[ang[m]]);
             }
-            for (int n = 0; n < verAnzahl; n++, m++) {//WAS IST DAS FUER EIN CRAZY M?
-              imageViewWuerfel[m].toFront();
-              imageViewWuerfel[m].setImage(imageVerteidiger[ver[n]]);
+            for (int n = 0; n < verAnzahl; n++) {
+              imageViewVerteidigerWuerfel[n].toFront();
+              imageViewVerteidigerWuerfel[n].setImage(imageVerteidiger[ver[n]]);
             }
             phasenLabel.setText("Angriffsphase");
             aufforderungsLabel.setText("Kämpfe oder gib auf!");
             break;
           case 5 : //Truppen verschieben also Startland auswaehlen
-            kartenAnzeigen();
+            kartenAnzeigen(); //er hat nicht immer schon die Karte berechnet
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1) { //nur eigene Laender mit mehr als 1 Truppe enablen
               landButtons[i].setDisable(false);
             } else {
@@ -563,8 +622,11 @@ public class RisikoGui extends Application {
             }
             break;
           case 6 : //Truppen verschieben also Zielland auswaehlen
-            for (int o = 0; o < 5; o++) {
-              imageViewWuerfel[o].toBack();
+            for (int o = 0; o < 3; o++) {
+              imageViewAngreiferWuerfel[o].toBack();
+            }
+            for (int o = 0; o < 2; o++) {
+              imageViewVerteidigerWuerfel[o].toBack();
             }
             
             if (spiel.istVerbunden(i) && i != spiel.getVonLand().getIndex()) { // landButtons[i].getHerrscher() == spiel.getDran() && i != spiel.getVonLand().getIndex() && //nur eigene, verbundene Laender enablen
@@ -619,12 +681,12 @@ public class RisikoGui extends Application {
     byte karte = spiel.getKarte();
     if (spiel.getKampfGewonnen() == true) {
       imageViewKarte.setImage(imageKarte[karte]);
-    imageViewKarte.setVisible(true);
-    
-    PauseTransition pause = new PauseTransition(Duration.seconds(4));
-    pause.setOnFinished(e -> imageViewKarte.setVisible(false));
-    pause.play();
-    } // end of if
+      imageViewKarte.setVisible(true);
+      
+      PauseTransition pause = new PauseTransition(Duration.seconds(2));
+      pause.setOnFinished(e -> imageViewKarte.setVisible(false));
+      pause.play();
+    }
   }
   
   public void kampfButton_gedrueckt(Event evt) {
