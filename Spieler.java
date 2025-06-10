@@ -45,7 +45,10 @@ public class Spieler{
   public byte getKarte() {
     return this.karte;
   }
-
+  
+  public int[] getKartenAnzahl() {
+    return this.kartenAnzahl;
+  }
   
   public void setGesamtTruppen(int anzahl){
     this.gesamtTruppen = anzahl;

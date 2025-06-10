@@ -19,6 +19,7 @@ public class Spiel {
   private int truppenVorher;
   private int truppenZumSetzen;
   boolean kampfGewonnen = false;
+  boolean kartenGenutzt = false;
   int platzierteTruppen = 0;
   int startTruppen;//die man am Anfang kriegt, also in phase 100
   
@@ -302,6 +303,7 @@ public class Spiel {
         phase++;
         break;
       case 1 : //angreifen also eigenes Land auswaehlen
+        kartenGenutzt = false;
         if (vonLand != null) {
           phase++;
         } else {
@@ -568,6 +570,10 @@ public class Spiel {
   
   private int berechneZuPlatzierendeTruppen() { //glaube ist gut so
     int extraTruppen = 0 + mitSpieler[dran].kartenNutzen();
+    if (extraTruppen != 0) {
+      kartenGenutzt = true;
+    }
+    
     for (int i = 0; i < kontinente.length; i++) {
       if (kontinente[i].beherrschtVon(dran) == true) {
         extraTruppen = extraTruppen + kontinente[i].getExtraTruppen();
@@ -611,10 +617,18 @@ public class Spiel {
     return this.mitSpieler[dran].getKarte();
   }
   
+  public int[] getKartenAnzahl(int gefordert) {
+    return this.mitSpieler[gefordert].getKartenAnzahl();
+  }
+
+  
   public boolean getKampfGewonnen() {
     return this.kampfGewonnen;
   }
-
+  
+  public boolean getKartenGenutzt() {
+    return this.kartenGenutzt;
+  }
   
 }
   
