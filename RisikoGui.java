@@ -23,6 +23,10 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import java.util.function.UnaryOperator;
+import javafx.scene.Group;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+
 
 public class RisikoGui extends Application {
   private byte spielerAnzahl = 0;
@@ -234,9 +238,32 @@ public class RisikoGui extends Application {
     };
     
     Stage spielPlan = new Stage();
+    Pane spielPane = new Pane();
+    Group skalierGruppe = new Group(spielPane);
+    Scene spielSzene = new Scene(skalierGruppe, 1366, 728);
     
-    Pane spielPane = new Pane(); // Es gibt schon eine pane fuer das erste Fenster also sollte diese anders heissen, am besten geben wir den roots, panes und scenes allen sinnvolle Namen, damit kann ich naehmlich nichts anfangen
-    Scene spielSzene = new Scene(spielPane, 1366, 728);
+    ChangeListener<Number> resizeListener = (obs, oldVal, newVal) -> {//von chat
+        double scaleX = spielSzene.getWidth() / 1366;
+        double scaleY = spielSzene.getHeight() / 728;
+        double scale = Math.min(scaleX, scaleY); // Verhältnis wahren
+    
+        spielPane.setScaleX(scale);
+        spielPane.setScaleY(scale);
+    
+        // Zentrieren
+        double offsetX = (spielSzene.getWidth() - 1366 * scale) / 2;
+        double offsetY = (spielSzene.getHeight() - 728 * scale) / 2;
+        spielPane.setLayoutX(offsetX);
+        //spielPane.setLayoutY(offsetY);
+    };
+    
+//    spielPlan.widthProperty().addListener((obs, oldVal, newVal) -> {//auch von chat
+//        spielPlan.setHeight(newVal.doubleValue() * (728 / 1366));
+//    });
+    
+    spielSzene.widthProperty().addListener(resizeListener);
+    spielSzene.heightProperty().addListener(resizeListener);
+    
     
     Image image = new Image("file:Riskgameboard.png");
     ImageView imageView = new ImageView(image);
@@ -422,6 +449,7 @@ public class RisikoGui extends Application {
     
     spielPlan.setTitle("Risiko");
     spielPlan.setScene(spielSzene);
+    spielPlan.setResizable(true);
     spielPlan.show();
     grafikErneuern();
   }
