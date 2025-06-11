@@ -1,14 +1,14 @@
 ﻿[Files]
-File0=..\..\00_Java_Lasse\git_Risiko\12_2_Softwareprojekt_Risiko\Kontinent.java
-File1=..\..\00_Java_Lasse\git_Risiko\12_2_Softwareprojekt_Risiko\Land.java
-File2=..\..\00_Java_Lasse\git_Risiko\12_2_Softwareprojekt_Risiko\LandButton.java
-File3=..\..\00_Java_Lasse\git_Risiko\12_2_Softwareprojekt_Risiko\RisikoGui.java
-File4=..\..\00_Java_Lasse\git_Risiko\12_2_Softwareprojekt_Risiko\Spiel.java
-File5=..\..\00_Java_Lasse\git_Risiko\12_2_Softwareprojekt_Risiko\Spieler.java
+File0=..\..\..\java\Risiko\12_2_Softwareprojekt_Risiko\Kontinent.java
+File1=..\..\..\java\Risiko\12_2_Softwareprojekt_Risiko\Land.java
+File2=..\..\..\java\Risiko\12_2_Softwareprojekt_Risiko\LandButton.java
+File3=..\..\..\java\Risiko\12_2_Softwareprojekt_Risiko\RisikoGui.java
+File4=..\..\..\java\Risiko\12_2_Softwareprojekt_Risiko\Spiel.java
+File5=..\..\..\java\Risiko\12_2_Softwareprojekt_Risiko\Spieler.java
 
 [Box:  - Kontinent]
-X=627
-Y=996
+X=930
+Y=1212
 MinVis=0
 ShowParameter=4
 SortOrder=0
@@ -17,8 +17,8 @@ FontSize=12
 FontName=Segoe UI
 
 [Box:  - Land]
-X=686
-Y=450
+X=994
+Y=661
 MinVis=0
 ShowParameter=4
 SortOrder=0
@@ -27,8 +27,8 @@ FontSize=12
 FontName=Segoe UI
 
 [Box:  - LandButton]
-X=609
-Y=175
+X=573
+Y=136
 MinVis=0
 ShowParameter=4
 SortOrder=0
@@ -47,8 +47,8 @@ FontSize=12
 FontName=Segoe UI
 
 [Box:  - Spiel]
-X=123
-Y=669
+X=139
+Y=1039
 MinVis=0
 ShowParameter=4
 SortOrder=0
