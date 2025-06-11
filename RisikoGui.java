@@ -25,7 +25,7 @@ import java.util.function.UnaryOperator;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.StackPane;
-
+import javafx.scene.Group;
 
 public class RisikoGui extends Application {
   private byte spielerAnzahl = 0;
@@ -246,26 +246,48 @@ public class RisikoGui extends Application {
     
     Stage spielPlan = new Stage();
     Pane spielPane = new Pane();
-    StackPane skalierGruppe = new StackPane();
-    skalierGruppe.getChildren().add(spielPane);
-    Scene spielSzene = new Scene(skalierGruppe, 1366, 728);
+    Group scaleGroup = new Group(spielPane);
+    StackPane stapelPane = new StackPane(scaleGroup);
+    Scene spielSzene = new Scene(stapelPane, 1366, 728);
     
-    ChangeListener<Number> resizeListener = (obs, oldVal, newVal) -> {//vonChat, funktioniert nicht
-      double scaleX = spielSzene.getWidth() / 1366;
-      double scaleY = spielSzene.getHeight() / 728;
-      double scale = Math.min(scaleX, scaleY);
+    double xAbweichung = 17;
+    double yAbweichung = 199;
+    double xGroesse = 1366;
+    double yGroesse = 728;
+    
+    scaleGroup.setTranslateX(xAbweichung);
+    scaleGroup.setTranslateY(yAbweichung);
+    
+    ChangeListener<Number> resizeListener = (obs, oldVal, newVal) -> {//teilweise von Chat, steckt aber trotzdem noch sehr viel Zeit drin, weil es zu bloed war
+      double scale = 0;
+      //System.out.println("Width: " + spielSzene.getWidth() + " height: " + spielPlan.getHeight() + " scale: " + scale);
+      double seitenVerhaelt = (spielSzene.getWidth() / spielPlan.getHeight()) / (xGroesse / yGroesse);
       
-      spielPane.setScaleX(scale);
-      spielPane.setScaleY(scale);
+      if (seitenVerhaelt >= 0.95) {
+        scale = spielSzene.getHeight() / yGroesse;
+      } else {
+        scale = spielSzene.getWidth() / xGroesse;
+      }
+
+      scaleGroup.setScaleX(scale);
+      scaleGroup.setScaleY(scale);
+      
+      double offsetX = (spielSzene.getWidth() - (xGroesse * scale)) / 2.0 + xAbweichung * scale;
+      double offsetY = (spielSzene.getHeight() - (yGroesse * scale)) / 2.0 + yAbweichung * scale;
+      
+      if (seitenVerhaelt >= 0.95) {
+        //System.out.println("jetzt");
+        scaleGroup.setTranslateX(xAbweichung * scale);
+        scaleGroup.setTranslateY(offsetY);
+      } else {
+        scaleGroup.setTranslateX(offsetX);
+        scaleGroup.setTranslateY(yAbweichung * scale);
+      }
+
     };
-    
-    //    spielPlan.widthProperty().addListener((obs, oldVal, newVal) -> {//auch von chat
-    //        spielPlan.setHeight(newVal.doubleValue() * (728 / 1366));
-    //    });
     
     spielSzene.widthProperty().addListener(resizeListener);
     spielSzene.heightProperty().addListener(resizeListener);
-    
     
     Image image = new Image("file:Riskgameboard.png");
     ImageView imageView = new ImageView(image);

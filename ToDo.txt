@@ -14,3 +14,5 @@ Karten anzeigen und Funktion testen
 Australien fixen
 Zufällige Reihenfolge der Spieler
 Beim angegriffenen muss sich die Truppen- und Länzeranzahl ändern
+auf dem Switch-Button steht immer noch switch
+

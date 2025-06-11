@@ -24,8 +24,8 @@ import javafx.scene.input.MouseEvent;
 import java.util.function.UnaryOperator;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.layout.StackPane;
-
+import javafx.scene.layout.StackPane;//
+import javafx.scene.Group;
 
 public class RisikoGui extends Application {
   private byte spielerAnzahl = 0;
@@ -84,7 +84,7 @@ public class RisikoGui extends Application {
     startButton.setLayoutY(288);
     startButton.setPrefHeight(40);
     startButton.setPrefWidth(96);
-    startButton.setText("Start");
+    startButton.getStyleClass().add("button-start");
     startButton.setOnAction(
     (event) -> {startButton_Action(event);} 
     );
@@ -125,6 +125,7 @@ public class RisikoGui extends Application {
     primaryStage.setOnCloseRequest(e -> System.exit(0));
     primaryStage.setTitle("RisikoGui");
     primaryStage.setScene(startSzene);
+    root.getStylesheets().add("CSSstart.css");
     primaryStage.show();
   }
   
@@ -243,24 +244,86 @@ public class RisikoGui extends Application {
     {1055.5, 485}, {1181, 468.5}, {1192, 554}, {1131, 562.5}
     };
     
-    Stage spielPlan = new Stage();
-    Pane spielPane = new Pane();
-    StackPane skalierGruppe = new StackPane();
-    skalierGruppe.getChildren().add(spielPane);
+    
+    /*Stage spielPlan = new Stage();
+    
+    Pane spielPane = new Pane(); // Deine GUI
+    spielPane.setPrefSize(1366, 728); // StackPane braucht diese Angabe
+    
+    StackPane skalierGruppe = new StackPane(spielPane);
     Scene spielSzene = new Scene(skalierGruppe, 1366, 728);
     
-    ChangeListener<Number> resizeListener = (obs, oldVal, newVal) -> {//vonChat, funktioniert nicht
-      double scaleX = spielSzene.getWidth() / 1366;
-      double scaleY = spielSzene.getHeight() / 728;
-      double scale = Math.min(scaleX, scaleY);
-      
-      spielPane.setScaleX(scale);
-      spielPane.setScaleY(scale);
+    final double basisBreite = 1366;
+    final double basisHoehe = 728;
+    
+    ChangeListener<Number> resizeListener = (obs, oldVal, newVal) -> {
+    double scaleX = spielSzene.getWidth() / basisBreite;
+    double scaleY = spielSzene.getHeight() / basisHoehe;
+    double scale = Math.min(scaleX, scaleY);
+    
+    spielPane.setScaleX(scale);
+    spielPane.setScaleY(scale);
     };
     
-    //    spielPlan.widthProperty().addListener((obs, oldVal, newVal) -> {//auch von chat
-    //        spielPlan.setHeight(newVal.doubleValue() * (728 / 1366));
-    //    });
+    spielPlan.widthProperty().addListener((obs, oldVal, newVal) -> {
+    spielPlan.setHeight(newVal.doubleValue() * (basisHoehe / basisBreite));
+    });
+    
+    spielSzene.widthProperty().addListener(resizeListener);
+    spielSzene.heightProperty().addListener(resizeListener);*/
+    
+    
+    
+    
+    Stage spielPlan = new Stage();
+    Pane spielPane = new Pane();
+    Group scaleGroup = new Group(spielPane);
+    StackPane stapelPane = new StackPane(scaleGroup);
+    //skalierGruppe.getChildren().add(spielPane);
+    Scene spielSzene = new Scene(stapelPane, 1366, 728);
+    
+    double xAbweichung = 17;
+    double yAbweichung = 199;
+    double xGroesse = 1366;
+    double yGroesse = 728;
+    
+    scaleGroup.setTranslateX(xAbweichung);
+    scaleGroup.setTranslateY(yAbweichung);
+    
+    ChangeListener<Number> resizeListener = (obs, oldVal, newVal) -> {//vonChat, funktioniert nicht
+      double scale = 0;
+//      double scaleX = spielSzene.getWidth() / xGroesse;
+//      double scaleY = spielSzene.getHeight() / yGroesse;
+//      double scale = Math.min(scaleX, scaleY);
+      System.out.println("Width: " + spielSzene.getWidth() + " height: " + spielPlan.getHeight() + " scale: " + scale);
+      double seitenVerhaelt = (spielSzene.getWidth() / spielPlan.getHeight()) / (xGroesse / yGroesse);
+      
+      if (seitenVerhaelt >= 0.95) {
+        scale = spielSzene.getHeight() / yGroesse;
+      } else {
+        scale = spielSzene.getWidth() / xGroesse;
+      }
+
+      scaleGroup.setScaleX(scale);
+      scaleGroup.setScaleY(scale);
+      
+      double offsetX = (spielSzene.getWidth() - (xGroesse * scale)) / 2.0 + xAbweichung * scale;
+      double offsetY = (spielSzene.getHeight() - (yGroesse * scale)) / 2.0 + yAbweichung * scale;
+      
+      if (seitenVerhaelt >= 0.95) {
+        System.out.println("jetzt");
+        scaleGroup.setTranslateX(xAbweichung * scale);
+        scaleGroup.setTranslateY(offsetY);
+      } else {
+        scaleGroup.setTranslateX(offsetX);
+        scaleGroup.setTranslateY(yAbweichung * scale);
+      }
+
+    };
+    
+//    spielPlan.widthProperty().addListener((obs, oldVal, newVal) -> {//auch von chat
+//      spielPlan.setHeight(newVal.doubleValue() * (728 / 1366));
+//    });
     
     spielSzene.widthProperty().addListener(resizeListener);
     spielSzene.heightProperty().addListener(resizeListener);
@@ -302,7 +365,6 @@ public class RisikoGui extends Application {
       landButtons[i].setMinSize(0, 0);
       landButtons[i].setPrefHeight(0.1);
       landButtons[i].setPrefWidth(0.1);
-      landButtons[i].getStyleClass().add("button-land");
       LandButton btn = landButtons[i];
       btn.setOnMouseClicked((MouseEvent event) -> btn.landButton_gedrueckt(event));
       spielPane.getChildren().add(landButtons[i]);
@@ -455,7 +517,7 @@ public class RisikoGui extends Application {
       imageViewAngreiferWuerfel[m] = new ImageView();
       imageViewAngreiferWuerfel[m].setFitWidth(80);
       imageViewAngreiferWuerfel[m].setPreserveRatio(true);
-      imageViewAngreiferWuerfel[m].setX(50 + m * 80);
+      imageViewAngreiferWuerfel[m].setX(70 + m * 80);
       imageViewAngreiferWuerfel[m].setY(625);
       spielPane.getChildren().add(0, imageViewAngreiferWuerfel[m]);
     }
@@ -463,7 +525,7 @@ public class RisikoGui extends Application {
       imageViewVerteidigerWuerfel[m] = new ImageView();
       imageViewVerteidigerWuerfel[m].setFitWidth(80);
       imageViewVerteidigerWuerfel[m].setPreserveRatio(true);
-      imageViewVerteidigerWuerfel[m].setX(50 + m * 80);
+      imageViewVerteidigerWuerfel[m].setX(70 + m * 80);
       imageViewVerteidigerWuerfel[m].setY(535);
       spielPane.getChildren().add(0, imageViewVerteidigerWuerfel[m]);
     }
