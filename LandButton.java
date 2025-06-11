@@ -40,20 +40,20 @@ public class LandButton extends Button{//geht anscheinend nicht
   
   public void refresh(int switchWert) {
     switch (switchWert) {
-      case  0: 
+      case 0 : 
         this.schriftzug.setText(land.getTruppen() + "");
         this.kontinente.setVisible(false);
         break;
-      case  1: 
-        this.schriftzug.setText(land.getName() + "");
+      case 1 : 
+        this.schriftzug.setText(land.getName() + "" + land.kontin);// LETZTERES NUR ZUM DEBUGGEN
         this.schriftzug.toFront();
         break;
-      case  2:
+      case 2 :
         this.schriftzug.setText("");
         this.kontinente.toFront();
         this.kontinente.setVisible(true);
         break;
-      case  10:
+      case 10 :
         this.schriftzug.setText(land.getTruppen() + " vs. " + land.getAngreiferTruppen());
         this.kontinente.setVisible(false);
         break;
@@ -73,5 +73,4 @@ public class LandButton extends Button{//geht anscheinend nicht
     this.schriftzug.setText("Angreifer " + truppen);
     this.kontinente.setVisible(false);
   }
-
 }

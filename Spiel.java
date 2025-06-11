@@ -88,6 +88,9 @@ public class Spiel {
         hinzuzfuegendeLaender[j] = laender[zuKontinentHinzugefuegt++];
       }
       kontinente[i] = new Kontinent(hinzuzfuegendeLaender, kontinentNamen[i], kontinentTruppen[i]);
+      for (Land laendchen : hinzuzfuegendeLaender) {//NUR ZUM DEBUGGEN 3
+        laendchen.kontin = i;
+      }
     }
   }
   
@@ -405,7 +408,7 @@ public class Spiel {
     return this.mitSpieler[meinSpieler].getGesamtLaender();
   }
   
-  public int getAnzahlTruppen(byte meinSpieler) {          //hab das mal public gemacht
+  public int getAnzahlTruppen(byte meinSpieler) { //hab das mal public gemacht
     return this.mitSpieler[meinSpieler].getGesamtTruppen();
   }
   
@@ -433,12 +436,12 @@ public class Spiel {
       verteidigerWuerfel[i] = (byte) ((Math.random() * 6) + 1);
     }
     
-    for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
-      System.out.println("angreiferWuerfel: " + i + " hat den Wert " + angreiferWuerfel[i]);
-    }
-    for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
-      System.out.println("verteidigerWuerfel: " + i + " hat den Wert " + verteidigerWuerfel[i]);
-    }
+//    for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
+//      System.out.println("angreiferWuerfel: " + i + " hat den Wert " + angreiferWuerfel[i]);
+//    }
+//    for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
+//      System.out.println("verteidigerWuerfel: " + i + " hat den Wert " + verteidigerWuerfel[i]);
+//    }
     byte zwischen = 0; //bubblesort
     for (byte i = 0; i < angreiferWuerfelAnzahl - 1; i++) {
       for (byte j = 0; j < angreiferWuerfelAnzahl - 1; j++) {
@@ -456,7 +459,6 @@ public class Spiel {
     }
     
     byte wuerfelNr = 0;
-    
     do { 
       System.out.println(angreiferWuerfel[wuerfelNr] + " vs. " + verteidigerWuerfel[wuerfelNr]);
       if (angreiferWuerfel[wuerfelNr] > verteidigerWuerfel[wuerfelNr]) {
@@ -574,14 +576,12 @@ public class Spiel {
   }
   
   private int berechneGesamtTruppen(byte meinSpieler) {
-    //return mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen();//NEIN DIE BRAUCHEN WIR AUCH FUER DIE AKTUALISIERUNG DER ANZAHL DER TRUPPEN EINES SPIELERS
     int truppen = 0;
     for (byte i = 0; i < laender.length; i++) {
       if (laender[i].getHerrscher() == meinSpieler) {
         truppen += laender[i].getTruppen();
       }
     } 
-    //mitSpieler[dran].setGesamtTruppen(truppen);//nein, dafuer ist aktualisiereTruppenLaender
     return truppen;
   }
   
@@ -602,7 +602,6 @@ public class Spiel {
   public int[] getKartenAnzahl(int gefordert) {
     return this.mitSpieler[gefordert].getKartenAnzahl();
   }
-
   
   public boolean getKampfGewonnen() {
     return this.kampfGewonnen;
@@ -612,15 +611,11 @@ public class Spiel {
     return this.kartenGenutzt;
   }
   
-
-  
   public boolean kannAngreifen(byte i){
-//    System.out.println("hiha");
-//    return true;    
     for (Land nachbarLand : laender[i].getNachbarn()){
       if (nachbarLand.getHerrscher() != dran) {
         return true;
-      } // end of if
+      }
     }
     return false;
   }
@@ -629,9 +624,8 @@ public class Spiel {
     for (Land nachbarLand : laender[i].getNachbarn()){
       if (nachbarLand.getHerrscher() == dran) {
         return true;
-      } // end of if
+      }
     }
     return false;
   }
-
 }
