@@ -302,6 +302,7 @@ public class RisikoGui extends Application {
       landButtons[i].setMinSize(0, 0);
       landButtons[i].setPrefHeight(0.1);
       landButtons[i].setPrefWidth(0.1);
+      landButtons[i].getStyleClass().add("button-land");
       LandButton btn = landButtons[i];
       btn.setOnMouseClicked((MouseEvent event) -> btn.landButton_gedrueckt(event));
       spielPane.getChildren().add(landButtons[i]);
@@ -314,7 +315,7 @@ public class RisikoGui extends Application {
     fertigButton.setLayoutY(600);
     fertigButton.setPrefHeight(70);
     fertigButton.setPrefWidth(70);
-    fertigButton.setText("Weiter");
+    fertigButton.getStyleClass().add("button-weiter");
     fertigButton.setOnAction(
     (event) -> {fertigButton_gedrueckt(event);} 
     );
@@ -325,7 +326,7 @@ public class RisikoGui extends Application {
     kampfButton.setLayoutY(500);
     kampfButton.setPrefHeight(70);
     kampfButton.setPrefWidth(70);
-    kampfButton.setText("Kampf");
+    kampfButton.getStyleClass().add("button-kampf");
     kampfButton.setOnAction(
     (event) -> {kampfButton_gedrueckt(event);} 
     );
@@ -337,6 +338,7 @@ public class RisikoGui extends Application {
     switchButton.setPrefHeight(70);
     switchButton.setPrefWidth(70);
     switchButton.setText("Switch");
+    switchButton.getStyleClass().add("button-switch");
     switchButton.setOnAction(
     (event) -> {switchButton_gedrueckt(event);} 
     );
@@ -579,7 +581,6 @@ public class RisikoGui extends Application {
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
-            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
             phasenLabel.setText("Angriffsphase");
             aufforderungsLabel.setText("Wähle das Land, welches du angreifen möchtest!");
             break;
@@ -605,38 +606,35 @@ public class RisikoGui extends Application {
             phasenLabel.setText("Angriffsphase");
             aufforderungsLabel.setText("Verschiebe deine Angreifertruppen in das ausgewählte Land!");
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
-            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
             break;
           case 4 : //angreifen also im Kampf
             landButtons[i].setDisable(true); //alle Laender disablen
-            
             kampfButton.setDisable(false);
             fertigButton.setDisable(false);
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
-            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
-//            
-//            for (int o = 0; o < 5; o++) {
-//              imageViewWuerfel[o].toBack();
-//            }
-//            byte ang[] = spiel.getAngreiferWuerfel();
-//            byte ver[] = spiel.getVerteidigerWuerfel();
-//            byte angAnzahl = spiel.getAngreiferWuerfelAnzahl();
-//            byte verAnzahl = spiel.getVerteidigerWuerfelAnzahl();
-//            byte m = 0;
-//            /*System.out.println("AngreiferWuerfelAnzahl = " + angAnzahl);
-//            System.out.println("VerteidigerWuerfelAnzahl = " + verAnzahl);
-//            System.out.println("AngreiferWuerfel[0] = " + ang[0]);
-//            System.out.println("VerteidigerrWuerfel[0] = " + ver[0]);*/
-//            for (; m < angAnzahl; m++) {
-//              imageViewWuerfel[m].toFront();
-//              imageViewWuerfel[m].setImage(imageAngreifer[ang[m]]);
-//            }
-//            for (int n = 0; n < verAnzahl; n++, m++) {//WAS IST DAS FUER EIN CRAZY M?
-//              imageViewWuerfel[m].toFront();
-//              imageViewWuerfel[m].setImage(imageVerteidiger[ver[n]]);
-//            }
-//            phasenLabel.setText("Angriffsphase");
-//            aufforderungsLabel.setText("Kämpfe oder gib auf!");
+            //            
+            //            for (int o = 0; o < 5; o++) {
+            //              imageViewWuerfel[o].toBack();
+            //            }
+            //            byte ang[] = spiel.getAngreiferWuerfel();
+            //            byte ver[] = spiel.getVerteidigerWuerfel();
+            //            byte angAnzahl = spiel.getAngreiferWuerfelAnzahl();
+            //            byte verAnzahl = spiel.getVerteidigerWuerfelAnzahl();
+            //            byte m = 0;
+            //            /*System.out.println("AngreiferWuerfelAnzahl = " + angAnzahl);
+            //            System.out.println("VerteidigerWuerfelAnzahl = " + verAnzahl);
+            //            System.out.println("AngreiferWuerfel[0] = " + ang[0]);
+            //            System.out.println("VerteidigerrWuerfel[0] = " + ver[0]);*/
+            //            for (; m < angAnzahl; m++) {
+            //              imageViewWuerfel[m].toFront();
+            //              imageViewWuerfel[m].setImage(imageAngreifer[ang[m]]);
+            //            }
+            //            for (int n = 0; n < verAnzahl; n++, m++) {//WAS IST DAS FUER EIN CRAZY M?
+            //              imageViewWuerfel[m].toFront();
+            //              imageViewWuerfel[m].setImage(imageVerteidiger[ver[n]]);
+            //            }
+            //            phasenLabel.setText("Angriffsphase");
+            //            aufforderungsLabel.setText("Kämpfe oder gib auf!");
             break;
           case 5 : //Truppen verschieben also Startland auswaehlen
             kartenAnzeigen();
@@ -703,7 +701,7 @@ public class RisikoGui extends Application {
     neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + ";-fx-font-size: 30px; -fx-background-color: lightgray;");
     neuerSpielerLabel.setVisible(true);
     
-    PauseTransition pause = new PauseTransition(Duration.seconds(0.75));
+    PauseTransition pause = new PauseTransition(Duration.seconds(2));
     pause.setOnFinished(e -> neuerSpielerLabel.setVisible(false));
     pause.play();
   }

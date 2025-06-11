@@ -84,7 +84,7 @@ public class RisikoGui extends Application {
     startButton.setLayoutY(288);
     startButton.setPrefHeight(40);
     startButton.setPrefWidth(96);
-    startButton.setText("Start");
+    startButton.getStyleClass().add("button-start");
     startButton.setOnAction(
     (event) -> {startButton_Action(event);} 
     );
@@ -125,6 +125,7 @@ public class RisikoGui extends Application {
     primaryStage.setOnCloseRequest(e -> System.exit(0));
     primaryStage.setTitle("RisikoGui");
     primaryStage.setScene(startSzene);
+    root.getStylesheets().add("CSSstart.css");
     primaryStage.show();
   }
   
@@ -314,7 +315,7 @@ public class RisikoGui extends Application {
     fertigButton.setLayoutY(600);
     fertigButton.setPrefHeight(70);
     fertigButton.setPrefWidth(70);
-    fertigButton.setText("Weiter");
+    fertigButton.getStyleClass().add("button-weiter");
     fertigButton.setOnAction(
     (event) -> {fertigButton_gedrueckt(event);} 
     );
@@ -325,7 +326,7 @@ public class RisikoGui extends Application {
     kampfButton.setLayoutY(500);
     kampfButton.setPrefHeight(70);
     kampfButton.setPrefWidth(70);
-    kampfButton.setText("Kampf");
+    kampfButton.getStyleClass().add("button-kampf");
     kampfButton.setOnAction(
     (event) -> {kampfButton_gedrueckt(event);} 
     );
@@ -337,6 +338,7 @@ public class RisikoGui extends Application {
     switchButton.setPrefHeight(70);
     switchButton.setPrefWidth(70);
     switchButton.setText("Switch");
+    switchButton.getStyleClass().add("button-switch");
     switchButton.setOnAction(
     (event) -> {switchButton_gedrueckt(event);} 
     );
@@ -453,7 +455,7 @@ public class RisikoGui extends Application {
       imageViewAngreiferWuerfel[m] = new ImageView();
       imageViewAngreiferWuerfel[m].setFitWidth(80);
       imageViewAngreiferWuerfel[m].setPreserveRatio(true);
-      imageViewAngreiferWuerfel[m].setX(50 + m * 80);
+      imageViewAngreiferWuerfel[m].setX(70 + m * 80);
       imageViewAngreiferWuerfel[m].setY(625);
       spielPane.getChildren().add(0, imageViewAngreiferWuerfel[m]);
     }
@@ -461,7 +463,7 @@ public class RisikoGui extends Application {
       imageViewVerteidigerWuerfel[m] = new ImageView();
       imageViewVerteidigerWuerfel[m].setFitWidth(80);
       imageViewVerteidigerWuerfel[m].setPreserveRatio(true);
-      imageViewVerteidigerWuerfel[m].setX(50 + m * 80);
+      imageViewVerteidigerWuerfel[m].setX(70 + m * 80);
       imageViewVerteidigerWuerfel[m].setY(535);
       spielPane.getChildren().add(0, imageViewVerteidigerWuerfel[m]);
     }

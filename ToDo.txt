@@ -9,6 +9,9 @@ Striche in der Gui zwischen Ägypten und Italien
 728*1366
 phase 0 truppen anzahl -- hoffentlich mit den kontinenten gefixt 
 Anzeigen von welchem Land man angreift
-
+Skalierung des Fensters (bisher 728*1366)
+Beim Wechsel von Truppen/Namen/Kontinenten die Angreifertruppen nicht verschwinden lassen
+Karten anzeigen und Funktion testen
+Australien fixen
 Zufällige Reihenfolge der Spieler
 Beim angegriffenen muss sich die Truppen- und Länzeranzahl ändern
