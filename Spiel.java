@@ -18,6 +18,8 @@ public class Spiel {
   private byte verteidigerWuerfelAnzahl;
   private int truppenVorher;
   private int truppenZumSetzen;
+  boolean kampfGewonnen = false;
+  boolean kartenGenutzt = false;
   int platzierteTruppen = 0;
   int startTruppen;//die man am Anfang kriegt, also in phase 100
   boolean kannAngreifen;
@@ -282,6 +284,7 @@ public class Spiel {
         phase++;
         break;
       case 1 : //angreifen also eigenes Land auswaehlen
+        kartenGenutzt = false;
         if (vonLand != null) {
           phase++;
         } else {
@@ -316,6 +319,10 @@ public class Spiel {
         }
         break;
       case 5 : //Truppen verschieben also StartLand auswaehlen
+        if (kampfGewonnen == true) {
+          mitSpieler[dran].karteZiehen();
+        }
+        kampfGewonnen = false;
         if (vonLand != null) {
           phase++;
         } else {
@@ -466,7 +473,8 @@ public class Spiel {
         nachLand.setTruppen(dran, nachLand.getAngreiferTruppen());
         nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
         System.out.println("hi");
-        mitSpieler[dran].karteZiehen();
+        kampfGewonnen = true;
+        //mitSpieler[dran].karteZiehen();
         mitSpieler[vonLand.getHerrscher()].setGesamtLaender(mitSpieler[vonLand.getHerrscher()].getGesamtLaender() + 1);
         getGewonnen();
       }
@@ -544,6 +552,10 @@ public class Spiel {
   
   private int berechneZuPlatzierendeTruppen() { //glaube ist gut so
     int extraTruppen = 0 + mitSpieler[dran].kartenNutzen();
+    if (extraTruppen != 0) {
+      kartenGenutzt = true;
+    }
+    
     for (int i = 0; i < kontinente.length; i++) {
       if (kontinente[i].beherrschtVon(dran) == true) {
         extraTruppen = extraTruppen + kontinente[i].getExtraTruppen();
@@ -583,6 +595,24 @@ public class Spiel {
     }
   }
   
+  public byte getKarte() {
+    return this.mitSpieler[dran].getKarte();
+  }
+  
+  public int[] getKartenAnzahl(int gefordert) {
+    return this.mitSpieler[gefordert].getKartenAnzahl();
+  }
+
+  
+  public boolean getKampfGewonnen() {
+    return this.kampfGewonnen;
+  }
+  
+  public boolean getKartenGenutzt() {
+    return this.kartenGenutzt;
+  }
+  
+
   
   public boolean kannAngreifen(byte i){
 //    System.out.println("hiha");

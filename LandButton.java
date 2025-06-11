@@ -46,6 +46,7 @@ public class LandButton extends Button{//geht anscheinend nicht
         break;
       case  1: 
         this.schriftzug.setText(land.getName() + "");
+        this.schriftzug.toFront();
         break;
       case  2:
         this.schriftzug.setText("");

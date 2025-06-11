@@ -4,7 +4,11 @@ Fehler beheben
 Aktualisieren der Gui fertig machen
 immer mindestens 1 Truppe schon beim Auswählen eines Landes zum Angreifen verschieben
 Das WerDranIstFeld sollte in Phase 100 am besten nur dann angezeigt werden, wenn sich der Spieler gewechselt hat -- verstehe ich nicht 
-Striche in der Gui zwischen Ägypten und Itallien
+Striche in der Gui zwischen Ägypten und Italien
 (zu fünft spielen)
 728*1366
 phase 0 truppen anzahl -- hoffentlich mit den kontinenten gefixt 
+Anzeigen von welchem Land man angreift
+
+Zufällige Reihenfolge der Spieler
+Beim angegriffenen muss sich die Truppen- und Länzeranzahl ändern
