@@ -579,7 +579,7 @@ public class RisikoGui extends Application {
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
-            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift();
+            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
             phasenLabel.setText("Angriffsphase");
             aufforderungsLabel.setText("Wähle das Land, welches du angreifen möchtest!");
             break;
@@ -605,7 +605,7 @@ public class RisikoGui extends Application {
             phasenLabel.setText("Angriffsphase");
             aufforderungsLabel.setText("Verschiebe deine Angreifertruppen in das ausgewählte Land!");
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
-            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift();
+            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
             break;
           case 4 : //angreifen also im Kampf
             landButtons[i].setDisable(true); //alle Laender disablen
@@ -613,8 +613,8 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(false);
             fertigButton.setDisable(false);
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
-            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift();
-//            
+            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
+                        
 //            for (int o = 0; o < 5; o++) {
 //              imageViewWuerfel[o].toBack();
 //            }

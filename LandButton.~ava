@@ -69,8 +69,8 @@ public class LandButton extends Button{//geht anscheinend nicht
     return land.getTruppen();
   }
   
-  public void angriffsSchrift(int truppen){
-    this.schriftzug.setText("Angreifer " + truppen);
+  public void angriffsSchrift(){
+    this.schriftzug.setText("Angreifer");
     this.kontinente.setVisible(false);
   }
 
