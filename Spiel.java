@@ -18,8 +18,11 @@ public class Spiel {
   private byte verteidigerWuerfelAnzahl;
   private int truppenVorher;
   private int truppenZumSetzen;
+  boolean kampfGewonnen = false;
+  boolean kartenGenutzt = false;
   int platzierteTruppen = 0;
   int startTruppen;//die man am Anfang kriegt, also in phase 100
+  boolean kannAngreifen;
   
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
     gui = meineGui;
@@ -153,26 +156,6 @@ public class Spiel {
           phasenWechsel();
         }
         break;
-      //        truppenVorher = berechneGesamtTruppen(dran);
-      //        System.out.println(berechneZuPlatzierendeTruppen());
-      //        System.out.println(platzierteTruppen);
-      //        if (platzierteTruppen < berechneZuPlatzierendeTruppen()) { 
-      //          if (taste == 1) {
-      //            land.setTruppen(dran, land.getTruppen() + 1);
-      //            System.out.println("Eine Truppe wird plaziert");
-      //            platzierteTruppen++;
-      //          } else if (taste == 2) {
-      //            int extra = Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran)));
-      //            land.setTruppen(dran, land.getTruppen() + extra);
-      //            platzierteTruppen += extra;
-      //          }
-      //        } else {
-      //          System.out.println("Error zu viele Truppen wurden plaziert");
-      //        }
-      //        if (platzierteTruppen == berechneZuPlatzierendeTruppen()) {
-      //          phasenWechsel();
-      //          break;
-      //        } 
       case 1 : //angreifen also eigenes Land auswaehlen
         System.out.println(zugNummer);
         if (land.getHerrscher() == dran && land.getTruppen() > 1) {
@@ -301,6 +284,7 @@ public class Spiel {
         phase++;
         break;
       case 1 : //angreifen also eigenes Land auswaehlen
+        kartenGenutzt = false;
         if (vonLand != null) {
           phase++;
         } else {
@@ -335,6 +319,10 @@ public class Spiel {
         }
         break;
       case 5 : //Truppen verschieben also StartLand auswaehlen
+        if (kampfGewonnen == true) {
+          mitSpieler[dran].karteZiehen();
+        }
+        kampfGewonnen = false;
         if (vonLand != null) {
           phase++;
         } else {
@@ -485,7 +473,8 @@ public class Spiel {
         nachLand.setTruppen(dran, nachLand.getAngreiferTruppen());
         nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
         System.out.println("hi");
-        mitSpieler[dran].karteZiehen();
+        kampfGewonnen = true;
+        //mitSpieler[dran].karteZiehen();
         mitSpieler[vonLand.getHerrscher()].setGesamtLaender(mitSpieler[vonLand.getHerrscher()].getGesamtLaender() + 1);
         getGewonnen();
       }
@@ -563,6 +552,10 @@ public class Spiel {
   
   private int berechneZuPlatzierendeTruppen() { //glaube ist gut so
     int extraTruppen = 0 + mitSpieler[dran].kartenNutzen();
+    if (extraTruppen != 0) {
+      kartenGenutzt = true;
+    }
+    
     for (int i = 0; i < kontinente.length; i++) {
       if (kontinente[i].beherrschtVon(dran) == true) {
         extraTruppen = extraTruppen + kontinente[i].getExtraTruppen();
@@ -602,5 +595,43 @@ public class Spiel {
     }
   }
   
-}
+  public byte getKarte() {
+    return this.mitSpieler[dran].getKarte();
+  }
   
+  public int[] getKartenAnzahl(int gefordert) {
+    return this.mitSpieler[gefordert].getKartenAnzahl();
+  }
+
+  
+  public boolean getKampfGewonnen() {
+    return this.kampfGewonnen;
+  }
+  
+  public boolean getKartenGenutzt() {
+    return this.kartenGenutzt;
+  }
+  
+
+  
+  public boolean kannAngreifen(byte i){
+//    System.out.println("hiha");
+//    return true;    
+    for (Land nachbarLand : laender[i].getNachbarn()){
+      if (nachbarLand.getHerrscher() != dran) {
+        return true;
+      } // end of if
+    }
+    return false;
+  }
+  
+  public boolean kannVerschieben(byte i){
+    for (Land nachbarLand : laender[i].getNachbarn()){
+      if (nachbarLand.getHerrscher() == dran) {
+        return true;
+      } // end of if
+    }
+    return false;
+  }
+
+}

@@ -12,3 +12,5 @@ phase 0 truppen anzahl
 Beim Wechsel von Truppen/Namen/Kontinenten die Angreifertruppen nicht verschwinden lassen
 Karten anzeigen und Funktion testen
 Australien fixen
+Zufällige Reihenfolge der Spieler
+Beim angegriffenen muss sich die Truppen- und Länzeranzahl ändern

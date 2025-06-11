@@ -3,6 +3,7 @@ public class Spieler{
   private String name;
   private int gesamtLaender = 0;
   private int[] kartenAnzahl = {0, 0, 0};// 0 = soldaten; 1 = pferde; 2 = kanonen
+  byte karte;
 
   public Spieler(String meinName){
     this.name = meinName;
@@ -12,7 +13,7 @@ public class Spieler{
     return this.name;
   }
   
-  public byte kartenNutzen(){ // könnten wir auch als switch case machen, ween das nicht automatisch sein soll
+  public byte kartenNutzen(){ // könnten wir auch als switch case machen, wenn das nicht automatisch sein soll
     if (kartenAnzahl[0] >= 1 && kartenAnzahl[1] >= 1 && kartenAnzahl[2] >= 1) {
       kartenAnzahl[0]--;
       kartenAnzahl[1]--;
@@ -37,8 +38,16 @@ public class Spieler{
   }
  
   public void karteZiehen(){
-    byte karte = (byte)(Math.random() * 3);
+    karte = (byte)(Math.random() * 3);
     this.kartenAnzahl[karte]++;
+  }
+  
+  public byte getKarte() {
+    return this.karte;
+  }
+  
+  public int[] getKartenAnzahl() {
+    return this.kartenAnzahl;
   }
   
   public void setGesamtTruppen(int anzahl){
