@@ -281,7 +281,6 @@ public class Spiel {
         if (kampfGewonnen == true) {
           mitSpieler[dran].karteZiehen();
         }
-        kampfGewonnen = false;
         phase = 5;
       } else {
         phasenWechsel();
@@ -590,7 +589,7 @@ public class Spiel {
     }
   }
   
-  private int fakeBerechneTruppen() { //fürs anzeigen, zieht keine karten von den spielern ab
+  private int fakeBerechneTruppen() { //fÃ¼rs anzeigen, zieht keine karten von den spielern ab
     int extraTruppen = 0 + mitSpieler[dran].karten();
     
     for (int i = 0; i < kontinente.length; i++) {
@@ -641,6 +640,11 @@ public class Spiel {
   public boolean getKampfGewonnen() {
     return this.kampfGewonnen;
   }
+  
+  public void setKampfGewonnen() {
+    this.kampfGewonnen = false;
+  }
+
   
   public boolean kannAngreifen(byte i){
     for (Land nachbarLand : laender[i].getNachbarn()){
