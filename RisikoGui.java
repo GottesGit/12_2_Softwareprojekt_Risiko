@@ -548,15 +548,15 @@ public class RisikoGui extends Application {
         for (int y = 0; y < 5; y++) {
           imageViewAlleKarten[j][y].setVisible(false);    
         }
-        System.out.println("hi" + j);
+        //System.out.println("hi" + j);
         //System.out.println("kartenPosition[" + j + "] = " + kartenPosition);
         int karten[] = spiel.getKartenAnzahl(j);
         //int anzahl = karten[0] + karten[1] + karten[2];
         for (int i = 0; i < 3; i++) {
-          System.out.println("ho" + i);
-          System.out.println("Karten von " + i + ": " + karten[i]);
+          //System.out.println("ho" + i);
+          //System.out.println("Karten von " + i + ": " + karten[i]);
           for (int x = 0; x < karten[i]; x++) {
-            System.out.println("ha" + x);
+            //System.out.println("ha" + x);
             imageViewAlleKarten[j][kartenPosition].setImage(imageKarte[i]);
             imageViewAlleKarten[j][kartenPosition].setVisible(true);
             kartenPosition++; 
