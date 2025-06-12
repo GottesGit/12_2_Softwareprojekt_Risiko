@@ -14,7 +14,7 @@ public class Kontinent{
       if (laender[i].getHerrscher() != herrscher) {
         return false;
       }
-    } // end of for
+    }
     return true;
   }
   

@@ -2,7 +2,6 @@ UML Pflegen (das neue ist das lange)
 Ordner aufräumen
 Fehler beheben
 Aktualisieren der Gui fertig machen
-immer mindestens 1 Truppe schon beim Auswählen eines Landes zum Angreifen verschieben
 Das WerDranIstFeld sollte in Phase 100 am besten nur dann angezeigt werden, wenn sich der Spieler gewechselt hat -- verstehe ich nicht 
 Striche in der Gui zwischen Ägypten und Italien
 (zu fünft spielen)
@@ -12,10 +11,6 @@ Anzeigen von welchem Land man angreift
 Skalierung des Fensters (bisher 728*1366)
 Beim Wechsel von Truppen/Namen/Kontinenten die Angreifertruppen nicht verschwinden lassen
 Karten anzeigen und Funktion testen
-Australien fixen
-Zufällige Reihenfolge der Spieler
 Beim angegriffenen muss sich die Truppen- und Länzeranzahl ändern
-russland gehört nicht zu europa
 kartenanimation ist nicht im vordergrund
 frithjof gewinnt easter egg
-auf dem Switch-Button steht immer noch switch

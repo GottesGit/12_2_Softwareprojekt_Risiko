@@ -7,7 +7,7 @@ public class Land{
   private int angreiferTruppen;
   private boolean schonDurch;
   private byte index;
-  public int kontin = -1;//NUR ZUM DEBUGGEN 1
+  //public int kontin = -1;//NUR ZUM DEBUGGEN
   
   public Land(String meinName, byte meinIndex) { // ist der name nicht unnoetig bzw sind zahlen nicht einfacher? - Das Land muss trotzdem einen Namen haben
     this.name = meinName;
@@ -52,7 +52,7 @@ public class Land{
       if (nachbarn[i] == anderesLand){//funktioniert das so oder muessen die Namen der Laender verglichen werden?
         return true;
       }
-    } // end of for
+    }
     return false;
   }
   

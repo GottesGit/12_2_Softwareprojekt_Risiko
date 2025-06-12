@@ -3,22 +3,22 @@ import javafx.event.*;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;             
 import javafx.scene.image.ImageView;
-
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 public class LandButton extends Button{//geht anscheinend nicht
-  private String positionSvg;
   private Land land;
   private Spiel spiel;
   private Text schriftzug;
   private ImageView kontinente;
+  private SVGPath form;
   int globalerSwitchWert;
   
-  public LandButton(Spiel meinSpiel, String position, Land meinLand, Text meinText, ImageView imageViewKontinente) {
+  public LandButton(Spiel meinSpiel, SVGPath meineForm, Land meinLand, Text meinText, ImageView imageViewKontinente) {
     this.spiel = meinSpiel;
-    this.positionSvg = position;
+    this.form = meineForm;
     this.land = meinLand;
     this.schriftzug = meinText;
     this.kontinente = imageViewKontinente;
@@ -45,7 +45,7 @@ public class LandButton extends Button{//geht anscheinend nicht
         this.kontinente.setVisible(false);
         break;
       case 1 : 
-        this.schriftzug.setText(land.getName() + "" + land.kontin);// LETZTERES NUR ZUM DEBUGGEN
+        this.schriftzug.setText(land.getName() + "");// + land.kontin);// LETZTERES NUR ZUM DEBUGGEN
         this.schriftzug.toFront();
         break;
       case 2 :
@@ -72,5 +72,15 @@ public class LandButton extends Button{//geht anscheinend nicht
   public void angriffsSchrift(int truppen){
     this.schriftzug.setText("Angreifer " + truppen);
     this.kontinente.setVisible(false);
+  }
+  
+  public void setKlickbar(boolean klick) {
+    this.setDisable(!klick);
+    if (klick) {
+      form.setStroke(Color.valueOf("#CC0099"));
+      form.setStrokeWidth(0.5);
+    } else {
+      form.setStrokeWidth(0);
+    }
   }
 }

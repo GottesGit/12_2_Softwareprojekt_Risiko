@@ -38,7 +38,7 @@ public class RisikoGui extends Application {
   private Rectangle[] spielerRectangle;
   private SVGPath[] truppenSVG;
   private SVGPath[] laenderSVG;
-  private String[] spielerFarben = {"red", "blue", "green", "yellow"};
+  private String[] spielerFarben = {"red", "blue", "green", "yellow"};//statt gelb wäre #CC0099 gut
   
   private ImageView[] imageViewAngreiferWuerfel = new ImageView[3];
   private ImageView[] imageViewVerteidigerWuerfel = new ImageView[2];
@@ -328,7 +328,7 @@ public class RisikoGui extends Application {
       landTexte[i].setTextAlignment(TextAlignment.CENTER); //hab das Gefühl das macht nichts
       landTexte[i].setMouseTransparent(true); //dann können wir nicht mehr auf die Texte klicken
       
-      landButtons[i] = new LandButton(spiel, laenderSvg[i], spiel.getLand(i), landTexte[i], imageViewKontinente); //hier Erstellung der landButtons
+      landButtons[i] = new LandButton(spiel, svgPfade[i], spiel.getLand(i), landTexte[i], imageViewKontinente); //hier Erstellung der landButtons
       landButtons[i].setStyle("-fx-background-color: transparent;");
       landButtons[i].setGraphic(svgPfade[i]);
       landButtons[i].setPickOnBounds(false);
@@ -570,9 +570,9 @@ public class RisikoGui extends Application {
         switch (spiel.getPhase()) {
           case 0 : //Truppen platzieren
             if (landButtons[i].getHerrscher() == spiel.getDran()) { //nur eigene Laender enablen
-              landButtons[i].setDisable(false);
+              landButtons[i].setKlickbar(true);
             } else {
-              landButtons[i].setDisable(true);
+              landButtons[i].setKlickbar(false);
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
@@ -582,9 +582,9 @@ public class RisikoGui extends Application {
             break;
           case 1 : //angreifen also eigenes Land auswaehlen
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1 && spiel.kannAngreifen(i)) { //nur eigene Laender mit mehr als 1 Truppe enablen
-              landButtons[i].setDisable(false);
+              landButtons[i].setKlickbar(true);
             } else {
-              landButtons[i].setDisable(true);
+              landButtons[i].setKlickbar(false);
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
@@ -593,9 +593,9 @@ public class RisikoGui extends Application {
             break;
           case 2 : //angreifen also Feind auswaehlen
             if (landButtons[i].getHerrscher() != spiel.getDran() && spiel.istBenachbart(i)) { //nur fremde, benachbarte Laender enablen
-              landButtons[i].setDisable(false);
+              landButtons[i].setKlickbar(true);
             } else {
-              landButtons[i].setDisable(true);
+              landButtons[i].setKlickbar(false);
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
@@ -612,9 +612,9 @@ public class RisikoGui extends Application {
             }
             
             if (i == spiel.getNachLand().getIndex()) { //nur angegriffenes Land enablen
-              landButtons[i].setDisable(false);
+              landButtons[i].setKlickbar(true);
             } else {
-              landButtons[i].setDisable(true);
+              landButtons[i].setKlickbar(false);
             }
             if(spiel.getNachLand().getAngreiferTruppen() > 0){
               kampfButton.setDisable(false);
@@ -628,7 +628,7 @@ public class RisikoGui extends Application {
             landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
             break;
           case 4 : //angreifen also im Kampf
-            landButtons[i].setDisable(true); //alle Laender disablen
+            landButtons[i].setKlickbar(false); //alle Laender disablen
             
             kampfButton.setDisable(false);
             fertigButton.setDisable(false);
@@ -644,9 +644,9 @@ public class RisikoGui extends Application {
               imageViewVerteidigerWuerfel[o].toBack();
             }
             if (landButtons[i].getHerrscher() == spiel.getDran() && landButtons[i].getTruppen() > 1 && spiel.kannVerschieben(i)) { //nur eigene Laender mit mehr als 1 Truppe enablen
-              landButtons[i].setDisable(false);
+              landButtons[i].setKlickbar(true);
             } else {
-              landButtons[i].setDisable(true);
+              landButtons[i].setKlickbar(false);
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
@@ -658,9 +658,9 @@ public class RisikoGui extends Application {
             break;
           case 6 : //Truppen verschieben also Zielland auswaehlen
             if (spiel.istVerbunden(i) && i != spiel.getVonLand().getIndex()) { // landButtons[i].getHerrscher() == spiel.getDran() && i != spiel.getVonLand().getIndex() && //nur eigene, verbundene Laender enablen
-              landButtons[i].setDisable(false);
+              landButtons[i].setKlickbar(true);
             } else {
-              landButtons[i].setDisable(true);
+              landButtons[i].setKlickbar(false);
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
@@ -669,9 +669,9 @@ public class RisikoGui extends Application {
             break;
           case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
             if (i == spiel.getNachLand().getIndex()) {
-              landButtons[i].setDisable(false);
+              landButtons[i].setKlickbar(true);
             } else {
-              landButtons[i].setDisable(true);
+              landButtons[i].setKlickbar(false);
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
@@ -680,9 +680,9 @@ public class RisikoGui extends Application {
             break;
           case 100 : //Anfangs Truppen platzieren
             if (landButtons[i].getHerrscher() == spiel.getDran()) {
-              landButtons[i].setDisable(false);
+              landButtons[i].setKlickbar(true);
             } else {
-              landButtons[i].setDisable(true);
+              landButtons[i].setKlickbar(false);
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(true);

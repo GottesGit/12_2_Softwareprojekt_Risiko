@@ -90,9 +90,9 @@ public class Spiel {
         hinzuzfuegendeLaender[j] = laender[zuKontinentHinzugefuegt++];
       }
       kontinente[i] = new Kontinent(hinzuzfuegendeLaender, kontinentNamen[i], kontinentTruppen[i]);
-      for (Land laendchen : hinzuzfuegendeLaender) {//NUR ZUM DEBUGGEN 3
-        laendchen.kontin = i;
-      }
+      //for (Land laendchen : hinzuzfuegendeLaender) {//NUR ZUM DEBUGGEN
+      //  laendchen.kontin = i;
+      //}
     }
   }
   
