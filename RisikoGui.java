@@ -54,7 +54,7 @@ public class RisikoGui extends Application {
   private Button kampfButton;
   private Button fertigButton;
   private Button switchButton;
-  int switchWert = 0;
+  private int switchWert = 0;
   private Label phasenLabel;
   private Label aufforderungsLabel;
   private Label wuerfelLabel;
@@ -548,15 +548,15 @@ public class RisikoGui extends Application {
         for (int y = 0; y < 5; y++) {
           imageViewAlleKarten[j][y].setVisible(false);    
         }
-        System.out.println("hi" + j);
+        //System.out.println("hi" + j);
         //System.out.println("kartenPosition[" + j + "] = " + kartenPosition);
         int karten[] = spiel.getKartenAnzahl(j);
         //int anzahl = karten[0] + karten[1] + karten[2];
         for (int i = 0; i < 3; i++) {
-          System.out.println("ho" + i);
-          System.out.println("Karten von " + i + ": " + karten[i]);
+          //System.out.println("ho" + i);
+          //System.out.println("Karten von " + i + ": " + karten[i]);
           for (int x = 0; x < karten[i]; x++) {
-            System.out.println("ha" + x);
+            //System.out.println("ha" + x);
             imageViewAlleKarten[j][kartenPosition].setImage(imageKarte[i]);
             imageViewAlleKarten[j][kartenPosition].setVisible(true);
             kartenPosition++; 
@@ -634,29 +634,6 @@ public class RisikoGui extends Application {
             fertigButton.setDisable(false);
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
             landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
-            
-            //            for (int o = 0; o < 5; o++) {
-            //              imageViewWuerfel[o].toBack();
-            //            }
-            //            byte ang[] = spiel.getAngreiferWuerfel();
-            //            byte ver[] = spiel.getVerteidigerWuerfel();
-            //            byte angAnzahl = spiel.getAngreiferWuerfelAnzahl();
-            //            byte verAnzahl = spiel.getVerteidigerWuerfelAnzahl();
-            //            byte m = 0;
-            //            /*System.out.println("AngreiferWuerfelAnzahl = " + angAnzahl);
-            //            System.out.println("VerteidigerWuerfelAnzahl = " + verAnzahl);
-            //            System.out.println("AngreiferWuerfel[0] = " + ang[0]);
-            //            System.out.println("VerteidigerrWuerfel[0] = " + ver[0]);*/
-            //            for (; m < angAnzahl; m++) {
-            //              imageViewWuerfel[m].toFront();
-            //              imageViewWuerfel[m].setImage(imageAngreifer[ang[m]]);
-            //            }
-            //            for (int n = 0; n < verAnzahl; n++, m++) {//WAS IST DAS FUER EIN CRAZY M?
-            //              imageViewWuerfel[m].toFront();
-            //              imageViewWuerfel[m].setImage(imageVerteidiger[ver[n]]);
-            //            }
-            //            phasenLabel.setText("Angriffsphase");
-            //            aufforderungsLabel.setText("Kämpfe oder gib auf!");
             break;
           case 5 : //Truppen verschieben also Startland auswaehlen
             kartenAnzeigen();
@@ -731,6 +708,7 @@ public class RisikoGui extends Application {
   private void kartenAnzeigen() {
     byte karte = spiel.getKarte();
     if (spiel.getKampfGewonnen() == true) {
+      spiel.setKampfGewonnen();
       imageViewKarte.setImage(imageKarte[karte]);
       imageViewKarte.setVisible(true);
       
@@ -773,14 +751,25 @@ public class RisikoGui extends Application {
     spiel.buttonKlickAktion((byte) 1, (byte) 1);
   }
   
-  public void switchButton_gedrueckt(Event evt) {
+  public void switchButton_gedrueckt(Event evt) {  
     if (switchWert == 2) {
       switchWert = 0;
     } else {
-      switchWert++;  
+      switchWert++;
     }
+    
     for (int i = 0; i < 42; i++) {
-      landButtons[i].refresh(switchWert);
+      if (spiel.getNachLand() != null) {
+        if (i == spiel.getNachLand().getIndex() && switchWert == 0) {
+          landButtons[i].refresh(10);
+        } else if (i == spiel.getVonLand().getIndex() && switchWert == 0) {
+          landButtons[i].angriffsSchrift(spiel.getVonLand().getTruppen());
+        } else {
+          landButtons[i].refresh(switchWert);
+        }
+      } else {
+        landButtons[i].refresh(switchWert);
+      }
     }
   }
   
