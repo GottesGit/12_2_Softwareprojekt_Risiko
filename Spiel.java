@@ -172,6 +172,14 @@ public class Spiel {
         if (land.getHerrscher() != dran && istBenachbart(land.getIndex())) {
           nachLand = land;
           phasenWechsel();
+          if (taste == 1) {
+            einmarschieren(1);
+          } else if (taste == 2) {
+            einmarschieren(Math.min(5, vonLand.getTruppen() - 1));
+          }
+          if (vonLand.getTruppen() < 2) {
+            phasenWechsel();
+          }
         } else {
           System.out.println("Error falsches Land 2");
         }
@@ -206,6 +214,15 @@ public class Spiel {
           nachLand = land;
           System.out.println("NachLand fuer Verschieben ausgewaehlt");
           phasenWechsel();
+          if (taste == 1) {
+            verschiebeTruppen(1);
+          } else if (taste == 2) {
+            verschiebeTruppen(Math.min(5, vonLand.getTruppen() - 1));
+          }
+          if (vonLand.getTruppen() <= 1) {
+            System.out.println("Alle Trupppen aus " + vonLand.getName() + " verschoben");
+            phasenWechsel();
+          }
         }
         schonDurchReset();
         break;
