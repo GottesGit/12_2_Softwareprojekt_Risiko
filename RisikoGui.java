@@ -251,7 +251,18 @@ public class RisikoGui extends Application {
     Scene spielSzene = new Scene(stapelPane, 1366, 728);
     
     double xAbweichung = 17;
-    double yAbweichung = 199;
+    double yAbw = 199;
+    switch (spielerAnzahl) {
+      case 3 : 
+        yAbw = 224;
+        break;
+      case 4 : 
+        yAbw = 249;
+        break;
+      default: 
+        break;
+    }
+    double yAbweichung = yAbw;
     double xGroesse = 1366;
     double yGroesse = 728;
     
@@ -259,6 +270,7 @@ public class RisikoGui extends Application {
     scaleGroup.setTranslateY(yAbweichung);
     
     ChangeListener<Number> resizeListener = (obs, oldVal, newVal) -> {//teilweise von Chat, steckt aber trotzdem noch sehr viel Zeit drin, weil es zu bloed war
+      
       double scale = 0;
       //System.out.println("Width: " + spielSzene.getWidth() + " height: " + spielPlan.getHeight() + " scale: " + scale);
       double seitenVerhaelt = (spielSzene.getWidth() / spielPlan.getHeight()) / (xGroesse / yGroesse);
@@ -536,15 +548,15 @@ public class RisikoGui extends Application {
         for (int y = 0; y < 5; y++) {
           imageViewAlleKarten[j][y].setVisible(false);    
         }
-        System.out.println("hi" + j);
+        //System.out.println("hi" + j);
         //System.out.println("kartenPosition[" + j + "] = " + kartenPosition);
         int karten[] = spiel.getKartenAnzahl(j);
         //int anzahl = karten[0] + karten[1] + karten[2];
         for (int i = 0; i < 3; i++) {
-          System.out.println("ho" + i);
-          System.out.println("Karten von " + i + ": " + karten[i]);
+          //System.out.println("ho" + i);
+          //System.out.println("Karten von " + i + ": " + karten[i]);
           for (int x = 0; x < karten[i]; x++) {
-            System.out.println("ha" + x);
+            //System.out.println("ha" + x);
             imageViewAlleKarten[j][kartenPosition].setImage(imageKarte[i]);
             imageViewAlleKarten[j][kartenPosition].setVisible(true);
             kartenPosition++; 

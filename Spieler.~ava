@@ -47,6 +47,10 @@ public class Spieler{
   }
  
   public byte karten(){ // für die pure anzeige, zieht keine karten ab
+    for (int i = 0; i < 3; i++) {
+      System.out.println("karte" + i + ": " + kartenAnzahl[i]);
+    } // end of for
+    
     if (this.kartenAnzahl[0] > 0 && this.kartenAnzahl[1] > 0 && this.kartenAnzahl[2] > 0) {
       System.out.println("k10");
       return 10;
