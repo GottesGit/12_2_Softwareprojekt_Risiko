@@ -19,11 +19,7 @@ public class Spiel {
   private int truppenVorher;
   private int truppenZumSetzen;
   boolean kampfGewonnen = false;
-  boolean kartenGenutzt = false;
-  int platzierteTruppen = 0;
-  int laeufe = 0;
   int startTruppen;//die man am Anfang kriegt, also in phase 100
-  int zuPlatzieren;
   boolean kannAngreifen;
   
   public Spiel(String spielerNamen[], RisikoGui meineGui) {
@@ -97,8 +93,7 @@ public class Spiel {
   }
   
   public void landKlickAktion(Land land, int taste) {//int zu byte konversion ist kacke, deswegen kein byte 
-    System.out.println(land.getName() + " inPhase " + phase);
-    
+    //System.out.println(land.getName() + " inPhase " + phase);
     switch (phase) {
       case 100:
         if (mitSpieler[dran].getGesamtTruppen() < startTruppen) {
@@ -107,10 +102,6 @@ public class Spiel {
             mitSpieler[dran].setGesamtTruppen(mitSpieler[dran].getGesamtTruppen() + 1);
           }
           else if (taste == 2) {
-            //            int verbleibend = startTruppen - mitSpieler[dran].getGesamtTruppen();
-            //            int truppenZumSetzen = Math.min(verbleibend, 5);
-            //            land.setTruppen(dran, land.getTruppen() + truppenZumSetzen);
-            //            mitSpieler[dran].setGesamtTruppen(mitSpieler[dran].getGesamtTruppen() + truppenZumSetzen);
             truppenZumSetzen = Math.min(startTruppen - mitSpieler[dran].getGesamtTruppen(), 5);
             land.setTruppen(dran, land.getTruppen() + truppenZumSetzen);
             mitSpieler[dran].setGesamtTruppen(mitSpieler[dran].getGesamtTruppen() + truppenZumSetzen);
@@ -141,29 +132,19 @@ public class Spiel {
           dran = 0;
           phasenWechsel();
         }
-        
         break;
       case 0 : //truppenplatzieren je nach maustaste
-        if (laeufe == 0) {
-          zuPlatzieren = berechneZuPlatzierendeTruppen();
-          laeufe++;
-        } // end of do-while
-        
-        //        System.out.println(berechneZuPlatzierendeTruppen());
-        //        System.out.println(mitSpieler[dran].getGesamtTruppen());
-        //        System.out.println(berechneGesamtTruppen(dran));
-        
         if (taste == 1) {
           land.setTruppen(dran, land.getTruppen() + 1);
           System.out.println("Eine Truppe wird plaziert");
         } else if (taste == 2) {
-          land.setTruppen(dran, land.getTruppen() + Math.min(5, (mitSpieler[dran].getGesamtTruppen() + zuPlatzieren - berechneGesamtTruppen(dran))));
+          land.setTruppen(dran, land.getTruppen() + Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran))));
         }
         System.out.println("hoe");
-        if (berechneGesamtTruppen(dran) == mitSpieler[dran].getGesamtTruppen() + zuPlatzieren) {//KAPUTT
+        if (berechneGesamtTruppen(dran) == mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen()) {//KAPUTT --immer noch?? --ich glaube nicht
           System.out.println("Phasenwechsel alle Truppen plaziert");
           phasenWechsel();
-        } else if (berechneGesamtTruppen(dran) > mitSpieler[dran].getGesamtTruppen() + zuPlatzieren) {
+        } else if (berechneGesamtTruppen(dran) > mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen()) {
           System.out.println("Error zu viele Truppen wurden Platziert");
           phasenWechsel();
         }
@@ -269,12 +250,7 @@ public class Spiel {
         phasenWechsel();
       } else if (phase == 5 || phase == 6) { //keine Truppen verschieben
         vonLand = null;//kopiert von phasenwechsel mit 7
-        zugNummer++;
-        dran++;
-        if (dran >= mitSpieler.length) {
-          dran = 0;
-        }
-        phase = 0;
+        spielerWechsel();
       } else if (phase == 1 || phase == 2) {
         vonLand = null;
         nachLand = null;
@@ -308,9 +284,8 @@ public class Spiel {
         break;
       case 0 : //truppenPlatzieren
         aktualisiereTruppenLaender(dran); //darf nicht schon vorher gemacht werden weil damit berechnet wird, wie viele noch Platziert werden duerfen
-        platzierteTruppen = 0;
         phase++;
-        laeufe = 0;
+        mitSpieler[dran].kartenNutzen(true);
         break;
       case 1 : //angreifen also eigenes Land auswaehlen
         if (vonLand != null) {
@@ -329,9 +304,7 @@ public class Spiel {
       case 3 : //angreifen also Truppen nach Zielland verschieben
         if (nachLand.getAngreiferTruppen() > 0) {
           phase++;
-        }/*else if (nachLand.getAngreiferTruppen() == 0) {
-        phase = 1;
-        }*/ 
+        } 
         else {
           fehler = true;
         }
@@ -363,16 +336,7 @@ public class Spiel {
       case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
         vonLand = null;
         nachLand = null;
-        zugNummer++;
-        dran++;
-        phase = 0;
-        //        if (zugNummer < mitSpieler.length && phase == 0) { //in der ersten Runde werden noch keine Extratruppen verteilt - doch
-        //          phase = 1;
-        //          break;
-        //        }
-        if (dran >= mitSpieler.length) {
-          dran = 0;
-        }
+        spielerWechsel();
         break;
     }
     
@@ -380,6 +344,30 @@ public class Spiel {
       System.out.println("Error die Phase " + phase + " kann nicht geaendert werden");
     }    
   }
+  
+  private void spielerWechsel() {
+    zugNummer++;
+    dran++;
+    if (dran >= mitSpieler.length) {
+      dran = 0;
+    }
+    System.out.println("Spieler" + dran + " hat Laender: " + mitSpieler[dran].getGesamtLaender());
+    while (mitSpieler[dran].getGesamtLaender() <= 0) {
+      if (++dran >= mitSpieler.length) {
+        dran = 0;
+        break;
+      }
+    }
+    while (mitSpieler[dran].getGesamtLaender() <= 0) {
+      if (++dran >= mitSpieler.length) {
+        System.out.println("Fataler Error im Spielerwechsel");
+        dran = 0;
+        break;
+      }
+    }
+    phase = 0;
+  }
+  
   
   public boolean istBenachbart(byte meinLand) {
     boolean istEinNachbar = false;
@@ -574,23 +562,7 @@ public class Spiel {
   }
   
   private int berechneZuPlatzierendeTruppen() { //glaube ist gut so
-    int extraTruppen = 0 + mitSpieler[dran].kartenNutzen();
-    
-    for (int i = 0; i < kontinente.length; i++) {
-      if (kontinente[i].beherrschtVon(dran) == true) {
-        extraTruppen = extraTruppen + kontinente[i].getExtraTruppen();
-      }
-    }
-    if (((int)(mitSpieler[dran].getGesamtLaender() / 3)) < 3) {
-      return 3 + extraTruppen;
-    }
-    else {
-      return (int)(mitSpieler[dran].getGesamtLaender() / 3) + extraTruppen;
-    }
-  }
-  
-  private int fakeBerechneTruppen() { //fÃ¼rs anzeigen, zieht keine karten von den spielern ab
-    int extraTruppen = 0 + mitSpieler[dran].karten();
+    int extraTruppen = mitSpieler[dran].kartenNutzen(false);
     
     for (int i = 0; i < kontinente.length; i++) {
       if (kontinente[i].beherrschtVon(dran) == true) {
@@ -606,7 +578,7 @@ public class Spiel {
   }
   
   public int getZuPlazierendeTruppen() {
-    return mitSpieler[dran].getGesamtTruppen() + fakeBerechneTruppen() - berechneGesamtTruppen(dran);
+    return mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran);
   }
   
   private int berechneGesamtTruppen(byte meinSpieler) {
@@ -644,7 +616,7 @@ public class Spiel {
   public void setKampfGewonnen() {
     this.kampfGewonnen = false;
   }
-
+  
   
   public boolean kannAngreifen(byte i){
     for (Land nachbarLand : laender[i].getNachbarn()){

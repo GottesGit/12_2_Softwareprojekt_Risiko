@@ -13,54 +13,39 @@ public class Spieler{
     return this.name;
   }
   
-  public byte kartenNutzen(){ // könnten wir auch als switch case machen, wenn das nicht automatisch sein soll
-    for (int i = 0; i < 3; i++) {
-      System.out.println("karte" + i + ": " + kartenAnzahl[i]);
-    } // end of for
+  public byte kartenNutzen(boolean entfernen){ // könnten wir auch als switch case machen, wenn das nicht automatisch sein soll
+    //for (int i = 0; i < 3; i++) {
+    //  System.out.println("karte" + i + ": " + kartenAnzahl[i]);
+    //}
     
     if (this.kartenAnzahl[0] > 0 && this.kartenAnzahl[1] > 0 && this.kartenAnzahl[2] > 0) {
-      kartenAnzahl[0]--;
-      kartenAnzahl[1]--;
-      kartenAnzahl[2]--;
-      System.out.println("k10");
+      if (entfernen) {
+        kartenAnzahl[0]--;
+        kartenAnzahl[1]--;
+        kartenAnzahl[2]--;
+        System.out.println("k10");
+      }
       return 10;
     }
     else if (this.kartenAnzahl[2] >= 3) {
-      kartenAnzahl[2] = kartenAnzahl[2] - 3;
-      System.out.println("k8");
+      if (entfernen) {
+        kartenAnzahl[2] = kartenAnzahl[2] - 3;
+        System.out.println("k8");
+      }
       return 8;
     }
     else if (this.kartenAnzahl[1] >= 3) {
-      kartenAnzahl[1] = kartenAnzahl[1] - 3;
-      System.out.println("k6");
+      if (entfernen) {
+        kartenAnzahl[1] = kartenAnzahl[1] - 3;
+        System.out.println("k6");
+      }
       return 6;
     } 
     else if (this.kartenAnzahl[0] >= 3) {
-      kartenAnzahl[0] = kartenAnzahl[0] - 3;
-      System.out.println("k4");
-      return 4;
-    }
-    else {
-      System.out.println("k0");
-      return 0;
-    }
-  }
- 
-  public byte karten(){ // für die pure anzeige, zieht keine karten ab
-    if (this.kartenAnzahl[0] > 0 && this.kartenAnzahl[1] > 0 && this.kartenAnzahl[2] > 0) {
-      System.out.println("k10");
-      return 10;
-    }
-    else if (this.kartenAnzahl[2] >= 3) {
-      System.out.println("k8");
-      return 8;
-    }
-    else if (this.kartenAnzahl[1] >= 3) {
-      System.out.println("k6");
-      return 6;
-    } 
-    else if (this.kartenAnzahl[0] >= 3) {
-      System.out.println("k4");
+      if (entfernen) {
+        kartenAnzahl[0] = kartenAnzahl[0] - 3;
+        System.out.println("k4");
+      }
       return 4;
     }
     else {

@@ -47,9 +47,7 @@ public class RisikoGui extends Application {
   
   private ImageView imageViewKarte;
   private Image[] imageKarte = new Image[3];
-  
   private ImageView[][] imageViewAlleKarten;
-  //private int[] kartenPosition;
   
   private Button kampfButton;
   private Button fertigButton;
@@ -63,6 +61,7 @@ public class RisikoGui extends Application {
   private TextField[] namenFelder = new TextField[4];
   private SVGPath[] svgPfade = new SVGPath[42];
   private Text[] landTexte = new Text[42];
+  private byte zuletztDran = 10;
   
   public void start(Stage primaryStage) { 
     Pane root = new Pane();
@@ -250,7 +249,7 @@ public class RisikoGui extends Application {
     StackPane stapelPane = new StackPane(scaleGroup);
     Scene spielSzene = new Scene(stapelPane, 1366, 728);
     
-    double xAbweichung = 17;
+    double xAbweichung = 16.9;
     double yAbw = 199;
     switch (spielerAnzahl) {
       case 3 : 
@@ -696,13 +695,18 @@ public class RisikoGui extends Application {
   }
   
   private void neuerSpieler() {
-    neuerSpielerLabel.setText(spiel.getSpielerName(spiel.getDran()) + " ist dran");
-    neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + ";-fx-font-size: 30px; -fx-background-color: lightgray;");
-    neuerSpielerLabel.setVisible(true);
-    
-    PauseTransition pause = new PauseTransition(Duration.seconds(0.75));
-    pause.setOnFinished(e -> neuerSpielerLabel.setVisible(false));
-    pause.play();
+    if (spiel.getDran() != zuletztDran) {
+      zuletztDran = spiel.getDran();
+      neuerSpielerLabel.setText(spiel.getSpielerName(spiel.getDran()) + " ist dran");
+      neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + ";-fx-font-size: 30px; -fx-background-color: lightgray;");
+      neuerSpielerLabel.setVisible(true);
+      
+      neuerSpielerLabel.setOnMouseEntered(event -> neuerSpielerLabel.setVisible(false));
+      
+      PauseTransition pause = new PauseTransition(Duration.seconds(1.2));
+      pause.setOnFinished(e -> neuerSpielerLabel.setVisible(false));
+      pause.play();
+    }
   }
   
   private void kartenAnzeigen() {
