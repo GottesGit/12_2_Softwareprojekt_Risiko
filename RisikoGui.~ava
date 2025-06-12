@@ -550,11 +550,15 @@ public class RisikoGui extends Application {
             kartenPosition++; 
           }
         }
+        
+        
       }
       
       for (byte i = 0; i < landButtons.length; i++) {
         landButtons[i].refresh(switchWert);
         svgPfade[i].setStyle("-fx-fill: " + spielerFarben[landButtons[i].getHerrscher()] + ";"); //erst einmal Farben deklariert, sollte dann noch mit Zahl und AngreiferTruppen usw. vervollstaendigt werden
+        
+        
         switch (spiel.getPhase()) {
           case 0 : //Truppen platzieren
             if (landButtons[i].getHerrscher() == spiel.getDran()) { //nur eigene Laender enablen

@@ -54,7 +54,7 @@ public class Spiel {
       case 4 : 
         startTruppen = 30;
         break;
-    } // end of switch
+    }
     
     for (byte i = 0; i < 42; i++) { // die laender muessen erst alle erstellt werden...
       laender[i] = new Land(laenderNamen[i], i);
@@ -237,14 +237,10 @@ public class Spiel {
     if (knopf == 1) {
       if (phase == 4 || phase == 3) { // im Kampf
         phase = 4;
-        //if (nachLand.getAngreiferTruppen() > 0) {
         vonLand.setTruppen(dran, vonLand.getTruppen() + nachLand.getAngreiferTruppen());
         nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
-        //}
-        //else if (phase == 4 && nachLand.getAngreiferTruppen() == 0) {
         gui.grafikErneuern();
         phasenWechsel();
-        //}
       } else if (phase == 5 || phase == 6) { //keine Truppen verschieben
         vonLand = null;//kopiert von phasenwechsel mit 7
         zugNummer++;
@@ -256,6 +252,10 @@ public class Spiel {
       } else if (phase == 1 || phase == 2) {
         vonLand = null;
         nachLand = null;
+        if (kampfGewonnen == true) {
+          mitSpieler[dran].karteZiehen();
+        }
+        kampfGewonnen = false;
         phase = 5;
       } else {
         phasenWechsel();
@@ -287,7 +287,6 @@ public class Spiel {
         phase++;
         break;
       case 1 : //angreifen also eigenes Land auswaehlen
-        kartenGenutzt = false;
         if (vonLand != null) {
           phase++;
         } else {
@@ -318,14 +317,10 @@ public class Spiel {
           nachLand = null;
           phase = 1;
         } else {
-          //          fehler = true;
+          fehler = true;
         }
         break;
       case 5 : //Truppen verschieben also StartLand auswaehlen
-        if (kampfGewonnen == true) {
-          mitSpieler[dran].karteZiehen();
-        }
-        kampfGewonnen = false;
         if (vonLand != null) {
           phase++;
         } else {
@@ -436,12 +431,12 @@ public class Spiel {
       verteidigerWuerfel[i] = (byte) ((Math.random() * 6) + 1);
     }
     
-//    for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
-//      System.out.println("angreiferWuerfel: " + i + " hat den Wert " + angreiferWuerfel[i]);
-//    }
-//    for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
-//      System.out.println("verteidigerWuerfel: " + i + " hat den Wert " + verteidigerWuerfel[i]);
-//    }
+    //    for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
+    //      System.out.println("angreiferWuerfel: " + i + " hat den Wert " + angreiferWuerfel[i]);
+    //    }
+    //    for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
+    //      System.out.println("verteidigerWuerfel: " + i + " hat den Wert " + verteidigerWuerfel[i]);
+    //    }
     byte zwischen = 0; //bubblesort
     for (byte i = 0; i < angreiferWuerfelAnzahl - 1; i++) {
       for (byte j = 0; j < angreiferWuerfelAnzahl - 1; j++) {
@@ -554,9 +549,6 @@ public class Spiel {
   
   private int berechneZuPlatzierendeTruppen() { //glaube ist gut so
     int extraTruppen = 0 + mitSpieler[dran].kartenNutzen();
-    if (extraTruppen != 0) {
-      kartenGenutzt = true;
-    }
     
     for (int i = 0; i < kontinente.length; i++) {
       if (kontinente[i].beherrschtVon(dran) == true) {
@@ -605,10 +597,6 @@ public class Spiel {
   
   public boolean getKampfGewonnen() {
     return this.kampfGewonnen;
-  }
-  
-  public boolean getKartenGenutzt() {
-    return this.kartenGenutzt;
   }
   
   public boolean kannAngreifen(byte i){
