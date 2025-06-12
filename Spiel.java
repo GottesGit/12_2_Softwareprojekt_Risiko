@@ -40,7 +40,7 @@ public class Spiel {
     {17, 19, 21, 22, 27, 28}, {19, 26, 29, 28, 30, 100}, {26, 27, 30, 31, 100, 100}, {19, 27, 30, 32, 100, 100}, {27, 28, 29, 31, 32, 33}, {28, 30, 38, 100, 100, 100}, {29, 30, 33, 34, 35, 100}, {30, 34, 36, 37, 100, 100}, {32, 33, 35, 36, 100, 100}, {32, 34, 36, 100, 100, 100}, {9, 33, 34, 35, 37, 100}, {33, 36, 100, 100, 100, 100}, //Asien
     {31, 39, 41, 100, 100, 100}, {38, 40, 100, 100, 100, 100}, {39, 41, 100, 100, 100, 100}, {38, 40, 100, 100, 100, 100}, //Australien
     };
-    byte[] kontinentLaender = {4, 9, 6, 6, 12, 4}; //Anzahl der Laender der jeweiligen Kontinente
+    byte[] kontinentLaender = {4, 9, 7, 6, 12, 4}; //Anzahl der Laender der jeweiligen Kontinente
     byte[] kontinentTruppen = {2, 5, 5, 3, 7, 2}; //Anzahl der Extratruppen der jeweiligen Kontinente
     String[] kontinentNamen = {"Suedamerika", "Nordmerika", "Europa", "Afrika", "Asien", "Australien"};
     
