@@ -38,7 +38,7 @@ public class RisikoGui extends Application {
   private Rectangle[] spielerRectangle;
   private SVGPath[] truppenSVG;
   private SVGPath[] laenderSVG;
-  private String[] spielerFarben = {"red", "blue", "green", "yellow"};//statt gelb wäre #CC0099 gut
+  private String[] spielerFarben = {"red", "blue", "#00cd00", "#eec900"};//statt gelb wäre #CC0099 gut - wie ihr meint
   
   private ImageView[] imageViewAngreiferWuerfel = new ImageView[3];
   private ImageView[] imageViewVerteidigerWuerfel = new ImageView[2];
@@ -53,6 +53,8 @@ public class RisikoGui extends Application {
   private Button fertigButton;
   private Button switchButton;
   private int switchWert = 0;
+  private int letzterAng;
+  private int letzterVer;
   private Label phasenLabel;
   private Label aufforderungsLabel;
   private Label wuerfelLabel;
@@ -79,7 +81,7 @@ public class RisikoGui extends Application {
     }
     
     
-    startButton.setLayoutX(48);
+    startButton.setLayoutX(76);
     startButton.setLayoutY(288);
     startButton.setPrefHeight(40);
     startButton.setPrefWidth(96);
@@ -105,8 +107,9 @@ public class RisikoGui extends Application {
       namenFelder[i].setLayoutX(24);
       namenFelder[i].setLayoutY(152 + 32 * i);
       namenFelder[i].setPrefHeight(24);
-      namenFelder[i].setPrefWidth(152);
+      namenFelder[i].setPrefWidth(200);
       namenFelder[i].setPromptText("Spielername eingeben...");
+      namenFelder[i].getStyleClass().add("textField-name");
       
       final int finaleohoho = i;
       namenFelder[i].setFocusTraversable(true);
@@ -562,7 +565,16 @@ public class RisikoGui extends Application {
           }
         }
       }
-      
+      if (letzterAng >= 0) {
+        landButtons[letzterAng].getStyleClass().remove("im-kampf-button");
+        landButtons[letzterAng].getStyleClass().add("normaler-button");
+        letzterAng = -1;
+      }
+      if (letzterVer >= 0) {
+        landButtons[letzterVer].getStyleClass().remove("im-kampf-button");
+        landButtons[letzterVer].getStyleClass().add("normaler-button");
+        letzterVer = -1;
+      }
       for (byte i = 0; i < landButtons.length; i++) {
         landButtons[i].refresh(switchWert);
         svgPfade[i].setStyle("-fx-fill: " + spielerFarben[landButtons[i].getHerrscher()] + ";"); //erst einmal Farben deklariert, sollte dann noch mit Zahl und AngreiferTruppen usw. vervollstaendigt werden
@@ -596,9 +608,14 @@ public class RisikoGui extends Application {
             } else {
               landButtons[i].setKlickbar(false);
             }
+            if (i == spiel.getVonLand().getIndex()) {
+              letzterAng = i;
+              landButtons[i].getStyleClass().remove("normaler-button");
+              landButtons[i].getStyleClass().add("im-kampf-button");
+            }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
-            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
+            //landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
             phasenLabel.setText("Angriffsphase");
             aufforderungsLabel.setText("Wähle das Land, welches du angreifen möchtest!");
             break;
@@ -608,6 +625,12 @@ public class RisikoGui extends Application {
             }
             for (int o = 0; o < 2; o++) {
               imageViewVerteidigerWuerfel[o].toBack();
+            }
+            
+            if (i == spiel.getVonLand().getIndex()) {
+              letzterAng = i;
+              landButtons[i].getStyleClass().remove("normaler-button");
+              landButtons[i].getStyleClass().add("im-kampf-button");
             }
             
             if (i == spiel.getNachLand().getIndex()) { //nur angegriffenes Land enablen
@@ -624,15 +647,25 @@ public class RisikoGui extends Application {
             phasenLabel.setText("Angriffsphase");
             aufforderungsLabel.setText("Verschiebe deine Angreifertruppen in das ausgewählte Land!");
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
-            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
+            //landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
             break;
           case 4 : //angreifen also im Kampf
             landButtons[i].setKlickbar(false); //alle Laender disablen
+            if (i == spiel.getVonLand().getIndex()) {
+              letzterAng = i;
+              landButtons[i].getStyleClass().remove("normaler-button");
+              landButtons[i].getStyleClass().add("im-kampf-button");
+            }
+            if (i == spiel.getNachLand().getIndex()) {
+              letzterVer = i;
+              landButtons[i].getStyleClass().remove("normaler-button");
+              landButtons[i].getStyleClass().add("im-kampf-button");
+            }
             
             kampfButton.setDisable(false);
             fertigButton.setDisable(false);
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
-            landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
+            //landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
             break;
           case 5 : //Truppen verschieben also Startland auswaehlen
             kartenAnzeigen();
@@ -693,7 +726,7 @@ public class RisikoGui extends Application {
       }
     }
   }
-  
+    
   private void neuerSpieler() {
     if (spiel.getDran() != zuletztDran) {
       zuletztDran = spiel.getDran();
@@ -766,8 +799,8 @@ public class RisikoGui extends Application {
       if (spiel.getNachLand() != null) {
         if (i == spiel.getNachLand().getIndex() && switchWert == 0) {
           landButtons[i].refresh(10);
-        } else if (i == spiel.getVonLand().getIndex() && switchWert == 0) {
-          landButtons[i].angriffsSchrift(spiel.getVonLand().getTruppen());
+          //        } else if (i == spiel.getVonLand().getIndex() && switchWert == 0) {
+          //          landButtons[i].angriffsSchrift(spiel.getVonLand().getTruppen());
         } else {
           landButtons[i].refresh(switchWert);
         }

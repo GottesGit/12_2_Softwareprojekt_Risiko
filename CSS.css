@@ -1,6 +1,15 @@
-.button:disabled {
-    -fx-opacity: 0.55;
+.normaler-button {
+    -fx-opacity: 1;
 }
+
+.normaler-button:disabled {
+    -fx-opacity: 0.4;
+}
+
+.im-kampf-button {
+    -fx-opacity: 0.7;
+}
+
 
 .button-weiter {
     -fx-background-image: url("/Graphiken/weiter.png");

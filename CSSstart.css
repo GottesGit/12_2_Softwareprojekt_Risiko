@@ -1,3 +1,15 @@
+.textField-name {
+    -fx-background-image: url("/Graphiken/namenfeld.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-text-fill: white;
+}
+
 .button-start {
     -fx-background-image: url("/Graphiken/start.png");
     -fx-background-size: cover;

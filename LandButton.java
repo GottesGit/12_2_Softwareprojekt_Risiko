@@ -69,18 +69,18 @@ public class LandButton extends Button{//geht anscheinend nicht
     return land.getTruppen();
   }
   
-  public void angriffsSchrift(int truppen){
-    this.schriftzug.setText("Angreifer " + truppen);
-    this.kontinente.setVisible(false);
-  }
+//  public void angriffsSchrift(int truppen){
+//    this.schriftzug.setText("Angreifer " + truppen);
+//    this.kontinente.setVisible(false);
+//  }
   
   public void setKlickbar(boolean klick) {
     this.setDisable(!klick);
-    if (klick) {
-      form.setStroke(Color.valueOf("#CC0099"));
-      form.setStrokeWidth(0.5);
-    } else {
-      form.setStrokeWidth(0);
-    }
+//    if (klick) {
+//      form.setStroke(Color.valueOf("#CC0099"));
+//      form.setStrokeWidth(0.5);
+//    } else {
+//      form.setStrokeWidth(0);
+//    }
   }
 }
