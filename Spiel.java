@@ -251,7 +251,10 @@ public class Spiel {
       } else if (phase == 5 || phase == 6) { //keine Truppen verschieben
         vonLand = null;//kopiert von phasenwechsel mit 7
         spielerWechsel();
-      } else if (phase == 1 || phase == 2) {
+      } else if (phase == 2) {
+        vonLand = null;
+        phase = 1;
+      } else if (phase == 1) {
         vonLand = null;
         nachLand = null;
         if (kampfGewonnen == true) {
