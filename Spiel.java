@@ -1,4 +1,5 @@
 import java.util.Arrays;
+
 public class Spiel {
   private byte phase = 100;
   private byte dran = 0;
@@ -9,8 +10,6 @@ public class Spiel {
   private RisikoGui gui;
   private Land vonLand;
   private Land nachLand;
-  //private String[] laenderNamen;
-  //private String[] kontinentNamen;//keine ahnung, wo die hin sollten, deswegen erst mal global
   private int[] kontinentLaender;
   private byte[] angreiferWuerfel = new byte[3];
   private byte[] verteidigerWuerfel = new byte[2];
@@ -81,7 +80,7 @@ public class Spiel {
     
     byte zuKontinentHinzugefuegt = 0;
     for (byte i = 0; i < 6; i++) { // fuer die 6 Kontinente
-      Land[] hinzuzfuegendeLaender = new Land[kontinentLaender[i]]; //was soll denn hinzuzfuegendeLaender bedeuten? Das ist das Array fuer die Laender, die dem Kontinent hinzugefuegt werden sollen
+      Land[] hinzuzfuegendeLaender = new Land[kontinentLaender[i]]; // Das ist das Array fuer die Laender, die dem Kontinent hinzugefuegt werden sollen
       for (int j = 0; j < kontinentLaender[i]; j++) {
         hinzuzfuegendeLaender[j] = laender[zuKontinentHinzugefuegt++];
       }
@@ -111,8 +110,8 @@ public class Spiel {
         else {
           System.out.println("Spieler " + (dran + 1) + " hat bereits genug Truppen!");
         }
-        System.out.println("GesamtTruppen:" + mitSpieler[dran].getGesamtTruppen());
-        System.out.println("taste: " + taste);
+        //System.out.println("GesamtTruppen:" + mitSpieler[dran].getGesamtTruppen());
+        //System.out.println("taste: " + taste);
         
         int versuche = 0;
         do {
@@ -121,7 +120,7 @@ public class Spiel {
         } while (mitSpieler[dran].getGesamtTruppen() >= startTruppen && versuche <= mitSpieler.length);
         
         boolean alleFertig = true;
-        for (Spieler spieler : mitSpieler) {//hat chat gemacht
+        for (Spieler spieler : mitSpieler) {
           if (spieler.getGesamtTruppen() < startTruppen) {
             alleFertig = false;
             break;
@@ -136,13 +135,10 @@ public class Spiel {
       case 0 : //truppenplatzieren je nach maustaste
         if (taste == 1) {
           land.setTruppen(dran, land.getTruppen() + 1);
-          System.out.println("Eine Truppe wird plaziert");
         } else if (taste == 2) {
           land.setTruppen(dran, land.getTruppen() + Math.min(5, (mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran))));
         }
-        System.out.println("hoe");
-        if (berechneGesamtTruppen(dran) == mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen()) {//KAPUTT --immer noch?? --ich glaube nicht
-          System.out.println("Phasenwechsel alle Truppen plaziert");
+        if (berechneGesamtTruppen(dran) == mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen()) {
           phasenWechsel();
         } else if (berechneGesamtTruppen(dran) > mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen()) {
           System.out.println("Error zu viele Truppen wurden Platziert");
@@ -150,7 +146,6 @@ public class Spiel {
         }
         break;
       case 1 : //angreifen also eigenes Land auswaehlen
-        System.out.println(zugNummer);
         if (land.getHerrscher() == dran && land.getTruppen() > 1) {
           vonLand = land;
           phasenWechsel();
@@ -200,9 +195,8 @@ public class Spiel {
         }
         break;
       case 6 : //Truppen verschieben also ZielLand auswaehlen
-        if (istVerbunden(land.getIndex())) {//land.getHerrscher() == dran && land != vonLand && 
+        if (istVerbunden(land.getIndex())) {
           nachLand = land;
-          System.out.println("NachLand fuer Verschieben ausgewaehlt");
           phasenWechsel();
           if (taste == 1) {
             verschiebeTruppen(1);
@@ -267,9 +261,9 @@ public class Spiel {
       gui.grafikErneuern();
     } else if (knopf == 2) {
       if (phase == 4 || phase == 3) {
-        phase = 4; // gibt vllt nen Error wenn noch keine Truppen zum Angreifen im Land sind
+        phase = 4;
         kampf();
-        gui.grafikErneuern(); //je nach dem, ob der Kampf bereits eine Animation macht unnoetig
+        gui.grafikErneuern();
       } else {
         System.out.println("Error der Kampfbutton wurde faelschlich bedient");
       }
@@ -354,7 +348,7 @@ public class Spiel {
     if (dran >= mitSpieler.length) {
       dran = 0;
     }
-    System.out.println("Spieler" + dran + " hat Laender: " + mitSpieler[dran].getGesamtLaender());
+    //System.out.println("Spieler" + dran + " hat Laender: " + mitSpieler[dran].getGesamtLaender());
     while (mitSpieler[dran].getGesamtLaender() <= 0) {
       if (++dran >= mitSpieler.length) {
         dran = 0;
@@ -371,6 +365,97 @@ public class Spiel {
     phase = 0;
   }
   
+  private boolean truppenPlatzieren(int anzahl, Land meinLand) { //von LandKlickAktionen in Phase 0 aufgerufen
+    if (dran == meinLand.getHerrscher()) {
+      meinLand.setTruppen(dran, meinLand.getTruppen() + anzahl);
+      return true;
+    }
+    else {
+      System.out.println("Error es werden Truppen in fremde Laender Platziert");
+      return false;  
+    }
+  }
+  
+  private void einmarschieren(int anzahl) {
+    System.out.println("Verschiebe " + anzahl);
+    if (dran != nachLand.getHerrscher()) {
+      if (vonLand.getTruppen() > anzahl) {
+        vonLand.setTruppen(dran, vonLand.getTruppen() - anzahl);
+        nachLand.setAngreiferTruppen(dran, nachLand.getAngreiferTruppen() + anzahl);
+      } else {
+        System.out.println("Error es werden zu viele Truppen zum Angreifen verwendet");
+      }
+    } else {
+      System.out.println("Error eigenes Land wird angegriffen");
+    }
+  }
+  
+  private void verschiebeTruppen(int anzahl) {
+    if (dran == vonLand.getHerrscher()) {
+      if (vonLand.getTruppen() > anzahl) {
+        vonLand.setTruppen(dran, vonLand.getTruppen() - anzahl);
+        nachLand.setTruppen(dran, nachLand.getTruppen() + anzahl);
+      } else {
+        System.out.println("Error es werden zu viele Truppen verschoben");
+      }
+    }
+    else {
+      System.out.println("Error Truppen werden aus Fremden Laendern verschoben");
+    }
+  }
+  
+  private void kampf() {
+    angreiferWuerfelAnzahl = (byte) ((nachLand.getAngreiferTruppen() >= 3)?3:nachLand.getAngreiferTruppen()); // die beiden muessten je nach Truppenzahlen eingestellt werden
+    verteidigerWuerfelAnzahl = (byte) ((nachLand.getTruppen() >= 2)?2:1);
+    for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
+      angreiferWuerfel[i] = (byte) ((Math.random() * 6) + 1);
+    }
+    for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
+      verteidigerWuerfel[i] = (byte) ((Math.random() * 6) + 1);
+    }
+    byte zwischen = 0; //bubblesort
+    for (byte i = 0; i < angreiferWuerfelAnzahl - 1; i++) {
+      for (byte j = 0; j < angreiferWuerfelAnzahl - 1; j++) {
+        if (angreiferWuerfel[j] < angreiferWuerfel[j + 1]) {
+          zwischen = angreiferWuerfel[j];
+          angreiferWuerfel[j] = angreiferWuerfel[j + 1];
+          angreiferWuerfel[j + 1] = zwischen;
+        }
+      }
+    }
+    if (verteidigerWuerfel[0] < verteidigerWuerfel[1]) { //und sortieren der zwei
+      zwischen = verteidigerWuerfel[0];
+      verteidigerWuerfel[0] = verteidigerWuerfel[1];
+      verteidigerWuerfel[1] = zwischen;
+    }
+    
+    byte wuerfelNr = 0;
+    do { 
+      //System.out.println(angreiferWuerfel[wuerfelNr] + " vs. " + verteidigerWuerfel[wuerfelNr]);
+      if (angreiferWuerfel[wuerfelNr] > verteidigerWuerfel[wuerfelNr]) {
+        nachLand.setTruppen(nachLand.getHerrscher(), nachLand.getTruppen() - 1);
+      } else{
+        nachLand.setAngreiferTruppen(dran, nachLand.getAngreiferTruppen() - 1);
+      }
+    } while (wuerfelNr++ < angreiferWuerfelAnzahl && wuerfelNr < verteidigerWuerfelAnzahl);
+    
+    if (nachLand.getTruppen() < 1 || nachLand.getAngreiferTruppen() < 1) {
+      if (nachLand.getTruppen() < 1 && nachLand.getAngreiferTruppen() > 0){
+        mitSpieler[nachLand.getHerrscher()].setGesamtLaender(mitSpieler[nachLand.getHerrscher()].getGesamtLaender() - 1);
+        aktualisiereTruppenLaender(nachLand.getHerrscher());
+        nachLand.setTruppen(dran, nachLand.getAngreiferTruppen());
+        nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
+        kampfGewonnen = true;
+        mitSpieler[vonLand.getHerrscher()].setGesamtLaender(mitSpieler[vonLand.getHerrscher()].getGesamtLaender() + 1);
+        getGewonnen();
+      }
+      aktualisiereTruppenLaender(nachLand.getHerrscher());
+      nachLand.setAngreiferTruppen(dran, 0);
+      gui.grafikErneuern();
+      phasenWechsel();
+    }
+    gui.grafikErneuern();
+  }
   
   public boolean istBenachbart(byte meinLand) {
     boolean istEinNachbar = false;
@@ -388,150 +473,61 @@ public class Spiel {
     return istEinVerbundener;
   }
   
-  public byte getPhase() {
-    return this.phase;
+  public boolean kannAngreifen(byte i){
+    for (Land nachbarLand : laender[i].getNachbarn()){
+      if (nachbarLand.getHerrscher() != dran) {
+        return true;
+      }
+    }
+    return false;
   }
   
-  public byte getDran() {
-    return this.dran;
+  public boolean kannVerschieben(byte i){
+    for (Land nachbarLand : laender[i].getNachbarn()){
+      if (nachbarLand.getHerrscher() == dran) {
+        return true;
+      }
+    }
+    return false;
   }
   
-  public Land getNachLand() {
-    return this.nachLand;
+  public void schonDurchReset() {
+    for (byte i = 0; i < laender.length; i++) {
+      laender[i].resetSchonDurch();
+    }
   }
   
-  public Land getVonLand() {
-    return this.vonLand;
-  }
-  
-  private boolean truppenPlatzieren(int anzahl, Land meinLand) { //von LandKlickAktionen in Phase 0 aufgerufen
-    if (dran == meinLand.getHerrscher()) {
-      meinLand.setTruppen(dran, meinLand.getTruppen() + anzahl);
-      return true;
+  private int berechneZuPlatzierendeTruppen() {
+    int extraTruppen = mitSpieler[dran].kartenNutzen(false);
+    for (int i = 0; i < kontinente.length; i++) {
+      if (kontinente[i].beherrschtVon(dran) == true) {
+        extraTruppen = extraTruppen + kontinente[i].getExtraTruppen();
+      }
+    }
+    if (((int)(mitSpieler[dran].getGesamtLaender() / 3)) < 3) {
+      return 3 + extraTruppen;
     }
     else {
-      System.out.println("Error es werden Truppen in fremde Laender Platziert");
-      return false;  
+      return (int)(mitSpieler[dran].getGesamtLaender() / 3) + extraTruppen;
     }
   }
   
-  
-  public int getAnzahlLaender(byte meinSpieler) { //hab das mal public gemacht
-    return this.mitSpieler[meinSpieler].getGesamtLaender();
-  }
-  
-  public int getAnzahlTruppen(byte meinSpieler) { //hab das mal public gemacht
-    return this.mitSpieler[meinSpieler].getGesamtTruppen();
-  }
-  
-  private void einmarschieren(int anzahl) {
-    System.out.println("Verschiebe " + anzahl);
-    if (dran != nachLand.getHerrscher()) {
-      if (vonLand.getTruppen() > anzahl) {
-        vonLand.setTruppen(dran, vonLand.getTruppen() - anzahl);
-        nachLand.setAngreiferTruppen(dran, nachLand.getAngreiferTruppen() + anzahl);
-      } else {
-        System.out.println("Error es werden zu viele Truppen zum Angreifen verwendet");
+  private int berechneGesamtTruppen(byte meinSpieler) {
+    int truppen = 0;
+    for (byte i = 0; i < laender.length; i++) {
+      if (laender[i].getHerrscher() == meinSpieler) {
+        truppen += laender[i].getTruppen();
       }
-    } else {
-      System.out.println("Error eigenes Land wird angegriffen");
-    }
+    } 
+    return truppen;
   }
   
-  private void kampf() {
-    angreiferWuerfelAnzahl = (byte) ((nachLand.getAngreiferTruppen() >= 3)?3:nachLand.getAngreiferTruppen()); // die beiden muessten je nach Truppenzahlen eingestellt werden
-    verteidigerWuerfelAnzahl = (byte) ((nachLand.getTruppen() >= 2)?2:1);
-    for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
-      angreiferWuerfel[i] = (byte) ((Math.random() * 6) + 1);
-    }
-    for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
-      verteidigerWuerfel[i] = (byte) ((Math.random() * 6) + 1);
-    }
-    
-    //    for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
-    //      System.out.println("angreiferWuerfel: " + i + " hat den Wert " + angreiferWuerfel[i]);
-    //    }
-    //    for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
-    //      System.out.println("verteidigerWuerfel: " + i + " hat den Wert " + verteidigerWuerfel[i]);
-    //    }
-    byte zwischen = 0; //bubblesort
-    for (byte i = 0; i < angreiferWuerfelAnzahl - 1; i++) {
-      for (byte j = 0; j < angreiferWuerfelAnzahl - 1; j++) {
-        if (angreiferWuerfel[j] < angreiferWuerfel[j + 1]) {
-          zwischen = angreiferWuerfel[j];
-          angreiferWuerfel[j] = angreiferWuerfel[j + 1];
-          angreiferWuerfel[j + 1] = zwischen;
-        }
-      }
-    }
-    if (verteidigerWuerfel[0] < verteidigerWuerfel[1]) {
-      zwischen = verteidigerWuerfel[0];
-      verteidigerWuerfel[0] = verteidigerWuerfel[1];
-      verteidigerWuerfel[1] = zwischen;
-    }
-    
-    byte wuerfelNr = 0;
-    do { 
-      System.out.println(angreiferWuerfel[wuerfelNr] + " vs. " + verteidigerWuerfel[wuerfelNr]);
-      if (angreiferWuerfel[wuerfelNr] > verteidigerWuerfel[wuerfelNr]) {
-        nachLand.setTruppen(nachLand.getHerrscher(), nachLand.getTruppen() - 1);
-      } else{
-        nachLand.setAngreiferTruppen(dran, nachLand.getAngreiferTruppen() - 1);
-      }
-    } while (wuerfelNr++ < angreiferWuerfelAnzahl && wuerfelNr < verteidigerWuerfelAnzahl);
-    
-    if (nachLand.getTruppen() < 1 || nachLand.getAngreiferTruppen() < 1) {
-      if (nachLand.getTruppen() < 1 && nachLand.getAngreiferTruppen() > 0){
-        mitSpieler[nachLand.getHerrscher()].setGesamtLaender(mitSpieler[nachLand.getHerrscher()].getGesamtLaender() - 1);
-        aktualisiereTruppenLaender(nachLand.getHerrscher());
-        nachLand.setTruppen(dran, nachLand.getAngreiferTruppen());
-        nachLand.setAngreiferTruppen(nachLand.getHerrscher(), 0);
-        System.out.println("hi");
-        kampfGewonnen = true;
-        //mitSpieler[dran].karteZiehen();
-        mitSpieler[vonLand.getHerrscher()].setGesamtLaender(mitSpieler[vonLand.getHerrscher()].getGesamtLaender() + 1);
-        getGewonnen();
-      }
-      aktualisiereTruppenLaender(nachLand.getHerrscher());
-      nachLand.setAngreiferTruppen(dran, 0);
-      //      for (byte i = 0; i < 3; i++) {
-      //        angreiferWuerfel[i] = (byte) 0;
-      //      }
-      //      for (byte i = 0; i < 2; i++) {
-      //        verteidigerWuerfel[i] = (byte) 0;
-      //      }
-      gui.grafikErneuern();
-      phasenWechsel();
-    }
-    gui.grafikErneuern();
+  private void aktualisiereTruppenLaender(byte meinSpieler){
+    mitSpieler[meinSpieler].setGesamtTruppen(berechneGesamtTruppen(meinSpieler));
   }
   
-  public byte[] getVerteidigerWuerfel() {//sollte dann von Gui abgefragt werden
-    return this.verteidigerWuerfel;
-  }
-  public byte[] getAngreiferWuerfel() {//sollte dann von Gui abgefragt werden
-    return this.angreiferWuerfel;
-  }
-  public byte getVerteidigerWuerfelAnzahl() {
-    return this.verteidigerWuerfelAnzahl;
-  }
-  public byte getAngreiferWuerfelAnzahl() {
-    return this.angreiferWuerfelAnzahl;
-  }
-  
-  private void verschiebeTruppen(int anzahl) {
-    if (dran == vonLand.getHerrscher()) {
-      if (vonLand.getTruppen() > anzahl) {
-        System.out.println("Truppen werden verschoben...");
-        vonLand.setTruppen(dran, vonLand.getTruppen() - anzahl);
-        nachLand.setTruppen(dran, nachLand.getTruppen() + anzahl);
-      } else {
-        System.out.println("Error es werden zu viele Truppen verschoben"); //bis jetzt ist diese Fehlermeldung einfach auszuloesen
-      }
-    }
-    else {
-      System.out.println("Error Truppen werden aus Fremden Laendern verschoben");
-    }
+  public void setKampfGewonnen() {
+    this.kampfGewonnen = false;
   }
   
   public Land getLand(byte stelle) {
@@ -560,48 +556,52 @@ public class Spiel {
     return 100;
   }
   
+  public int getAnzahlLaender(byte meinSpieler) {
+    return this.mitSpieler[meinSpieler].getGesamtLaender();
+  }
+  
+  public int getAnzahlTruppen(byte meinSpieler) {
+    return this.mitSpieler[meinSpieler].getGesamtTruppen();
+  }
+  
+  public byte[] getVerteidigerWuerfel() {//von Gui abgefragt
+    return this.verteidigerWuerfel;
+  }
+  
+  public byte[] getAngreiferWuerfel() {//von Gui abgefragt
+    return this.angreiferWuerfel;
+  }
+  
+  public byte getVerteidigerWuerfelAnzahl() {
+    return this.verteidigerWuerfelAnzahl;
+  }
+  
+  public byte getAngreiferWuerfelAnzahl() {
+    return this.angreiferWuerfelAnzahl;
+  }
+  
+  public byte getPhase() {
+    return this.phase;
+  }
+  
+  public byte getDran() {
+    return this.dran;
+  }
+  
+  public Land getNachLand() {
+    return this.nachLand;
+  }
+  
+  public Land getVonLand() {
+    return this.vonLand;
+  }
+  
   public String getSpielerName(byte sNr) {
     return this.mitSpieler[sNr].getName();
   }
   
-  private int berechneZuPlatzierendeTruppen() { //glaube ist gut so
-    int extraTruppen = mitSpieler[dran].kartenNutzen(false);
-    
-    for (int i = 0; i < kontinente.length; i++) {
-      if (kontinente[i].beherrschtVon(dran) == true) {
-        extraTruppen = extraTruppen + kontinente[i].getExtraTruppen();
-      }
-    }
-    if (((int)(mitSpieler[dran].getGesamtLaender() / 3)) < 3) {
-      return 3 + extraTruppen;
-    }
-    else {
-      return (int)(mitSpieler[dran].getGesamtLaender() / 3) + extraTruppen;
-    }
-  }
-  
   public int getZuPlazierendeTruppen() {
     return mitSpieler[dran].getGesamtTruppen() + berechneZuPlatzierendeTruppen() - berechneGesamtTruppen(dran);
-  }
-  
-  private int berechneGesamtTruppen(byte meinSpieler) {
-    int truppen = 0;
-    for (byte i = 0; i < laender.length; i++) {
-      if (laender[i].getHerrscher() == meinSpieler) {
-        truppen += laender[i].getTruppen();
-      }
-    } 
-    return truppen;
-  }
-  
-  private void aktualisiereTruppenLaender(byte meinSpieler){
-    mitSpieler[meinSpieler].setGesamtTruppen(berechneGesamtTruppen(meinSpieler));
-  }
-  
-  public void schonDurchReset() {//extramethode??
-    for (byte i = 0; i < laender.length; i++) {
-      laender[i].resetSchonDurch();
-    }
   }
   
   public byte getKarte() {
@@ -614,28 +614,5 @@ public class Spiel {
   
   public boolean getKampfGewonnen() {
     return this.kampfGewonnen;
-  }
-  
-  public void setKampfGewonnen() {
-    this.kampfGewonnen = false;
-  }
-  
-  
-  public boolean kannAngreifen(byte i){
-    for (Land nachbarLand : laender[i].getNachbarn()){
-      if (nachbarLand.getHerrscher() != dran) {
-        return true;
-      }
-    }
-    return false;
-  }
-  
-  public boolean kannVerschieben(byte i){
-    for (Land nachbarLand : laender[i].getNachbarn()){
-      if (nachbarLand.getHerrscher() == dran) {
-        return true;
-      }
-    }
-    return false;
   }
 }

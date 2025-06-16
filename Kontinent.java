@@ -19,7 +19,7 @@ public class Kontinent{
   }
   
   public int getExtraTruppen() {
-    System.out.println("Extratruppen aus " + name);
+    // System.out.println("Extratruppen aus " + name);
     return this.truppen;
   }
 }
