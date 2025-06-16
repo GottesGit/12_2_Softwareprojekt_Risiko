@@ -49,12 +49,6 @@ public class RisikoGui extends Application {
   private Image[] imageKarte = new Image[3];
   private ImageView[][] imageViewAlleKarten;
   
-  private ImageView imageViewGrau;          //Gewinn
-  private ImageView imageViewGewinn;
-  private Button viewButton;
-  private Button closeButton;
-  private Label gewinnLabel;
-  
   private Button kampfButton;
   private Button fertigButton;
   private Button switchButton;
@@ -376,7 +370,7 @@ public class RisikoGui extends Application {
     );
     spielPane.getChildren().add(kampfButton);
     
-    switchButton = new Button(); //Switch-Button
+    switchButton = new Button(); //Kampf-Button
     switchButton.setLayoutX(1266);
     switchButton.setLayoutY(50);
     switchButton.setPrefHeight(70);
@@ -538,60 +532,6 @@ public class RisikoGui extends Application {
     imageViewKarte.toFront();
     //kartenPosition = new int[spielerAnzahl];
     
-    
-    //Gewinn:
-    
-    imageViewGrau = new ImageView(new Image(getClass().getResourceAsStream("/Graphiken/grayScreen.png")));
-    imageViewGrau.setFitWidth(1366);
-    imageViewGrau.setPreserveRatio(true);
-    imageViewGrau.setVisible(false);
-    spielPane.getChildren().add(0, imageViewGrau);
-    
-    imageViewGewinn = new ImageView(new Image(getClass().getResourceAsStream("/Graphiken/confetti.gif")));
-    imageViewGewinn.setFitWidth(1366);
-    imageViewGewinn.setPreserveRatio(true);
-    imageViewGewinn.setVisible(false);
-    spielPane.getChildren().add(imageViewGewinn);
-    
-    gewinnLabel = new Label();
-    gewinnLabel.setLayoutX(483);
-    gewinnLabel.setLayoutY(341.5);
-    gewinnLabel.setPrefHeight(52);
-    gewinnLabel.setPrefWidth(400);
-    gewinnLabel.setStyle("-fx-font-size: 50px; -fx-font-weight: bold; -fx-background-color: transparent;");
-    gewinnLabel.setText("");
-    gewinnLabel.setAlignment(Pos.CENTER);
-    gewinnLabel.setVisible(false);
-    spielPane.getChildren().add(gewinnLabel);
-    
-    viewButton = new Button();
-    viewButton.setLayoutX(483);
-    viewButton.setLayoutY(400);
-    viewButton.setPrefHeight(70);
-    viewButton.setPrefWidth(70);
-    viewButton.getStyleClass().add("button-view");
-    viewButton.setVisible(false);
-    viewButton.setOnAction(
-    (event) -> {viewButton_gedrueckt(event);} 
-    );
-    spielPane.getChildren().add(viewButton);
-    
-    closeButton = new Button();
-    closeButton.setLayoutX(813);
-    closeButton.setLayoutY(50);
-    closeButton.setPrefHeight(70);
-    closeButton.setPrefWidth(70);
-    closeButton.getStyleClass().add("button-close");
-    closeButton.setVisible(false);
-    closeButton.setOnAction(
-    (event) -> {closeButton_gedrueckt(event);} 
-    );
-    spielPane.getChildren().add(closeButton);
-    
-    
-    
-    spielPlan.setFullScreen(true);
-    
     spielPlan.setTitle("Risiko");
     spielPlan.setScene(spielSzene);
     spielPlan.setResizable(true);
@@ -607,23 +547,6 @@ public class RisikoGui extends Application {
   public void grafikErneuern() {
     if (spiel.getGewonnen() != 100) {
       System.out.println("Spieler " + spiel.getGewonnen() + " hat gewonnen!"); //muesste dann natuerlich auch in die Gui
-      
-      imageViewGrau.setVisible(true);
-      imageViewGrau.toFront();
-      
-      imageViewGewinn.setVisible(true);
-      imageViewGewinn.toFront();
-      
-      viewButton.setVisible(true);
-      viewButton.toFront();
-      
-      closeButton.setVisible(true);
-      closeButton.toFront();
-      
-      gewinnLabel.setVisible(true);
-      gewinnLabel.toFront();
-      gewinnLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + "; -fx-font-size: 50px; -fx-font-weight: bold; -fx-background-color: white;");
-      gewinnLabel.setText(spiel.getSpielerName(spiel.getGewonnen())+ " hat gewonnen!");
     } else {
       for (int j = 0; j < spielerAnzahl; j++) {
         if (spiel.getDran() == j) {
@@ -826,10 +749,8 @@ public class RisikoGui extends Application {
       zuletztDran = spiel.getDran();
       neuerSpielerLabel.setText(spiel.getSpielerName(spiel.getDran()) + " ist an der Reihe!");
       neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + ";-fx-font-size: 30px; -fx-font-weight: bold; -fx-background-color: transparent;");
-      imageViewNeuerSpieler.setVisible(true);
-      imageViewNeuerSpieler.toFront();
       neuerSpielerLabel.setVisible(true);
-      neuerSpielerLabel.toFront();
+      imageViewNeuerSpieler.setVisible(true);
       
       neuerSpielerLabel.setOnMouseEntered(event -> {
         neuerSpielerLabel.setVisible(false);
@@ -851,7 +772,6 @@ public class RisikoGui extends Application {
       spiel.setKampfGewonnen();
       imageViewKarte.setImage(imageKarte[karte]);
       imageViewKarte.setVisible(true);
-      imageViewKarte.toFront();
       
       PauseTransition pause = new PauseTransition(Duration.seconds(2));
       pause.setOnFinished(e -> imageViewKarte.setVisible(false));
@@ -912,14 +832,6 @@ public class RisikoGui extends Application {
         landButtons[i].refresh(switchWert);
       }
     }
-  }
-  
-  public void viewButton_gedrueckt(Event evt) {
-
-  }
-  
-  public void closeButton_gedrueckt(Event evt) {
-
   }
   
 }
