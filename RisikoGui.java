@@ -55,6 +55,8 @@ public class RisikoGui extends Application {
   private int switchWert = 0;
   private int letzterAng;
   private int letzterVer;
+  private ImageView imageViewNeuerSpieler;
+  private ImageView imageViewPhase;
   private Label phasenLabel;
   private Label aufforderungsLabel;
   private Label wuerfelLabel;
@@ -379,12 +381,19 @@ public class RisikoGui extends Application {
     );
     spielPane.getChildren().add(switchButton);
     
+    imageViewPhase = new ImageView(new Image(getClass().getResourceAsStream("/Graphiken/phase.png"))); //PhasenUndAufforderungs-ImageView
+    imageViewPhase.setFitWidth(280);
+    imageViewPhase.setX(543);
+    imageViewPhase.setY(7);
+    imageViewPhase.setPreserveRatio(true);
+    spielPane.getChildren().add(imageViewPhase);
+    
     phasenLabel = new Label(); //Phasen-Label
     phasenLabel.setLayoutX(543);
     phasenLabel.setLayoutY(5);
     phasenLabel.setPrefHeight(40);
     phasenLabel.setPrefWidth(280);
-    phasenLabel.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-background-color: lightgray;");
+    phasenLabel.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: transparent;");
     phasenLabel.setText("Befestigungsphase");
     phasenLabel.setAlignment(Pos.CENTER);
     spielPane.getChildren().add(phasenLabel);
@@ -394,7 +403,7 @@ public class RisikoGui extends Application {
     aufforderungsLabel.setLayoutY(45);
     aufforderungsLabel.setPrefHeight(11);
     aufforderungsLabel.setPrefWidth(260);
-    aufforderungsLabel.setStyle("-fx-font-size: 10px; -fx-background-color: lightgray;");
+    aufforderungsLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: white; -fx-background-color: transparent;");
     aufforderungsLabel.setText("Setze deine Truppen!");
     aufforderungsLabel.setAlignment(Pos.CENTER);
     spielPane.getChildren().add(aufforderungsLabel);
@@ -411,7 +420,7 @@ public class RisikoGui extends Application {
         imageViewAlleKarten[k][x] = new ImageView();
         imageViewAlleKarten[k][x].setFitWidth(25);
         imageViewAlleKarten[k][x].setPreserveRatio(true);
-        imageViewAlleKarten[k][x].setX(27 + x * 40);
+        imageViewAlleKarten[k][x].setX(27 + x * 30);
         imageViewAlleKarten[k][x].setY(376 + k * 50 - 121);
         spielPane.getChildren().add(imageViewAlleKarten[k][x]);
       }
@@ -471,12 +480,20 @@ public class RisikoGui extends Application {
       spielPane.getChildren().add(laenderLabel[k]);
     }
     
+    imageViewNeuerSpieler = new ImageView(new Image(getClass().getResourceAsStream("/Graphiken/neuerSpieler.png"))); //PhasenUndAufforderungs-ImageView
+    imageViewNeuerSpieler.setFitWidth(400);
+    imageViewNeuerSpieler.setX(483);
+    imageViewNeuerSpieler.setY(341.5);
+    imageViewNeuerSpieler.setPreserveRatio(true);
+    imageViewNeuerSpieler.setVisible(false);
+    spielPane.getChildren().add(imageViewNeuerSpieler);
+    
     neuerSpielerLabel = new Label(); //Aufforderungs-Label
-    neuerSpielerLabel.setLayoutX(553);
+    neuerSpielerLabel.setLayoutX(483);
     neuerSpielerLabel.setLayoutY(341.5);
-    neuerSpielerLabel.setPrefHeight(32);
-    neuerSpielerLabel.setPrefWidth(260);
-    neuerSpielerLabel.setStyle("-fx-font-size: 30px; -fx-background-color: lightgray;");
+    neuerSpielerLabel.setPrefHeight(52);
+    neuerSpielerLabel.setPrefWidth(400);
+    neuerSpielerLabel.setStyle("-fx-font-size: 50px; -fx-font-weight: bold; -fx-background-color: transparent;");
     neuerSpielerLabel.setText("");
     neuerSpielerLabel.setAlignment(Pos.CENTER);
     neuerSpielerLabel.setVisible(false);
@@ -645,7 +662,7 @@ public class RisikoGui extends Application {
             }
             fertigButton.setDisable(false);
             phasenLabel.setText("Angriffsphase");
-            aufforderungsLabel.setText("Verschiebe deine Angreifertruppen in das ausgewählte Land!");
+            aufforderungsLabel.setText("Verschiebe deine Angreifertruppen in das Land!");
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
             //landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
             break;
@@ -683,7 +700,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             phasenLabel.setText("Zugphase");
-            aufforderungsLabel.setText("Wähle das Land, aus welchem du Truppen ziehen möchtest!");
+            aufforderungsLabel.setText("Wähle, aus welchem Land du Truppen ziehen möchtest!");
             for (int k = 0; k < 42; k++) {
               landButtons[k].refresh(switchWert);
             }
@@ -697,7 +714,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             phasenLabel.setText("Zugphase");
-            aufforderungsLabel.setText("Wähle das Land, in welches du Truppen ziehen möchtest!");
+            aufforderungsLabel.setText("Wähle, in welches Land du Truppen ziehen möchtest!");
             break;
           case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
             if (i == spiel.getNachLand().getIndex()) {
@@ -730,14 +747,21 @@ public class RisikoGui extends Application {
   private void neuerSpieler() {
     if (spiel.getDran() != zuletztDran) {
       zuletztDran = spiel.getDran();
-      neuerSpielerLabel.setText(spiel.getSpielerName(spiel.getDran()) + " ist dran");
-      neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + ";-fx-font-size: 30px; -fx-background-color: lightgray;");
+      neuerSpielerLabel.setText(spiel.getSpielerName(spiel.getDran()) + " ist an der Reihe!");
+      neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + ";-fx-font-size: 30px; -fx-font-weight: bold; -fx-background-color: transparent;");
       neuerSpielerLabel.setVisible(true);
+      imageViewNeuerSpieler.setVisible(true);
       
-      neuerSpielerLabel.setOnMouseEntered(event -> neuerSpielerLabel.setVisible(false));
+      neuerSpielerLabel.setOnMouseEntered(event -> {
+        neuerSpielerLabel.setVisible(false);
+        imageViewNeuerSpieler.setVisible(false);
+      });
       
       PauseTransition pause = new PauseTransition(Duration.seconds(1.2));
-      pause.setOnFinished(e -> neuerSpielerLabel.setVisible(false));
+      pause.setOnFinished(e -> {
+        neuerSpielerLabel.setVisible(false);
+        imageViewNeuerSpieler.setVisible(false);
+      });
       pause.play();
     }
   }
