@@ -13,6 +13,7 @@ public class Land{
     this.name = meinName;
     this.index = meinIndex;
   }
+  
   public void setNachbarn(Land[] angrenzend) {
     this.nachbarn = java.util.Arrays.copyOf(angrenzend, angrenzend.length);
   }
@@ -31,25 +32,9 @@ public class Land{
     this.angreiferSpieler = meinAngreifer;
   }
   
-  public int getAngreiferTruppen() {
-    return this.angreiferTruppen;
-  }
-  
-  public byte getHerrscher() {
-    return this.herrscher;
-  }
-  
-  public String getName() {
-    return this.name;
-  }
-  
-  public Land[] getNachbarn() {
-    return this.nachbarn;//darf man das so?
-  }
-  
   public boolean getAngrenzend(Land anderesLand){
     for (int i = 0; i < nachbarn.length; i++) {
-      if (nachbarn[i] == anderesLand){//funktioniert das so oder muessen die Namen der Laender verglichen werden?
+      if (nachbarn[i] == anderesLand){
         return true;
       }
     }
@@ -69,6 +54,22 @@ public class Land{
       }
     }
     return false;
+  }
+  
+  public int getAngreiferTruppen() {
+    return this.angreiferTruppen;
+  }
+  
+  public byte getHerrscher() {
+    return this.herrscher;
+  }
+  
+  public String getName() {
+    return this.name;
+  }
+  
+  public Land[] getNachbarn() {
+    return this.nachbarn;
   }
   
   public boolean getSchonDurch() {

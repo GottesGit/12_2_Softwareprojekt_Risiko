@@ -3,3 +3,6 @@ Ordner aufräumen
 (zu fünft spielen)
 (Im Kampf muss sich die Truppen- und Länderanzahl ändern)
 frithjof gewinnt easter egg
+Code pflegen (prints)
+Gewinnscreen
+Projektbeschreibung wiederherstellen

@@ -31,12 +31,8 @@ public class LandButton extends Button{//geht anscheinend nicht
     } else if (evt.getButton() == MouseButton.SECONDARY) {
       spiel.landKlickAktion(land, 2);   
     }
-    System.out.println(land.getName() + "gedrueckt");
+    //System.out.println(land.getName() + "gedrueckt");
   }
-  
-  //  public void refresh() {
-  //    this.schriftzug.setText(land.getName() + " " + land.getTruppen() + " Angreifertrupps: " + land.getAngreiferTruppen());
-  //  }
   
   public void refresh(int switchWert) {
     switch (switchWert) {
@@ -61,19 +57,6 @@ public class LandButton extends Button{//geht anscheinend nicht
     globalerSwitchWert = switchWert;
   }
   
-  public byte getHerrscher() {
-    return land.getHerrscher();
-  }
-  
-  public int getTruppen() {
-    return land.getTruppen();
-  }
-  
-//  public void angriffsSchrift(int truppen){
-//    this.schriftzug.setText("Angreifer " + truppen);
-//    this.kontinente.setVisible(false);
-//  }
-  
   public void setKlickbar(boolean klick) {
     this.setDisable(!klick);
 //    if (klick) {
@@ -82,5 +65,13 @@ public class LandButton extends Button{//geht anscheinend nicht
 //    } else {
 //      form.setStrokeWidth(0);
 //    }
+  }
+  
+  public byte getHerrscher() {
+    return land.getHerrscher();
+  }
+  
+  public int getTruppen() {
+    return land.getTruppen();
   }
 }
