@@ -1,6 +1,6 @@
 README
 Wenn Sie die grundlegenden Regeln von RISIKO kennen, werden Sie Risiko_Anleitung.pdf nicht brauchen, sondern nur diese kurze Erklärung.
-
+Das gesamte Spiel ist skalierbar.
 
 Anleitung:
 Zum Starten des Spiels muss RisikoGui.java gestartet werden.
