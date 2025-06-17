@@ -28,33 +28,30 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.Group;
 
 public class RisikoGui extends Application {
-  private byte spielerAnzahl = 0;
   private Spiel spiel;
-  private LandButton[] landButtons = new LandButton[42];//hiermit ist das natuerlich fest, das muesste angepasst werden, wenn das fuer verschiedene Maps funktionieren soll     dafür musst du erstmal ne neue Map machen
-  
+  private LandButton[] landButtons = new LandButton[42];
   private Label[] spielerLabel;
   private Label[] truppenLabel;
   private Label[] laenderLabel;
   private Rectangle[] spielerRectangle;
   private SVGPath[] truppenSVG;
   private SVGPath[] laenderSVG;
-  private String[] spielerFarben = {"red", "blue", "#00cd00", "#eec900"};//statt gelb wäre #CC0099 gut - wie ihr meint
+  private String[] spielerFarben = {"red", "blue", "#00cd00", "#eec900"};
   
   private ImageView[] imageViewAngreiferWuerfel = new ImageView[3];
   private ImageView[] imageViewVerteidigerWuerfel = new ImageView[2];
   private Image[] imageAngreifer = new Image[7];
   private Image[] imageVerteidiger = new Image[7];
-  
   private ImageView imageViewKarte;
   private Image[] imageKarte = new Image[3];
   private ImageView[][] imageViewAlleKarten;
-  
-  private ImageView imageViewGrau;          //Gewinn
+  private ImageView imageViewGrau; //Gewinn
   private ImageView imageViewGewinn;
   private Button viewButton;
   private Button closeButton;
   private Label gewinnLabel;
   
+  private byte spielerAnzahl = 0;
   private Button kampfButton;
   private Button fertigButton;
   private Button switchButton;
@@ -73,21 +70,22 @@ public class RisikoGui extends Application {
   private Text[] landTexte = new Text[42];
   private byte zuletztDran = 10;
   
+  public static void main(String[] args) {
+    launch(args);
+  }
+  
   public void start(Stage primaryStage) { 
     Pane root = new Pane();
     Scene startSzene = new Scene(root, 500, 350);
-    
     Image startImage = new Image("file:Start.png");
     ImageView startImageView = new ImageView(startImage);
     startImageView.setFitWidth(500);
     startImageView.setPreserveRatio(true);
     root.getChildren().add(0, startImageView);
-    
     Image[] startBilder = new Image[4];
     for (int j = 0; j < 4; j++) {
       startBilder[j] = new Image("file:Startbildschirme/Startbildschirm" + j + ".png");
     }
-    
     
     startButton.setLayoutX(76);
     startButton.setLayoutY(288);
@@ -100,8 +98,7 @@ public class RisikoGui extends Application {
     root.getChildren().add(startButton);
     
     int maxLaenge = 10;
-    
-    UnaryOperator<TextFormatter.Change> filter = change -> {
+    UnaryOperator<TextFormatter.Change> filter = change -> {//von ChatGPT
       String neuerText = change.getControlNewText();
       if (neuerText.length() <= maxLaenge) {
         return change;
@@ -119,16 +116,15 @@ public class RisikoGui extends Application {
       namenFelder[i].setPromptText("Spielername eingeben...");
       namenFelder[i].getStyleClass().add("textField-name");
       
-      final int finaleohoho = i;
+      final int finalei = i;//vonHier
       namenFelder[i].setFocusTraversable(true);
       namenFelder[i].focusedProperty().addListener((obs, oldVal, newVal) -> {
         if (newVal) {
-          startImageView.setImage(startBilder[finaleohoho]);
+          startImageView.setImage(startBilder[finalei]);
         }
       });
       
-      namenFelder[i].setTextFormatter(new TextFormatter<>(filter));
-      
+      namenFelder[i].setTextFormatter(new TextFormatter<>(filter));//bis hier von ChatGPT
       root.getChildren().add(namenFelder[i]);
     }
     
@@ -147,7 +143,7 @@ public class RisikoGui extends Application {
       }
     }
     if (anzahl > 1) {
-      Stage primaryStage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
+      Stage primaryStage = (Stage) ((Node) evt.getSource()).getScene().getWindow();//von ChatGPT
       primaryStage.close();
       spielStart();
     }
@@ -174,17 +170,17 @@ public class RisikoGui extends Application {
       }
     }
     byte startSpieler = (byte) (Math.random() * spielerAnzahl);//zufaelliger Startspieler
-    System.out.println("startSpieler: " + startSpieler);
+    //System.out.println("startSpieler: " + startSpieler);
     String[] namen = new String[spielerAnzahl];
     for (byte i = startSpieler; i < spielerAnzahl; i++) {
       namen[i - startSpieler] = namenFelder[i].getText();
       spielerFarben[i - startSpieler] = farben[i];
-      System.out.println(i + " Spieler " + (i - startSpieler) + " : " + namenFelder[i].getText());
+      //System.out.println(i + " Spieler " + (i - startSpieler) + " : " + namenFelder[i].getText());
     }
     for (byte i = 0; i < startSpieler; i++) {
       namen[i + spielerAnzahl - startSpieler] = namenFelder[i].getText();
       spielerFarben[i + spielerAnzahl - startSpieler] = farben[i];
-      System.out.println(i + " Spieler " + (i + spielerAnzahl - startSpieler) + " : " + namenFelder[i].getText());
+      //System.out.println(i + " Spieler " + (i + spielerAnzahl - startSpieler) + " : " + namenFelder[i].getText());
     }
     spiel = new Spiel(namen, this);
     
@@ -207,7 +203,7 @@ public class RisikoGui extends Application {
     // Europa
     "M 114.72,34.32 C 114.73,34.39 114.73,34.44 114.76,34.50   114.92,34.82 115.29,34.70 115.49,34.50   115.56,34.41 115.63,34.29 115.72,34.24   115.80,34.20 116.18,34.16 116.28,34.16   116.28,34.16 116.69,34.16 116.69,34.16   116.77,34.16 116.89,34.15 116.96,34.20   117.13,34.30 117.12,34.54 117.31,34.67   117.43,34.75 118.07,34.80 118.25,34.82   118.34,34.84 118.49,34.88 118.56,34.82   118.71,34.72 118.69,34.47 118.69,34.32   118.69,34.32 118.66,33.82 118.66,33.82   118.66,33.76 118.65,33.67 118.71,33.63   118.79,33.57 119.18,33.68 119.28,33.70   119.64,33.79 119.98,33.92 120.31,34.09   120.42,34.15 120.62,34.25 120.70,34.35   120.76,34.44 120.75,34.56 120.75,34.66   120.75,34.66 120.75,35.29 120.75,35.29   120.75,35.29 120.72,35.79 120.72,35.79   120.72,35.79 120.69,36.51 120.69,36.51   120.68,36.62 120.69,36.80 120.65,36.91   120.61,37.02 120.50,37.04 120.41,37.10   120.28,37.19 120.22,37.26 120.18,37.41   120.12,37.67 120.19,37.93 120.04,38.32   119.99,38.44 119.93,38.56 119.81,38.61   119.74,38.64 119.64,38.63 119.56,38.63   118.92,38.64 118.55,38.65 117.94,38.39   117.82,38.34 117.60,38.23 117.50,38.15   117.38,38.05 117.33,37.95 117.22,37.89   117.11,37.83 116.70,37.79 116.56,37.79   115.97,37.78 115.65,37.87 115.35,38.45   115.35,38.45 115.04,39.04 115.04,39.04   114.91,39.31 115.01,39.47 114.62,39.48   114.62,39.48 114.25,39.48 114.25,39.48   114.25,39.48 113.09,39.60 113.09,39.60   113.09,39.60 112.38,39.60 112.38,39.60   112.28,39.60 111.86,39.58 111.81,39.52   111.78,39.48 111.78,39.41 111.78,39.35   112.07,39.35 112.13,39.25 112.38,39.14   112.61,39.04 112.85,39.07 112.85,38.72   112.85,38.34 112.62,38.52 112.63,38.10   112.63,38.10 112.74,37.23 112.74,37.23   112.74,37.23 112.66,36.44 112.66,36.44   112.66,36.36 112.66,36.22 112.74,36.16   112.79,36.12 112.90,36.13 112.97,36.13   112.97,36.13 113.50,36.13 113.50,36.13   113.39,36.02 112.94,35.56 112.88,35.44   112.80,35.28 112.78,35.03 112.78,34.85   113.19,34.77 113.37,34.32 113.75,34.32   113.75,34.32 114.72,34.32 114.72,34.32 Z", // Island
     "M 138.16,43.64 C 137.16,43.64 136.69,43.91 135.78,44.06   135.78,44.06 135.19,44.11 135.19,44.11   135.05,44.12 134.97,44.16 134.85,44.06   134.70,43.95 134.62,43.75 134.58,43.58   134.45,43.14 134.47,42.80 134.47,42.36   134.47,41.26 135.10,40.35 135.94,39.68   136.15,39.51 136.54,39.25 136.78,39.13   136.91,39.06 137.18,38.94 137.25,38.82   137.34,38.65 137.23,38.34 137.11,38.20   136.88,37.92 136.55,37.89 136.22,37.85   136.07,37.83 136.00,37.81 135.84,37.82   135.33,37.86 134.91,38.23 134.60,38.60   134.28,38.98 133.97,39.55 133.70,39.98   133.33,40.54 133.10,40.82 132.67,41.33   132.67,41.33 132.00,42.04 132.00,42.04   131.81,42.23 131.68,42.30 131.69,42.58   131.70,43.35 132.21,44.31 132.22,45.17   132.23,46.15 131.86,46.69 131.19,47.36   131.19,47.36 130.44,48.07 130.44,48.07   130.19,48.29 129.84,48.58 129.56,48.74   129.46,48.80 129.28,48.89 129.16,48.84   129.07,48.80 129.04,48.70 129.01,48.61   128.97,48.45 128.94,48.16 128.94,47.99   128.94,47.99 128.94,46.71 128.94,46.71   128.94,46.39 128.95,46.07 128.87,45.77   128.73,45.23 128.27,44.89 127.72,44.89   127.72,44.89 127.59,44.89 127.59,44.89   126.94,44.90 126.33,45.24 125.78,45.56   125.52,45.71 125.01,46.03 124.72,46.01   124.37,45.99 124.29,45.45 124.24,45.17   124.20,44.93 124.19,44.76 124.19,44.52   124.19,44.52 124.16,44.14 124.16,44.14   124.16,44.14 124.19,43.86 124.19,43.86   124.19,43.86 124.19,43.39 124.19,43.39   124.19,42.85 123.96,42.62 123.97,42.17   123.98,41.75 124.52,41.51 124.84,41.35   125.77,40.88 126.81,40.60 127.53,39.79   127.83,39.45 127.98,38.85 128.22,38.61   128.47,38.36 128.75,38.52 129.01,38.13   129.15,37.92 129.09,37.65 129.24,37.41   129.65,36.73 130.63,35.74 131.28,35.28   131.54,35.10 131.82,34.90 132.12,34.83   132.49,34.74 133.24,34.68 133.53,34.52   133.94,34.30 133.82,33.83 133.94,33.64   134.06,33.44 134.48,33.38 134.69,33.38   135.35,33.37 135.76,33.39 136.34,33.02   136.34,33.02 137.59,32.18 137.59,32.18   137.78,32.09 138.04,31.99 138.25,32.01   138.62,32.03 139.05,32.34 139.34,32.55   139.94,32.98 140.65,33.59 141.38,33.75   141.35,33.98 141.15,34.56 141.08,34.82   140.87,35.51 140.71,36.15 140.72,36.88   140.73,37.39 141.10,37.14 141.12,37.63   141.13,37.87 141.06,38.05 140.92,38.23   140.85,38.31 140.74,38.39 140.71,38.48   140.67,38.57 140.71,38.86 140.61,39.07   140.61,39.07 140.30,39.51 140.30,39.51   140.30,39.51 139.91,40.32 139.91,40.32   139.91,40.32 139.53,40.86 139.53,40.86   139.53,40.86 139.20,41.70 139.20,41.70   139.05,41.94 138.84,41.83 138.77,42.08   138.68,42.37 139.03,42.52 139.08,42.80   139.09,42.92 139.02,42.99 138.91,43.01   138.91,43.01 138.16,43.01 138.16,43.01   138.16,43.01 138.16,43.64 138.16,43.64 Z", // Skandinavien
-    "M 115.44,50.65 C 115.48,50.34 115.66,49.74 115.55,49.46   115.46,49.19 115.28,49.29 115.22,49.08   115.14,48.86 115.25,48.73 115.02,48.30   114.91,48.12 114.76,47.91 114.59,47.78   114.43,47.66 114.33,47.69 114.25,47.57   114.17,47.45 114.19,47.08 114.19,46.92   114.19,46.66 114.29,46.40 114.34,46.14   114.34,46.14 114.34,45.42 114.34,45.42   114.35,45.13 114.54,45.14 114.78,45.14   114.78,45.14 115.41,45.14 115.41,45.14   115.49,45.14 115.58,45.15 115.65,45.11   115.88,44.99 115.87,44.53 115.88,44.30   115.88,44.23 115.86,44.10 115.92,44.05   115.97,44.01 116.09,44.02 116.16,44.02   116.51,44.01 117.01,44.03 117.34,44.14   117.56,44.21 117.76,44.32 117.84,44.55   117.96,44.85 117.72,45.01 117.47,45.10   116.94,45.28 116.54,45.27 116.00,45.27   116.00,45.60 116.03,45.77 116.17,46.08   116.30,46.37 116.46,46.53 116.47,46.86   116.47,47.12 116.40,47.45 116.58,47.67   116.67,47.79 116.76,47.82 116.91,47.83   117.00,47.84 117.16,47.82 117.22,47.91   117.26,47.97 117.25,48.15 117.26,48.24   117.29,48.48 117.30,48.66 117.44,48.86   117.50,48.94 117.55,49.01 117.63,49.07   117.97,49.36 118.79,49.86 118.97,49.15   119.19,49.20 119.47,49.30 119.60,49.49   119.76,49.70 119.64,49.96 119.44,49.99   119.30,50.00 119.18,49.92 119.00,50.02   118.79,50.15 118.68,50.42 118.63,50.65   118.51,51.16 118.53,51.48 118.53,51.99   118.53,51.99 118.12,52.02 118.12,52.02   117.89,52.02 117.52,51.98 117.35,52.16   117.22,52.28 117.27,52.39 117.23,52.49   117.19,52.60 116.97,52.86 116.87,52.92   116.67,53.04 116.43,53.00 116.22,53.05   115.85,53.14 115.03,53.24 114.66,53.24   114.37,53.25 114.34,53.23 114.06,53.18   114.06,53.05 114.05,52.91 114.16,52.82   114.30,52.71 114.52,52.82 114.65,52.59   114.75,52.39 114.75,52.00 114.75,51.77   114.75,51.50 114.83,51.33 114.93,51.09   114.97,50.98 115.06,50.71 115.16,50.67   115.22,50.64 115.37,50.65 115.44,50.65 Z M 110.31,52.06 C 110.39,51.84 110.52,51.56 110.69,51.40   110.82,51.28 110.89,51.31 111.00,51.23   111.10,51.15 111.27,50.81 111.27,50.68   111.27,50.38 110.83,50.20 110.75,50.07   110.72,50.02 110.72,49.93 110.72,49.87   110.73,49.70 110.83,49.71 110.97,49.71   110.97,49.71 111.38,49.71 111.38,49.71   111.52,49.71 111.74,49.70 111.78,49.52   111.81,49.37 111.46,49.11 111.73,48.88   111.89,48.74 112.41,48.73 112.62,48.76   112.68,48.76 112.80,48.77 112.84,48.79   112.84,48.79 113.13,49.02 113.13,49.02   113.24,49.09 113.51,49.18 113.50,49.33   113.48,49.52 113.14,49.70 113.11,49.96   113.07,50.18 113.32,50.36 113.44,50.55   113.01,50.76 112.79,51.18 112.78,51.65   112.68,51.58 112.55,51.44 112.44,51.41   112.24,51.37 111.91,51.57 111.79,51.71   111.70,51.81 111.67,51.92 111.56,51.99   111.47,52.05 111.38,52.05 111.28,52.06   111.28,52.06 110.31,52.06 110.31,52.06 Z", // Gr
+    "M 115.44,50.65 C 115.48,50.34 115.66,49.74 115.55,49.46   115.46,49.19 115.28,49.29 115.22,49.08   115.14,48.86 115.25,48.73 115.02,48.30   114.91,48.12 114.76,47.91 114.59,47.78   114.43,47.66 114.33,47.69 114.25,47.57   114.17,47.45 114.19,47.08 114.19,46.92   114.19,46.66 114.29,46.40 114.34,46.14   114.34,46.14 114.34,45.42 114.34,45.42   114.35,45.13 114.54,45.14 114.78,45.14   114.78,45.14 115.41,45.14 115.41,45.14   115.49,45.14 115.58,45.15 115.65,45.11   115.88,44.99 115.87,44.53 115.88,44.30   115.88,44.23 115.86,44.10 115.92,44.05   115.97,44.01 116.09,44.02 116.16,44.02   116.51,44.01 117.01,44.03 117.34,44.14   117.56,44.21 117.76,44.32 117.84,44.55   117.96,44.85 117.72,45.01 117.47,45.10   116.94,45.28 116.54,45.27 116.00,45.27   116.00,45.60 116.03,45.77 116.17,46.08   116.30,46.37 116.46,46.53 116.47,46.86   116.47,47.12 116.40,47.45 116.58,47.67   116.67,47.79 116.76,47.82 116.91,47.83   117.00,47.84 117.16,47.82 117.22,47.91   117.26,47.97 117.25,48.15 117.26,48.24   117.29,48.48 117.30,48.66 117.44,48.86   117.50,48.94 117.55,49.01 117.63,49.07   117.97,49.36 118.79,49.86 118.97,49.15   119.19,49.20 119.47,49.30 119.60,49.49   119.76,49.70 119.64,49.96 119.44,49.99   119.30,50.00 119.18,49.92 119.00,50.02   118.79,50.15 118.68,50.42 118.63,50.65   118.51,51.16 118.53,51.48 118.53,51.99   118.53,51.99 118.12,52.02 118.12,52.02   117.89,52.02 117.52,51.98 117.35,52.16   117.22,52.28 117.27,52.39 117.23,52.49   117.19,52.60 116.97,52.86 116.87,52.92   116.67,53.04 116.43,53.00 116.22,53.05   115.85,53.14 115.03,53.24 114.66,53.24   114.37,53.25 114.34,53.23 114.06,53.18   114.06,53.05 114.05,52.91 114.16,52.82   114.30,52.71 114.52,52.82 114.65,52.59   114.75,52.39 114.75,52.00 114.75,51.77   114.75,51.50 114.83,51.33 114.93,51.09   114.97,50.98 115.06,50.71 115.16,50.67   115.22,50.64 115.37,50.65 115.44,50.65 Z M 110.31,52.06 C 110.39,51.84 110.52,51.56 110.69,51.40   110.82,51.28 110.89,51.31 111.00,51.23   111.10,51.15 111.27,50.81 111.27,50.68   111.27,50.38 110.83,50.20 110.75,50.07   110.72,50.02 110.72,49.93 110.72,49.87   110.73,49.70 110.83,49.71 110.97,49.71   110.97,49.71 111.38,49.71 111.38,49.71   111.52,49.71 111.74,49.70 111.78,49.52   111.81,49.37 111.46,49.11 111.73,48.88   111.89,48.74 112.41,48.73 112.62,48.76   112.68,48.76 112.80,48.77 112.84,48.79   112.84,48.79 113.13,49.02 113.13,49.02   113.24,49.09 113.51,49.18 113.50,49.33   113.48,49.52 113.14,49.70 113.11,49.96   113.07,50.18 113.32,50.36 113.44,50.55   113.01,50.76 112.79,51.18 112.78,51.65   112.68,51.58 112.55,51.44 112.44,51.41   112.24,51.37 111.91,51.57 111.79,51.71   111.70,51.81 111.67,51.92 111.56,51.99   111.47,52.05 111.38,52.05 111.28,52.06   111.28,52.06 110.31,52.06 110.31,52.06 Z", // Grossbrotannien
     "M 117.03,54.56 C 117.46,54.37 117.86,54.40 118.19,54.29   118.19,54.29 119.81,53.53 119.81,53.53   120.26,53.34 120.29,53.45 120.62,53.32   121.12,53.14 121.64,52.69 122.25,52.56   122.25,52.56 123.09,52.45 123.09,52.45   123.32,52.39 123.37,52.27 123.50,52.27   123.57,52.28 123.72,52.36 123.78,52.39   124.04,52.52 124.15,52.51 124.16,52.84   124.16,52.84 124.16,53.24 124.16,53.24   124.16,53.24 124.38,53.18 124.38,53.18   124.38,53.18 124.31,53.40 124.31,53.40   124.31,53.40 124.91,53.42 124.91,53.42   125.09,53.44 125.22,53.26 125.40,53.40   125.53,53.51 125.43,53.75 125.49,53.90   125.53,54.01 125.91,54.16 126.03,54.18   126.17,54.20 126.24,54.11 126.34,54.05   126.44,53.99 126.49,54.00 126.59,53.99   126.54,54.12 126.48,54.30 126.63,54.40   126.70,54.44 126.78,54.42 126.84,54.48   126.94,54.57 127.09,54.96 127.07,55.09   127.03,55.29 126.72,55.33 126.73,55.59   126.74,55.78 127.02,56.16 127.11,56.34   127.22,56.56 127.21,56.73 127.22,56.97   127.22,56.97 127.22,57.15 127.22,57.15   127.19,57.41 126.72,57.42 126.69,57.80   126.66,58.08 126.79,58.26 126.69,58.56   126.69,58.56 126.19,58.47 126.19,58.47   125.66,58.42 125.11,58.49 124.59,58.61   124.32,58.68 123.98,58.75 123.81,59.00   123.46,59.53 123.51,60.64 122.91,61.25   122.39,61.77 121.38,61.80 120.75,62.17   120.32,62.43 119.97,62.74 119.63,63.10   119.63,63.10 119.18,63.61 119.18,63.61   119.09,63.67 118.95,63.66 118.84,63.68   118.84,63.68 118.19,63.85 118.19,63.85   117.24,64.16 116.36,64.53 115.34,64.31   115.11,64.26 114.93,64.22 114.72,64.10   114.78,63.95 114.88,63.78 114.88,63.62   114.88,63.21 114.34,62.91 114.03,62.72   113.91,62.65 113.53,62.47 113.49,62.34   113.46,62.21 113.65,61.88 113.71,61.75   113.71,61.75 114.11,60.94 114.11,60.94   114.16,60.79 114.22,60.60 114.17,60.44   114.11,60.29 113.98,60.21 113.88,60.09   113.97,60.08 114.10,60.07 114.18,60.01   114.30,59.93 114.33,59.81 114.50,59.68   114.71,59.53 115.04,59.46 115.28,59.34   115.58,59.19 115.67,58.99 116.03,59.00   116.21,59.01 116.47,59.10 116.66,59.14   116.66,59.14 117.28,59.19 117.28,59.19   117.68,59.19 118.06,59.22 118.44,59.05   118.83,58.88 118.94,58.72 119.06,58.64   119.20,58.56 119.35,58.61 119.53,58.46   119.68,58.33 119.68,58.20 119.77,58.12   119.99,57.89 120.61,57.86 120.47,57.37   120.35,56.96 120.03,56.40 119.59,56.27   119.36,56.20 119.13,56.34 118.97,56.25   118.87,56.19 118.82,56.06 118.77,55.97   118.70,55.85 118.63,55.78 118.53,55.69   118.23,55.42 117.84,55.20 117.50,54.97   117.33,54.86 117.12,54.75 117.03,54.56 Z", // Westeuropa
     "M 133.75,55.78 C 133.76,55.84 133.75,55.87 133.80,55.92   133.92,56.05 134.45,56.06 134.62,56.06   134.62,56.06 135.16,56.09 135.16,56.09   135.16,56.09 136.44,56.09 136.44,56.09   136.44,56.09 136.75,56.06 136.75,56.06   137.06,56.04 137.31,56.06 137.62,55.99   137.78,55.96 137.97,55.91 138.07,55.77   138.15,55.66 138.16,55.50 138.16,55.37   138.16,55.13 138.18,54.75 138.36,54.58   138.47,54.46 138.60,54.48 138.69,54.36   138.77,54.26 138.75,54.13 138.95,53.90   139.30,53.50 139.99,53.21 140.53,53.21   140.84,53.22 140.97,53.31 141.19,53.53   141.51,53.85 141.64,54.10 141.56,54.56   141.53,54.76 141.51,54.84 141.41,55.03   141.52,55.03 141.65,55.04 141.74,55.11   141.85,55.19 141.85,55.31 141.84,55.43   141.84,55.69 141.67,56.05 141.51,56.25   141.32,56.48 141.23,56.29 140.88,56.44   140.47,56.62 140.22,56.86 139.96,57.22   139.73,57.53 139.57,57.90 139.47,58.28   139.41,58.54 139.38,58.82 139.27,59.06   138.98,59.71 138.42,60.23 137.91,60.69   137.91,60.69 137.50,61.10 137.50,61.10   137.44,61.16 137.37,61.27 137.28,61.30   137.14,61.34 136.80,61.17 136.50,61.16   136.02,61.14 135.57,61.54 135.56,62.03   135.56,62.50 135.99,63.39 136.06,63.91   135.95,63.84 135.75,63.65 135.62,63.66   135.51,63.66 135.41,63.79 135.22,63.85   135.07,63.74 135.03,63.85 134.89,63.74   134.65,63.53 134.38,62.88 134.02,62.47   133.63,62.04 133.25,61.94 133.25,61.28   133.25,61.28 133.25,60.97 133.25,60.97   133.25,60.60 133.34,60.23 133.08,59.91   132.87,59.65 132.52,59.56 132.26,59.28   131.97,58.98 131.81,58.59 131.41,58.39   131.11,58.25 130.78,58.30 130.41,58.12   130.41,58.12 129.44,57.56 129.44,57.56   129.31,57.49 129.06,57.33 128.94,57.28   128.70,57.20 128.50,57.34 128.50,57.59   128.51,57.83 128.71,58.16 128.85,58.34   129.10,58.69 129.38,58.99 129.72,59.25   129.72,59.25 130.37,59.70 130.37,59.70   130.64,59.94 130.55,60.23 130.97,60.46   130.97,60.46 132.12,61.14 132.12,61.14   132.22,61.20 132.45,61.37 132.45,61.50   132.45,61.59 132.26,61.71 132.19,61.76   131.98,61.91 131.77,62.11 131.66,62.35   131.57,62.56 131.59,62.83 131.55,63.07   131.52,63.28 131.41,63.53 131.30,63.72   130.91,64.41 130.00,64.88 129.22,64.88   129.22,64.88 128.94,64.88 128.94,64.88   128.67,64.88 128.23,64.81 128.04,64.60   127.88,64.41 127.90,64.06 127.87,63.82   127.84,63.65 127.77,63.56 127.72,63.41   127.72,63.41 128.47,63.41 128.47,63.41   128.47,63.41 128.91,63.44 128.91,63.44   129.21,63.42 129.41,63.24 129.62,63.04   130.05,62.62 130.39,62.15 130.12,61.53   129.94,61.14 129.47,60.69 129.16,60.38   129.16,60.38 128.84,60.03 128.84,60.03   128.31,59.47 127.53,58.77 126.75,58.59   126.87,58.22 126.74,58.18 126.75,57.81   126.76,57.48 127.07,57.49 127.24,57.28   127.32,57.17 127.29,56.89 127.28,56.75   127.26,56.29 126.89,56.01 126.81,55.65   126.73,55.34 127.09,55.33 127.14,55.09   127.17,54.91 126.95,54.61 126.94,54.50   126.92,54.36 127.04,54.32 127.12,54.18   127.12,54.18 127.22,53.94 127.22,53.94   127.32,53.82 127.64,53.90 127.78,53.94   128.00,53.99 128.19,54.08 128.38,54.22   128.59,54.38 128.91,54.68 129.16,54.75   129.43,54.83 129.70,54.68 130.09,54.68   130.36,54.69 130.63,54.78 130.88,54.88   130.96,54.92 131.12,55.03 131.21,54.97   131.28,54.92 131.28,54.79 131.28,54.71   131.27,54.49 131.09,54.11 131.41,54.01   131.74,53.91 131.79,54.21 132.09,54.19   132.21,54.18 132.47,54.10 132.55,54.14   132.67,54.19 132.63,54.36 132.84,54.39   132.97,54.41 133.35,54.32 133.50,54.31   133.60,54.31 133.71,54.31 133.71,54.43   133.71,54.58 133.49,54.92 133.46,55.06   133.44,55.18 133.50,55.23 133.55,55.34   133.64,55.54 133.58,55.62 133.75,55.78 Z", // Suedeuropa
     "M 124.22,53.15 C 124.22,52.96 124.27,52.64 124.12,52.50   123.99,52.37 123.62,52.31 123.53,52.17   123.49,52.10 123.50,51.90 123.49,51.80   123.45,51.42 123.44,50.89 123.68,50.55   123.98,50.13 124.69,50.15 125.16,50.07   125.45,50.01 125.76,49.87 125.85,49.55   125.91,49.35 125.83,49.08 125.76,48.90   125.63,48.57 125.38,48.21 125.38,47.86   125.37,47.33 125.52,46.53 126.19,46.52   126.68,46.51 127.08,46.77 127.39,47.14   127.48,47.26 127.67,47.48 127.60,47.64   127.56,47.74 127.27,47.88 127.16,47.97   126.75,48.30 126.52,48.77 126.76,49.27   126.96,49.70 127.47,49.97 127.94,49.92   128.29,49.89 128.41,49.77 128.81,49.77   129.30,49.78 129.75,50.08 130.25,49.96   130.80,49.83 131.44,49.27 131.91,49.14   132.03,49.10 132.27,49.11 132.41,49.11   132.41,49.11 134.09,49.33 134.09,49.33   134.36,49.29 134.42,49.12 134.54,49.07   134.54,49.07 134.88,49.03 134.88,49.03   135.12,48.98 135.37,48.90 135.62,48.90   136.16,48.89 136.20,49.08 136.56,49.18   136.70,49.22 136.88,49.19 136.96,49.34   137.06,49.51 136.91,49.87 136.85,50.05   136.79,50.27 136.76,50.39 137.03,50.40   137.03,50.40 137.41,50.40 137.41,50.40   137.91,50.40 138.02,50.59 138.44,50.66   138.54,50.68 138.75,50.67 138.79,50.78   138.82,50.87 138.70,51.09 138.67,51.18   138.59,51.39 138.59,51.65 138.74,51.83   138.95,52.10 139.28,52.01 139.56,52.12   139.53,52.26 139.42,52.48 139.52,52.61   139.60,52.71 139.76,52.71 139.81,52.81   139.85,52.88 139.80,52.96 139.81,53.02   139.83,53.10 139.89,53.18 139.94,53.24   139.56,53.38 139.15,53.59 138.89,53.90   138.69,54.13 138.70,54.27 138.63,54.35   138.54,54.45 138.34,54.41 138.20,54.71   138.10,54.94 138.10,55.19 138.07,55.43   138.05,55.58 138.08,55.69 137.96,55.80   137.80,55.94 137.19,55.99 136.97,56.00   136.97,56.00 136.38,56.00 136.38,56.00   136.38,56.00 136.00,56.03 136.00,56.03   136.00,56.03 135.56,56.03 135.56,56.03   135.56,56.03 135.09,56.00 135.09,56.00   134.53,56.00 134.39,56.01 133.81,55.90   133.81,55.90 133.88,55.75 133.88,55.75   133.65,55.63 133.72,55.61 133.64,55.40   133.56,55.20 133.46,55.19 133.57,54.93   133.63,54.80 133.84,54.45 133.75,54.32   133.70,54.24 133.58,54.24 133.50,54.25   133.50,54.25 132.85,54.33 132.85,54.33   132.67,54.30 132.73,54.14 132.56,54.08   132.42,54.02 132.25,54.13 132.03,54.12   131.84,54.11 131.82,54.02 131.69,53.96   131.50,53.88 131.25,53.97 131.17,54.15   131.07,54.36 131.28,54.58 131.19,54.96   130.87,54.83 130.42,54.60 130.06,54.60   130.06,54.60 129.38,54.71 129.38,54.71   129.02,54.73 128.73,54.43 128.47,54.23   128.23,54.04 127.99,53.92 127.69,53.85   127.53,53.81 127.30,53.76 127.18,53.91   127.09,54.02 127.13,54.20 126.91,54.33   126.76,54.41 126.56,54.35 126.60,54.15   126.63,54.05 126.71,53.97 126.78,53.90   126.70,53.90 126.54,53.89 126.47,53.92   126.33,53.96 126.23,54.09 126.12,54.12   126.03,54.14 125.65,54.00 125.59,53.92   125.51,53.80 125.63,53.55 125.46,53.39   125.30,53.24 125.14,53.25 125.00,53.39   124.74,53.28 124.68,53.31 124.41,53.31   124.41,53.31 124.53,53.06 124.53,53.06   124.53,53.06 124.22,53.15 124.22,53.15 Z", // Nordeuropa
@@ -335,8 +331,8 @@ public class RisikoGui extends Application {
       landTexte[i].setLayoutX(laenderPositionen[i][0] - 10);
       landTexte[i].setLayoutY(laenderPositionen[i][1]);
       landTexte[i].setStyle("-fx-fill: white; -fx-font-size: 15px; -fx-font-weight: bold;");
-      landTexte[i].setTextAlignment(TextAlignment.CENTER); //hab das Gefühl das macht nichts
-      landTexte[i].setMouseTransparent(true); //dann können wir nicht mehr auf die Texte klicken
+      landTexte[i].setTextAlignment(TextAlignment.CENTER);
+      landTexte[i].setMouseTransparent(true); //dann koennen wir nicht mehr auf die Texte klicken
       
       landButtons[i] = new LandButton(spiel, svgPfade[i], spiel.getLand(i), landTexte[i], imageViewKontinente); //hier Erstellung der landButtons
       landButtons[i].setStyle("-fx-background-color: transparent;");
@@ -462,7 +458,7 @@ public class RisikoGui extends Application {
       spielerLabel[k].setPrefHeight(20);
       spielerLabel[k].setPrefWidth(140);
       spielerLabel[k].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;");
-      spielerLabel[k].setText(spiel.getSpielerName(k));//namenFelder[k].getText()
+      spielerLabel[k].setText(spiel.getSpielerName(k));
       spielPane.getChildren().add(spielerLabel[k]);
       
       truppenLabel[k] = new Label();
@@ -485,8 +481,7 @@ public class RisikoGui extends Application {
       laenderLabel[k].setAlignment(Pos.CENTER);
       spielPane.getChildren().add(laenderLabel[k]);
     }
-    
-    imageViewNeuerSpieler = new ImageView(new Image(getClass().getResourceAsStream("/Graphiken/neuerSpieler.png"))); //PhasenUndAufforderungs-ImageView
+    imageViewNeuerSpieler = new ImageView(new Image(getClass().getResourceAsStream("/Graphiken/neuerSpieler.png"))); //NeuerSpieler-ImageView
     imageViewNeuerSpieler.setFitWidth(400);
     imageViewNeuerSpieler.setX(483);
     imageViewNeuerSpieler.setY(341.5);
@@ -536,7 +531,6 @@ public class RisikoGui extends Application {
     imageViewKarte.setY(124);
     spielPane.getChildren().add(0, imageViewKarte);
     imageViewKarte.toFront();
-    //kartenPosition = new int[spielerAnzahl];
     
     
     //Gewinn:
@@ -600,10 +594,6 @@ public class RisikoGui extends Application {
     grafikErneuern();
   }
   
-  public static void main(String[] args) {
-    launch(args);
-  }
-  
   public void grafikErneuern() {
     if (spiel.getGewonnen() != 100) {
       System.out.println("Spieler " + spiel.getGewonnen() + " hat gewonnen!"); //muesste dann natuerlich auch in die Gui
@@ -644,15 +634,9 @@ public class RisikoGui extends Application {
         for (int y = 0; y < 5; y++) {
           imageViewAlleKarten[j][y].setVisible(false);    
         }
-        //System.out.println("hi" + j);
-        //System.out.println("kartenPosition[" + j + "] = " + kartenPosition);
         int karten[] = spiel.getKartenAnzahl(j);
-        //int anzahl = karten[0] + karten[1] + karten[2];
         for (int i = 0; i < 3; i++) {
-          //System.out.println("ho" + i);
-          //System.out.println("Karten von " + i + ": " + karten[i]);
           for (int x = 0; x < karten[i]; x++) {
-            //System.out.println("ha" + x);
             imageViewAlleKarten[j][kartenPosition].setImage(imageKarte[i]);
             imageViewAlleKarten[j][kartenPosition].setVisible(true);
             kartenPosition++; 
@@ -681,8 +665,8 @@ public class RisikoGui extends Application {
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
-            phasenLabel.setText("Verstärkungsphase");
-            aufforderungsLabel.setText("Bitte setze " + spiel.getZuPlazierendeTruppen() + " Truppen auf deine Länder.");
+            phasenLabel.setText("VerstÃƒÂ¤rkungsphase");
+            aufforderungsLabel.setText("Bitte setze " + spiel.getZuPlazierendeTruppen() + " Truppen auf deine LÃƒÂ¤nder.");
             neuerSpieler();
             break;
           case 1 : //angreifen also eigenes Land auswaehlen
@@ -694,7 +678,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             phasenLabel.setText("Angriffsphase");
-            aufforderungsLabel.setText("Wähle ein Land, aus welchem du angreifen möchtest!");
+            aufforderungsLabel.setText("WÃƒÂ¤hle ein Land, aus welchem du angreifen mÃƒÂ¶chtest!");
             break;
           case 2 : //angreifen also Feind auswaehlen
             if (landButtons[i].getHerrscher() != spiel.getDran() && spiel.istBenachbart(i)) { //nur fremde, benachbarte Laender enablen
@@ -709,9 +693,8 @@ public class RisikoGui extends Application {
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
-            //landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
             phasenLabel.setText("Angriffsphase");
-            aufforderungsLabel.setText("Wähle das Land, welches du angreifen möchtest!");
+            aufforderungsLabel.setText("WÃƒÂ¤hle das Land, welches du angreifen mÃƒÂ¶chtest!");
             break;
           case 3 : //angreifen also Truppen nach Zielland verschieben
             for (int o = 0; o < 3; o++) {
@@ -741,7 +724,6 @@ public class RisikoGui extends Application {
             phasenLabel.setText("Angriffsphase");
             aufforderungsLabel.setText("Verschiebe deine Angreifertruppen in das Land!");
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
-            //landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
             break;
           case 4 : //angreifen also im Kampf
             landButtons[i].setKlickbar(false); //alle Laender disablen
@@ -759,7 +741,6 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(false);
             fertigButton.setDisable(false);
             landButtons[spiel.getNachLand().getIndex()].refresh(10);
-            //landButtons[spiel.getVonLand().getIndex()].angriffsSchrift(spiel.getVonLand().getTruppen());
             break;
           case 5 : //Truppen verschieben also Startland auswaehlen
             kartenAnzeigen();
@@ -777,7 +758,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             phasenLabel.setText("Zugphase");
-            aufforderungsLabel.setText("Wähle, aus welchem Land du Truppen ziehen möchtest!");
+            aufforderungsLabel.setText("WÃ¤hle, aus welchem Land du Truppen ziehen mÃ¶chtest!");
             for (int k = 0; k < 42; k++) {
               landButtons[k].refresh(switchWert);
             }
@@ -791,7 +772,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             phasenLabel.setText("Zugphase");
-            aufforderungsLabel.setText("Wähle, in welches Land du Truppen ziehen möchtest!");
+            aufforderungsLabel.setText("WÃ¤hle, in welches Land du Truppen ziehen mÃ¶chtest!");
             break;
           case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
             if (i == spiel.getNachLand().getIndex()) {
@@ -802,7 +783,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             phasenLabel.setText("Zugphase");
-            aufforderungsLabel.setText("Wähle die Anzahl an Truppen!");
+            aufforderungsLabel.setText("WÃƒÂ¤hle die Anzahl an Truppen!");
             break;
           case 100 : //Anfangs Truppen platzieren
             if (landButtons[i].getHerrscher() == spiel.getDran()) {
@@ -826,17 +807,16 @@ public class RisikoGui extends Application {
       zuletztDran = spiel.getDran();
       neuerSpielerLabel.setText(spiel.getSpielerName(spiel.getDran()) + " ist an der Reihe!");
       neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + ";-fx-font-size: 30px; -fx-font-weight: bold; -fx-background-color: transparent;");
-      imageViewNeuerSpieler.setVisible(true);
+      neuerSpielerLabel.setVisible(true);
       imageViewNeuerSpieler.toFront();
       neuerSpielerLabel.setVisible(true);
       neuerSpielerLabel.toFront();
       
-      neuerSpielerLabel.setOnMouseEntered(event -> {
+      neuerSpielerLabel.setOnMouseEntered(event -> {//Umsetzung von ChatGPT
         neuerSpielerLabel.setVisible(false);
         imageViewNeuerSpieler.setVisible(false);
       });
-      
-      PauseTransition pause = new PauseTransition(Duration.seconds(1.2));
+      PauseTransition pause = new PauseTransition(Duration.seconds(1.5));//Umsetzung von ChatGPT
       pause.setOnFinished(e -> {
         neuerSpielerLabel.setVisible(false);
         imageViewNeuerSpieler.setVisible(false);
@@ -853,14 +833,14 @@ public class RisikoGui extends Application {
       imageViewKarte.setVisible(true);
       imageViewKarte.toFront();
       
-      PauseTransition pause = new PauseTransition(Duration.seconds(2));
+      PauseTransition pause = new PauseTransition(Duration.seconds(1.7));//Umsetzung von ChatGPT
       pause.setOnFinished(e -> imageViewKarte.setVisible(false));
       pause.play();
     }
   }
   
   public void kampfButton_gedrueckt(Event evt) {
-    spiel.buttonKlickAktion((byte) 2, (byte) 1);//weiss nicht, ob das geht 
+    spiel.buttonKlickAktion((byte) 2, (byte) 1);
     
     for (int o = 0; o < 3; o++) {
       imageViewAngreiferWuerfel[o].toBack();
@@ -872,10 +852,6 @@ public class RisikoGui extends Application {
     byte ver[] = spiel.getVerteidigerWuerfel();
     byte angAnzahl = spiel.getAngreiferWuerfelAnzahl();
     byte verAnzahl = spiel.getVerteidigerWuerfelAnzahl();
-    /*System.out.println("AngreiferWuerfelAnzahl = " + angAnzahl);
-    System.out.println("VerteidigerWuerfelAnzahl = " + verAnzahl);
-    System.out.println("AngreiferWuerfel[0] = " + ang[0]);
-    System.out.println("VerteidigerrWuerfel[0] = " + ver[0]);*/
     for (int m = 0; m < angAnzahl; m++) {
       imageViewAngreiferWuerfel[m].toFront();
       imageViewAngreiferWuerfel[m].setImage(imageAngreifer[ang[m]]);
@@ -885,7 +861,7 @@ public class RisikoGui extends Application {
       imageViewVerteidigerWuerfel[n].setImage(imageVerteidiger[ver[n]]);
     }
     phasenLabel.setText("Angriffsphase");
-    aufforderungsLabel.setText("Kämpfe oder gib auf!");
+    aufforderungsLabel.setText("KÃƒÂ¤mpfe oder gib auf!");
   }
   
   public void fertigButton_gedrueckt(Event evt) {
@@ -903,8 +879,6 @@ public class RisikoGui extends Application {
       if (spiel.getNachLand() != null) {
         if (i == spiel.getNachLand().getIndex() && switchWert == 0) {
           landButtons[i].refresh(10);
-          //        } else if (i == spiel.getVonLand().getIndex() && switchWert == 0) {
-          //          landButtons[i].angriffsSchrift(spiel.getVonLand().getTruppen());
         } else {
           landButtons[i].refresh(switchWert);
         }
@@ -921,6 +895,4 @@ public class RisikoGui extends Application {
   public void closeButton_gedrueckt(Event evt) {
 
   }
-  
 }
-    
