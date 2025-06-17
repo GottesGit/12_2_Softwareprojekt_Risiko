@@ -175,12 +175,12 @@ public class RisikoGui extends Application {
     for (byte i = startSpieler; i < spielerAnzahl; i++) {
       namen[i - startSpieler] = namenFelder[i].getText();
       spielerFarben[i - startSpieler] = farben[i];
-      System.out.println(i + " Spieler " + (i - startSpieler) + " : " + namenFelder[i].getText());
+      //System.out.println(i + " Spieler " + (i - startSpieler) + " : " + namenFelder[i].getText());
     }
     for (byte i = 0; i < startSpieler; i++) {
       namen[i + spielerAnzahl - startSpieler] = namenFelder[i].getText();
       spielerFarben[i + spielerAnzahl - startSpieler] = farben[i];
-      System.out.println(i + " Spieler " + (i + spielerAnzahl - startSpieler) + " : " + namenFelder[i].getText());
+      //System.out.println(i + " Spieler " + (i + spielerAnzahl - startSpieler) + " : " + namenFelder[i].getText());
     }
     spiel = new Spiel(namen, this);
     
@@ -665,8 +665,8 @@ public class RisikoGui extends Application {
             }
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
-            phasenLabel.setText("VerstÃ¤rkungsphase");
-            aufforderungsLabel.setText("Bitte setze " + spiel.getZuPlazierendeTruppen() + " Truppen auf deine LÃ¤nder.");
+            phasenLabel.setText("VerstÃƒÂ¤rkungsphase");
+            aufforderungsLabel.setText("Bitte setze " + spiel.getZuPlazierendeTruppen() + " Truppen auf deine LÃƒÂ¤nder.");
             neuerSpieler();
             break;
           case 1 : //angreifen also eigenes Land auswaehlen
@@ -678,7 +678,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             phasenLabel.setText("Angriffsphase");
-            aufforderungsLabel.setText("WÃ¤hle ein Land, aus welchem du angreifen mÃ¶chtest!");
+            aufforderungsLabel.setText("WÃƒÂ¤hle ein Land, aus welchem du angreifen mÃƒÂ¶chtest!");
             break;
           case 2 : //angreifen also Feind auswaehlen
             if (landButtons[i].getHerrscher() != spiel.getDran() && spiel.istBenachbart(i)) { //nur fremde, benachbarte Laender enablen
@@ -694,7 +694,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             phasenLabel.setText("Angriffsphase");
-            aufforderungsLabel.setText("WÃ¤hle das Land, welches du angreifen mÃ¶chtest!");
+            aufforderungsLabel.setText("WÃƒÂ¤hle das Land, welches du angreifen mÃƒÂ¶chtest!");
             break;
           case 3 : //angreifen also Truppen nach Zielland verschieben
             for (int o = 0; o < 3; o++) {
@@ -758,7 +758,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             phasenLabel.setText("Zugphase");
-            aufforderungsLabel.setText("Wähle, aus welchem Land du Truppen ziehen möchtest!");
+            aufforderungsLabel.setText("WÃ¤hle, aus welchem Land du Truppen ziehen mÃ¶chtest!");
             for (int k = 0; k < 42; k++) {
               landButtons[k].refresh(switchWert);
             }
@@ -772,7 +772,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             phasenLabel.setText("Zugphase");
-            aufforderungsLabel.setText("Wähle, in welches Land du Truppen ziehen möchtest!");
+            aufforderungsLabel.setText("WÃ¤hle, in welches Land du Truppen ziehen mÃ¶chtest!");
             break;
           case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
             if (i == spiel.getNachLand().getIndex()) {
@@ -783,7 +783,7 @@ public class RisikoGui extends Application {
             kampfButton.setDisable(true);
             fertigButton.setDisable(false);
             phasenLabel.setText("Zugphase");
-            aufforderungsLabel.setText("WÃ¤hle die Anzahl an Truppen!");
+            aufforderungsLabel.setText("WÃƒÂ¤hle die Anzahl an Truppen!");
             break;
           case 100 : //Anfangs Truppen platzieren
             if (landButtons[i].getHerrscher() == spiel.getDran()) {
@@ -861,7 +861,7 @@ public class RisikoGui extends Application {
       imageViewVerteidigerWuerfel[n].setImage(imageVerteidiger[ver[n]]);
     }
     phasenLabel.setText("Angriffsphase");
-    aufforderungsLabel.setText("KÃ¤mpfe oder gib auf!");
+    aufforderungsLabel.setText("KÃƒÂ¤mpfe oder gib auf!");
   }
   
   public void fertigButton_gedrueckt(Event evt) {

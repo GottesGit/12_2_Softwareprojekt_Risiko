@@ -104,7 +104,7 @@ public class Spiel {
             truppenZumSetzen = Math.min(startTruppen - mitSpieler[dran].getGesamtTruppen(), 5);
             land.setTruppen(dran, land.getTruppen() + truppenZumSetzen);
             mitSpieler[dran].setGesamtTruppen(mitSpieler[dran].getGesamtTruppen() + truppenZumSetzen);
-            System.out.println("Du hast " + truppenZumSetzen + " Truppen platziert!");
+            //System.out.println("Du hast " + truppenZumSetzen + " Truppen platziert!");
           }
         }
         else {
@@ -127,7 +127,7 @@ public class Spiel {
           }
         }
         if (alleFertig) {
-          System.out.println("Alle Spieler haben ihre Starttruppen gesetzt.");
+          //System.out.println("Alle Spieler haben ihre Starttruppen gesetzt.");
           dran = 0;
           phasenWechsel();
         }
@@ -204,14 +204,14 @@ public class Spiel {
             verschiebeTruppen(Math.min(5, vonLand.getTruppen() - 1));
           }
           if (vonLand.getTruppen() <= 1) {
-            System.out.println("Alle Trupppen aus " + vonLand.getName() + " verschoben");
+            //System.out.println("Alle Trupppen aus " + vonLand.getName() + " verschoben");
             phasenWechsel();
           }
         }
         schonDurchReset();
         break;
       case 7 : //Truppen verschieben also Truppen nach Zielland verschieben
-        System.out.println("Verschieben sollte passieren");
+        //System.out.println("Verschieben sollte passieren");
         if (land == nachLand) {
           if (taste == 1) {
             verschiebeTruppen(1);
@@ -219,7 +219,7 @@ public class Spiel {
             verschiebeTruppen(Math.min(5, vonLand.getTruppen() - 1));
           }
           if (vonLand.getTruppen() <= 1) {
-            System.out.println("Alle Trupppen aus " + vonLand.getName() + " verschoben");
+            //System.out.println("Alle Trupppen aus " + vonLand.getName() + " verschoben");
             phasenWechsel();
           }
         } else {
@@ -274,7 +274,7 @@ public class Spiel {
   
   public void phasenWechsel() {
     boolean fehler = false;
-    System.out.println("Phasenwechsel:" + phase);
+    //System.out.println("Phasenwechsel:" + phase);
     switch (phase) {
       case 100:
         phase = 0;
@@ -377,7 +377,7 @@ public class Spiel {
   }
   
   private void einmarschieren(int anzahl) {
-    System.out.println("Verschiebe " + anzahl);
+    //System.out.println("Verschiebe " + anzahl);
     if (dran != nachLand.getHerrscher()) {
       if (vonLand.getTruppen() > anzahl) {
         vonLand.setTruppen(dran, vonLand.getTruppen() - anzahl);
