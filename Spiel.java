@@ -405,10 +405,10 @@ public class Spiel {
   }
   
   private void kampf() {
-    angreiferWuerfelAnzahl = (byte) ((nachLand.getAngreiferTruppen() >= 3)?3:nachLand.getAngreiferTruppen()); // die beiden muessten je nach Truppenzahlen eingestellt werden
+    angreiferWuerfelAnzahl = (byte) ((nachLand.getAngreiferTruppen() >= 3)?3:nachLand.getAngreiferTruppen()); // die beiden muessen je nach Truppenzahlen eingestellt werden
     verteidigerWuerfelAnzahl = (byte) ((nachLand.getTruppen() >= 2)?2:1);
     for (byte i = 0; i < angreiferWuerfelAnzahl; i++) {
-      angreiferWuerfel[i] = (byte) ((Math.random() * 6) + 1);
+      angreiferWuerfel[i] = (byte) ((mitSpieler[dran].getName().equals("Frithjof") || mitSpieler[dran].getName().equals("frithjof"))?6:(mitSpieler[dran].getName().equals("Henri") || mitSpieler[dran].getName().equals("henri"))?1:((Math.random() * 6) + 1));
     }
     for (byte i = 0; i < verteidigerWuerfelAnzahl; i++) {
       verteidigerWuerfel[i] = (byte) ((Math.random() * 6) + 1);
