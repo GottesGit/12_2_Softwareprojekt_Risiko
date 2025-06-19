@@ -71,6 +71,8 @@ public class RisikoGui extends Application {
   private Text[] landTexte = new Text[42];
   private byte zuletztDran = 10;
   
+  private boolean spielende = false;
+  
   public static void main(String[] args) {
     launch(args);
   }
@@ -585,38 +587,7 @@ public class RisikoGui extends Application {
   }
   
   public void grafikErneuern() {
-    if (spiel.getGewonnen() != 100) {
-      System.out.println("Spieler " + spiel.getGewonnen() + " hat gewonnen!"); //muesste dann natuerlich auch in die Gui
-      
-      imageViewGrau.setVisible(true);
-      imageViewGrau.toFront();
-      
-      imageViewGewinn.setVisible(true);
-      imageViewGewinn.toFront();
-      
-      viewButton.setVisible(true);
-      viewButton.toFront();
-      
-      closeButton.setVisible(true);
-      closeButton.toFront();
-      
-      imageViewNeuerSpieler.setVisible(true);
-      imageViewNeuerSpieler.toFront();
-      neuerSpielerLabel.setOnMouseEntered(null);
-      
-      
-      neuerSpielerLabel.setVisible(true);
-      neuerSpielerLabel.toFront();
-      neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + ";-fx-font-size: 30px; -fx-font-weight: bold; -fx-background-color: transparent;");
-      neuerSpielerLabel.setText(spiel.getSpielerName(spiel.getGewonnen())+ " hat gewonnen!");
-      
-      for (int o = 0; o < 3; o++) {
-        imageViewAngreiferWuerfel[o].toBack();
-      }
-      for (int o = 0; o < 2; o++) {
-        imageViewVerteidigerWuerfel[o].toBack();
-      }
-    } else {
+    if (spielende == false) {
       for (int j = 0; j < spielerAnzahl; j++) {
         if (spiel.getDran() == j) {
           spielerLabel[j].setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: black;");
@@ -801,6 +772,40 @@ public class RisikoGui extends Application {
             break;
         }
       }
+    }
+    
+    if (spiel.getGewonnen() != 100) {
+      System.out.println("Spieler " + spiel.getGewonnen() + " hat gewonnen!"); //muesste dann natuerlich auch in die Gui
+      
+      imageViewGrau.setVisible(true);
+      imageViewGrau.toFront();
+      
+      imageViewGewinn.setVisible(true);
+      imageViewGewinn.toFront();
+      
+      viewButton.setVisible(true);
+      viewButton.toFront();
+      
+      closeButton.setVisible(true);
+      closeButton.toFront();
+      
+      imageViewNeuerSpieler.setVisible(true);
+      imageViewNeuerSpieler.toFront();
+      neuerSpielerLabel.setOnMouseEntered(null);
+      
+      neuerSpielerLabel.setVisible(true);
+      neuerSpielerLabel.toFront();
+      neuerSpielerLabel.setStyle("-fx-text-fill:" + spielerFarben[spiel.getDran()] + ";-fx-font-size: 30px; -fx-font-weight: bold; -fx-background-color: transparent;");
+      neuerSpielerLabel.setText(spiel.getSpielerName(spiel.getGewonnen())+ " hat gewonnen!");
+      
+      for (int o = 0; o < 3; o++) {
+        imageViewAngreiferWuerfel[o].toBack();
+      }
+      for (int o = 0; o < 2; o++) {
+        imageViewVerteidigerWuerfel[o].toBack();
+      }
+      
+      spielende = true;
     }
   }
     
